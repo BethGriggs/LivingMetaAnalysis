@@ -15,22 +15,25 @@ router.get('/', function(req, res) {
 });
 
 // get studies route
-router.get('/studies', function(req, res, next) {
-  Study.find(function(err, studies){
-    if(err){ return next(err); }
+router.get('/api/studies', function(req, res, next) {
+  Study.find(function(err, studies) {
+    if (err) {
+      return next(err);
+    }
     res.json(studies);
   });
 });
 
 // post studies route
-router.post('/studies', function(req, res, next) {
+router.post('/api/studies', function(req, res, next) {
   var study = new Study(req.body);
 
-  study.save(function(err, study){
-    if(err){ return next(err); }
+  study.save(function(err, study) {
+    if (err) {
+      return next(err);
+    }
     res.json(study);
   });
 });
-
 
 module.exports = router;

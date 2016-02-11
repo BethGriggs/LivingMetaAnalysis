@@ -11,6 +11,11 @@ app.config([
          url: '/home',
          templateUrl: '/home.html',
          controller: 'MainCtrl'
+       })
+       .state('studies/create', {
+         url: '/studies/create',
+         templateUrl: '/studies/create.html',
+         controller: 'MainCtrl'
        });
 
     $urlRouterProvider.otherwise('home');
