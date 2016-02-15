@@ -48,7 +48,7 @@
         <div class="form-group">
           <label class="col-md-4 control-label" for="title">Title</label>
           <div class="col-md-6">
-            <input id="title"  ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
+            <input id="title" ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
             <span class="help-block">Title of the article/study </span>
           </div>
         </div>
@@ -90,6 +90,10 @@
 
   <script type="text/ng-template" id="/studies.html">
     <h1>Studies Home Template</h1>
+
+    <div ng-repeat="study in studies">
+      {{study.title}}
+    </div>
   </script>
 </body>
 
