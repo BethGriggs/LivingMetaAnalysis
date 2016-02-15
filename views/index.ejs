@@ -11,37 +11,81 @@
 
 <body ng-app="livingmetaanalysis">
 
-     <!-- Fixed navbar -->
-     <nav class="navbar navbar-default navbar-static-top">
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-default navbar-static-top">
 
-         <div id="navbar" class="navbar-collapse collapse">
-           <ul class="nav navbar-nav">
-             <li><a href="#">Home</a></li>
-              <li><a href="">Meta Analysis</a></li>
-              <li><a href="">Add Data</a></li>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="">Meta Analysis</a></li>
+        <li><a href="">Add Data</a></li>
 
-           </ul>
-           <ul class="nav navbar-nav navbar-right">
-             <li><a href="">My Account</a></li>
-           </ul>
-         </div><!--/.nav-collapse -->
-     </nav>
-
-     <div class="container">
-
-       <div>
-          <ui-view></ui-view>
-       </div>
-
-     </div>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="">My Account</a></li>
+      </ul>
     </div>
+    <!--/.nav-collapse -->
+  </nav>
+
+  <div class="container">
+
+    <div>
+      <ui-view></ui-view>
+    </div>
+
+  </div>
+  </div>
   </div>
   <script type="text/ng-template" id="/studies/create.html">
-      <h1>Create studies template</h1>
+    <form ng-submit="addStudy()" class="form-horizontal">
+      <fieldset>
+
+        <!-- Form Name -->
+        <legend>Add new study</legend>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="title">Title</label>
+          <div class="col-md-6">
+            <input id="title"  ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
+            <span class="help-block">Title of the article/study </span>
+          </div>
+        </div>
+
+        <!-- Search input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="author">Authors</label>
+          <div class="col-md-6">
+            <input id="author" ng-model="author" name="author" type="search" placeholder="" class="form-control input-md" required="">
+            <p class="help-block">type to add authors names</p>
+          </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="year">Year Published</label>
+          <div class="col-md-2">
+            <input id="year" ng-model="year" name="year" type="text" placeholder="yyyy" class="form-control input-md">
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="addStudy"></label>
+          <div class="col-md-4">
+            <button id="addStudy" name="addStudy" class="btn btn-success">Add Study</button>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+
+
   </script>
 
   <script type="text/ng-template" id="/home.html">
-      <h1>Test Home Template</h1>
+    <h1>Test Home Template</h1>
   </script>
 </body>
 
