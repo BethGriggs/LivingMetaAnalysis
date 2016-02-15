@@ -12,13 +12,22 @@ app.config([
         templateUrl: '/home.html',
         controller: 'MainCtrl'
       })
+      .state('studies', {
+        url: '/studies',
+        templateUrl: '/studies.html',
+        controller: 'StudyCtrl',
+        resolve: {
+          postPromise: ['studies', function(studies) {
+            return studies.getAll();
+          }]
+        }})
       .state('studies/create', {
         url: '/studies/create',
         templateUrl: '/studies/create.html',
         controller: 'StudyCtrl',
         resolve: {
-          postPromise: ['studies', function(posts) {
-            return posts.getAll();
+          postPromise: ['studies', function(studies) {
+            return studies.getAll();
           }]
         }
       });
