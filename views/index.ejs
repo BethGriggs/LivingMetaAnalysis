@@ -93,7 +93,13 @@
 
     <div ng-repeat="study in studies">
       {{study.title}}
+      {{study._id}}
     </div>
+  </script>
+
+  <script type="text/ng-template" id="/study.html">
+        <h1>Test individual study</h1>
+        <p>{{studies[0].title}}</p>
   </script>
 </body>
 

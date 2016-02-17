@@ -20,7 +20,8 @@ app.config([
           postPromise: ['studies', function(studies) {
             return studies.getAll();
           }]
-        }})
+        }
+      })
       .state('studies/create', {
         url: '/studies/create',
         templateUrl: '/studies/create.html',
@@ -28,6 +29,16 @@ app.config([
         resolve: {
           postPromise: ['studies', function(studies) {
             return studies.getAll();
+          }]
+        }
+      })
+      .state('study', {
+        url: '/studies/:id',
+        templateUrl: '/study.html',
+        controller: 'StudyCtrl',
+        resolve: {
+          study: ['$stateParams', 'studies', function($stateParams, studies) {
+            return studies.get($stateParams.id);
           }]
         }
       });
@@ -40,45 +51,50 @@ app.config([
 // services
 app.factory('studies', ['$http', function($http) {
 
-      var o = {
-        studies: []
-      };
-      o.getAll = function() {
-        return $http.get('/api/studies').success(function(data) {
-          angular.copy(data, o.studies);
-        });
-      };
-        o.create = function(study) {
-          return $http.post('/api/studies', study).success(function(data) {
-            o.studies.push(data);
-          });
-        };
-        return o;
-      }]);
+  var o = {
+    studies: []
+  };
+  o.getAll = function() {
+    return $http.get('/api/studies').success(function(data) {
+      angular.copy(data, o.studies);
+    });
+  };
+  o.create = function(study) {
+    return $http.post('/api/studies', study).success(function(data) {
+      o.studies.push(data);
+    });
+  };
 
+  o.get = function(id) {
+    return $http.get('api/studies/' + id).then(function(res) {
+      o.studies.push(res.data);
+    })
+  };
+  return o;
+}]);
 
-    // controllers
-    app.controller('MainCtrl', [
-      '$scope',
-      function($scope) {
+// controllers
+app.controller('MainCtrl', [
+  '$scope',
+  function($scope) {
 
-      }
-    ]);
+  }
+]);
 
-    // controllers
-    app.controller('StudyCtrl', [
-      '$scope', 'studies',
-      function($scope, studies) {
-        $scope.studies = studies.studies;
-        $scope.addStudy = function() {
-          studies.create({
-            title: $scope.title,
-            link: $scope.link,
-          });
-          alert($scope.studies);
-          $scope.title = '';
-          $scope.author = '';
-          $scope.year = '';
-        };
-      }
-    ]);
+// controllers
+app.controller('StudyCtrl', [
+  '$scope', 'studies',
+  function($scope, studies) {
+    $scope.studies = studies.studies;
+
+    $scope.addStudy = function() {
+      studies.create({
+        title: $scope.title,
+        link: $scope.link,
+      });
+      $scope.title = '';
+      $scope.author = '';
+      $scope.year = '';
+    };
+  }
+]);

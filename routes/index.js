@@ -36,4 +36,24 @@ router.post('/api/studies', function(req, res, next) {
   });
 });
 
+// param
+router.param('study', function(req, res, next, id) {
+  var query = Study.findById(id);
+
+  query.exec(function(err, study) {
+    if (err) {
+      return next(err);
+    }
+    if (!study) {
+      return next(new Error('can\'t find thing'));
+    }
+
+    req.study = study;
+    return next();
+  });
+});
+
+router.get('/api/studies/:study', function(req, res) {
+  res.json(req.study);
+});
 module.exports = router;
