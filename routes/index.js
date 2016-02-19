@@ -14,6 +14,9 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
+
+/* Studies routes */
+
 // get studies route
 router.get('/api/studies', function(req, res, next) {
   Study.find(function(err, studies) {
@@ -56,4 +59,9 @@ router.param('study', function(req, res, next, id) {
 router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
 });
+
+/* experiments routes */
+router.get('/api/studies/:study/experiments', function(req, res, next) {
+      res.json(req.study.experiments);
+})
 module.exports = router;

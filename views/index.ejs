@@ -92,15 +92,22 @@
     <h1>Studies Home Template</h1>
 
     <div ng-repeat="study in studies">
-      {{study.title}}
-      {{study._id}}
+      <a href="#/studies/{{study._id}}">  {{study.title}} </a>
+
     </div>
   </script>
 
   <script type="text/ng-template" id="/study.html">
-        <h1>Test individual study</h1>
-        <p>{{studies[0].title}}</p>
+        <h1>{{studies[0].title}}</h1>
+        {{studies[0]}}
+        <p>Authors: {{studies[0].author}}</p>
+        <p>Year: {{studies[0].year}}</p>
+        <h2> Experiments </h2>
+        <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
+        <p ng-show="showExperimentForm">Form here!</p>
   </script>
+
+
 </body>
 
 </html>

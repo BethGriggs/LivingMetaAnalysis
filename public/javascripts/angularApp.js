@@ -41,6 +41,16 @@ app.config([
             return studies.get($stateParams.id);
           }]
         }
+      })
+      .state('studyExperiments', {
+        url: '/studies/:id/experiments',
+        templateUrl: '/experiments.html',
+        controller: 'StudyCtrl',
+        resolve: {
+          study: ['$stateParams', 'studies', function($stateParams, studies) {
+            return studies.get($stateParams.id);
+          }]
+        }
       });
 
     $urlRouterProvider.otherwise('home');
@@ -70,18 +80,16 @@ app.factory('studies', ['$http', function($http) {
       o.studies.push(res.data);
     })
   };
+
+  o.getExperiments = function(id) {
+    return $http.get('api/studies/' + id + '/experiments').then(function(res) {
+      o.studies.push(res.data);
+    })
+  };
   return o;
 }]);
 
-// controllers
-app.controller('MainCtrl', [
-  '$scope',
-  function($scope) {
-
-  }
-]);
-
-// controllers
+/* Controllers */
 app.controller('StudyCtrl', [
   '$scope', 'studies',
   function($scope, studies) {
