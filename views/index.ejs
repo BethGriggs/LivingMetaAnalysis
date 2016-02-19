@@ -2,10 +2,10 @@
 
 <head>
   <title>Living Meta Analysis</title>
-  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap.min.css" rel="stylesheet">
   <link href="/stylesheets/style.css">
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+  <script src="/vendor/angular.min.js"></script>
+  <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
 </head>
 
@@ -81,7 +81,6 @@
       </fieldset>
     </form>
 
-
   </script>
 
   <script type="text/ng-template" id="/home.html">
@@ -98,16 +97,18 @@
   </script>
 
   <script type="text/ng-template" id="/study.html">
-        <h1>{{studies[0].title}}</h1>
-        {{studies[0]}}
-        <p>Authors: {{studies[0].author}}</p>
-        <p>Year: {{studies[0].year}}</p>
-        <h2> Experiments </h2>
-        <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
-        <p ng-show="showExperimentForm">Form here!</p>
+    <h1>{{studies[0].title}}</h1> {{studies[0]}}
+    <p>Authors: {{studies[0].author}}</p>
+    <p>Year: {{studies[0].year}}</p>
+    <h2> Experiments </h2>
+    <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
+    <p ng-show="showExperimentForm">Form here!</p>
   </script>
 
-
+  <script type="text/ng-template" id="/experiments.html">
+    <h1>Experiments page</h1>
+    {{experiments}}
+  </script>
 </body>
 
 </html>

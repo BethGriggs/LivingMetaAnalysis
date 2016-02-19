@@ -60,8 +60,4 @@ router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
 });
 
-/* experiments routes */
-router.get('/api/studies/:study/experiments', function(req, res, next) {
-      res.json(req.study.experiments);
-})
 module.exports = router;

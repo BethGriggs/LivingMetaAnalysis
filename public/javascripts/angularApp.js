@@ -42,13 +42,13 @@ app.config([
           }]
         }
       })
-      .state('studyExperiments', {
-        url: '/studies/:id/experiments',
+      .state('experiments', {
+        url: '/experiments',
         templateUrl: '/experiments.html',
-        controller: 'StudyCtrl',
+        controller: 'ExperimentsCtrl',
         resolve: {
-          study: ['$stateParams', 'studies', function($stateParams, studies) {
-            return studies.get($stateParams.id);
+          study: ['$stateParams', 'experiments', function($stateParams, experiments) {
+            return experiments.getAll();
           }]
         }
       });
@@ -76,16 +76,31 @@ app.factory('studies', ['$http', function($http) {
   };
 
   o.get = function(id) {
-    return $http.get('api/studies/' + id).then(function(res) {
+    return $http.get('/api/studies/' + id).then(function(res) {
       o.studies.push(res.data);
     })
   };
 
-  o.getExperiments = function(id) {
-    return $http.get('api/studies/' + id + '/experiments').then(function(res) {
-      o.studies.push(res.data);
-    })
+  return o;
+}]);
+
+// services
+app.factory('experiments', ['$http', function($http) {
+
+  var o = {
+    experiments: []
   };
+
+  o.getAll = function() {
+    return $http.get('/api/studies').success(function(data) {
+      var experiments = res.data;
+      console.log(experiments);
+      // for (experiment in experiments) {
+      //   o.experiments.push(experiment);
+      // }
+    });
+  };
+
   return o;
 }]);
 
@@ -104,5 +119,12 @@ app.controller('StudyCtrl', [
       $scope.author = '';
       $scope.year = '';
     };
+  }
+]);
+
+app.controller('ExperimentsCtrl', [
+  '$scope', 'experiments',
+  function($scope, experiments) {
+    $scope.experiments = experiments.experiments;
   }
 ]);
