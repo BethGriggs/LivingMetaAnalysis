@@ -109,7 +109,14 @@ app.controller('StudyCtrl', [
   '$scope', 'studies',
   function($scope, studies) {
     $scope.studies = studies.studies;
-
+    $scope.authors = [];
+    $scope.addAuthor = function() {
+      var newAuthorNo = $scope.authors.length+1;
+      $scope.authors.push({'name' : ''});
+    }
+    $scope.removeAuthor = function(index) {
+      $scope.authors.splice(index, 1);
+    }
     $scope.addStudy = function() {
       studies.create({
         title: $scope.title,

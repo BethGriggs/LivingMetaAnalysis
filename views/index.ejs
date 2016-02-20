@@ -41,6 +41,7 @@
     <form ng-submit="addStudy()" class="form-horizontal">
       <fieldset>
 
+
         <!-- Form Name -->
         <legend>Add new study</legend>
 
@@ -53,14 +54,21 @@
           </div>
         </div>
 
-        <!-- Search input-->
+
         <div class="form-group">
           <label class="col-md-4 control-label" for="author">Authors</label>
-          <div class="col-md-6">
-            <input id="author" ng-model="author" name="author" type="search" placeholder="" class="form-control input-md" required="">
-            <p class="help-block">type to add authors names</p>
+          <div ng-repeat="author in authors track by $index">
+            <input type="text" ng-model="author.name">
+            <button ng-click="removeAuthor($index)">X</button>
           </div>
+          <button ng-click="addAuthor()">Add Author</button>
+
+          <div id="authorDisplay">
+          {{authors}}
+          </div>
+
         </div>
+
 
         <!-- Text input-->
         <div class="form-group">
@@ -99,15 +107,16 @@
   <script type="text/ng-template" id="/study.html">
     <h1>{{studies[0].title}}</h1> {{studies[0]}}
     <p>Authors: {{studies[0].author}}</p>
+
     <p>Year: {{studies[0].year}}</p>
     <h2> Experiments </h2>
+
     <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
     <p ng-show="showExperimentForm">Form here!</p>
   </script>
 
   <script type="text/ng-template" id="/experiments.html">
-    <h1>Experiments page</h1>
-    {{experiments}}
+    <h1>Experiments page</h1> {{experiments}}
   </script>
 </body>
 
