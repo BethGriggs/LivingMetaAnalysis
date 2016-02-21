@@ -4,15 +4,14 @@
   <title>Living Meta Analysis</title>
   <link href="/vendor/bootstrap.min.css" rel="stylesheet">
   <link href="/stylesheets/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
 </head>
 
 <body ng-app="livingmetaanalysis">
-
-
-
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -37,10 +36,13 @@
 
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <li><a href="#/studies">Studies</a></li>
+          <li><a href="#/studies"><i class="fa fa-book"></i>Studies</a></li>
         </ul>
         <ul class="nav nav-sidebar">
-          <li><a href="">Meta Analyses</a></li>
+          <li><a href="#/studies"><i class="fa fa-flask"></i>Experiments</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href=""><i class="fa fa-line-chart"></i>Meta Analyses</a></li>
         </ul>
       </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
