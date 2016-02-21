@@ -113,6 +113,11 @@ app.controller('StudyCtrl', [
   }
 ]);
 
+app.controller('MainCtrl', [
+  '$scope',
+  function($scope) {
+  }
+]);
 app.controller('StudiesCtrl', [
   '$scope', 'studies',
   function($scope, studies) {

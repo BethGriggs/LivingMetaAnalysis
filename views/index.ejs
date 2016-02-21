@@ -3,7 +3,7 @@
 <head>
   <title>Living Meta Analysis</title>
   <link href="/vendor/bootstrap.min.css" rel="stylesheet">
-  <link href="/stylesheets/style.css">
+  <link href="/stylesheets/style.css" rel="stylesheet">
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
@@ -11,26 +11,39 @@
 
 <body ng-app="livingmetaanalysis">
 
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-default navbar-static-top">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Home</a></li>
-        <li><a href="">Meta Analysis</a></li>
-        <li><a href="">Add Data</a></li>
 
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="">My Account</a></li>
-      </ul>
-    </div>
-    <!--/.nav-collapse -->
-  </nav>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#home">Living Meta Analysis</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
 
-  <div class="container">
+  <div class="container-fluid">
+    <div class="row">
 
-    <div>
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><a href="#/studies">Studies</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Meta Analyses</a></li>
+        </ul>
+      </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <ui-view></ui-view>
     </div>
 
