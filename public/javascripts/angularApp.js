@@ -25,7 +25,7 @@ app.config([
       .state('studies/create', {
         url: '/studies/create',
         templateUrl: '/studies/create.html',
-        controller: 'StudyCtrl',
+        controller: 'StudiesCtrl',
         resolve: {
           postPromise: ['studies', function(studies) {
             return studies.getAll();
@@ -109,12 +109,20 @@ app.factory('experiments', ['$http', function($http) {
 app.controller('StudyCtrl', [
   '$scope', 'study',
   function($scope, study) {
-    console.log(study);
     $scope.study = study;
+  }
+]);
+
+app.controller('StudiesCtrl', [
+  '$scope', 'studies',
+  function($scope, studies) {
+    $scope.studies = studies.studies;
     $scope.authors = [];
-    var testArray = ['one','two'];
+    var testArray = ['one', 'two'];
     $scope.addAuthor = function() {
-      $scope.authors.push({'author' : ''});
+      $scope.authors.push({
+        'author': ''
+      });
     }
     $scope.removeAuthor = function(index) {
       $scope.authors.splice(index, 1);
@@ -132,12 +140,6 @@ app.controller('StudyCtrl', [
   }
 ]);
 
-app.controller('StudiesCtrl', [
-  '$scope', 'studies',
-  function($scope, studies) {
-    $scope.studies = studies.studies;
-    }
-]);
 app.controller('ExperimentsCtrl', [
   '$scope', 'experiments',
   function($scope, experiments) {
