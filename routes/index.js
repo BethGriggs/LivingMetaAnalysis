@@ -30,7 +30,6 @@ router.get('/api/studies', function(req, res, next) {
 // post studies route
 router.post('/api/studies', function(req, res, next) {
   var study = new Study(req.body);
-
   study.save(function(err, study) {
     if (err) {
       return next(err);

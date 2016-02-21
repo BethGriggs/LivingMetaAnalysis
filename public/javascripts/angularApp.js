@@ -15,9 +15,9 @@ app.config([
       .state('studies', {
         url: '/studies',
         templateUrl: '/studies.html',
-        controller: 'StudyCtrl',
+        controller: 'StudiesCtrl',
         resolve: {
-          postPromise: ['studies', function(studies) {
+          studyPromise: ['studies', function(studies) {
             return studies.getAll();
           }]
         }
@@ -47,7 +47,7 @@ app.config([
         templateUrl: '/experiments.html',
         controller: 'ExperimentsCtrl',
         resolve: {
-          study: ['$stateParams', 'experiments', function($stateParams, experiments) {
+          post: ['$stateParams', 'experiments', function($stateParams, experiments) {
             return experiments.getAll();
           }]
         }
@@ -70,6 +70,7 @@ app.factory('studies', ['$http', function($http) {
     });
   };
   o.create = function(study) {
+    console.log(study);
     return $http.post('/api/studies', study).success(function(data) {
       o.studies.push(data);
     });
@@ -77,7 +78,7 @@ app.factory('studies', ['$http', function($http) {
 
   o.get = function(id) {
     return $http.get('/api/studies/' + id).then(function(res) {
-      o.studies.push(res.data);
+      return res.data;
     })
   };
 
@@ -106,13 +107,14 @@ app.factory('experiments', ['$http', function($http) {
 
 /* Controllers */
 app.controller('StudyCtrl', [
-  '$scope', 'studies',
-  function($scope, studies) {
-    $scope.studies = studies.studies;
+  '$scope', 'study',
+  function($scope, study) {
+    console.log(study);
+    $scope.study = study;
     $scope.authors = [];
+    var testArray = ['one','two'];
     $scope.addAuthor = function() {
-      var newAuthorNo = $scope.authors.length+1;
-      $scope.authors.push({'name' : ''});
+      $scope.authors.push({'author' : ''});
     }
     $scope.removeAuthor = function(index) {
       $scope.authors.splice(index, 1);
@@ -120,7 +122,8 @@ app.controller('StudyCtrl', [
     $scope.addStudy = function() {
       studies.create({
         title: $scope.title,
-        link: $scope.link,
+        author: ['Author1', 'Author2'],
+        year: '2000'
       });
       $scope.title = '';
       $scope.author = '';
@@ -129,6 +132,12 @@ app.controller('StudyCtrl', [
   }
 ]);
 
+app.controller('StudiesCtrl', [
+  '$scope', 'studies',
+  function($scope, studies) {
+    $scope.studies = studies.studies;
+    }
+]);
 app.controller('ExperimentsCtrl', [
   '$scope', 'experiments',
   function($scope, experiments) {

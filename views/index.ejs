@@ -58,7 +58,7 @@
         <div class="form-group">
           <label class="col-md-4 control-label" for="author">Authors</label>
           <div ng-repeat="author in authors track by $index">
-            <input type="text" ng-model="author.name">
+            <input type="text" ng-model="author.author">
             <button ng-click="removeAuthor($index)">X</button>
           </div>
           <button ng-click="addAuthor()">Add Author</button>
@@ -105,10 +105,10 @@
   </script>
 
   <script type="text/ng-template" id="/study.html">
-    <h1>{{studies[0].title}}</h1> {{studies[0]}}
-    <p>Authors: {{studies[0].author}}</p>
+    <p>Blah : {{study}}</p>
+    <p>Authors: </p>
 
-    <p>Year: {{studies[0].year}}</p>
+    <p>Year: </p>
     <h2> Experiments </h2>
 
     <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
