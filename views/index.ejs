@@ -9,49 +9,143 @@
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
+
+
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+
+
 </head>
 
-<body ng-app="livingmetaanalysis">
-      <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#home">Living Meta Analysis</a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Logout</a></li>
-            </ul>
-          </div>
+<body ng-app="livingmetaanalysis" class="loaded">
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+  </div>
+
+
+  <!-- START HEADER -->
+  <header id="header" class="page-topbar">
+    <div class="navbar-fixed">
+      <nav class="cyan">
+        <div class="nav-wrapper">
+
+          <ul class="left">
+            <li>Living Meta Analysis</li>
+          </ul>
+
+          <ul class="right hide-on-med-and-down">
+            <li>Joe Bloggs</li>
+          </ul>
         </div>
       </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-
-      <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li><a href="#/studies"><i class="fa fa-book"></i>Studies</a></li>
-        </ul>
-        <ul class="nav nav-sidebar">
-          <li><a href="#/studies"><i class="fa fa-flask"></i>Experiments</a></li>
-        </ul>
-        <ul class="nav nav-sidebar">
-          <li><a href=""><i class="fa fa-line-chart"></i>Meta Analyses</a></li>
-        </ul>
-      </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <ui-view></ui-view>
     </div>
+  </header>
+  <!-- END HEADER -->
+
+  <!-- START MAIN -->
+  <div id="main">
+    <!-- START WRAPPER -->
+    <div class="wrapper">
+      <!-- START LEFT SIDEBAR NAV-->
+      <aside id="left-sidebar-nav">
+        <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y" style="left: 0px; height: 1045px;">
+
+          <li class="bold"><a href="#/home" class="waves-effect waves-cyan"><i class="fa fa-home"></i>Home</a>
+          </li>
+          <li class="no-padding">
+            <ul class="collapsible collapsible-accordion">
+              <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="fa fa-book"></i>Studies</a>
+                <div class="collapsible-body" style="">
+                  <ul>
+                    <li><a href="#/studies/create"><i class="fa fa-plus"></i>Add Study</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="bold"><a class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-flask"></i>Experiments</a>
+                <div class="collapsible-body" style="">
+                  <ul>
+                    <li><a href="#/"><i class="fa fa-plus"></i> Add Experiment</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="bold"><a class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
+                <div class="collapsible-body" style="">
+                  <ul>
+                    <li><a href="#/"><i class="fa fa-plus"></i>Meta-Analysis</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </li>
+      </aside>
+      <!-- END LEFT SIDEBAR NAV-->
+
+      <!-- START CONTENT -->
+      <section id="content">
+        <!--start container-->
+        <div class="container">
+          <ui-view></ui-view>
+        </div>
+      </section>
+      <!-- END CONTENT -->
+
+      <!-- START RIGHT SIDEBAR NAV-->
+      <aside id="right-sidebar-nav">
+        <ul id="chat-out" class="side-nav rightside-navigation right-aligned ps-container ps-active-y" style="width: 300px; right: -310px; height: 1109px;">
+          <li class="li-hover">
+            <a href="#" data-activates="chat-out" class="chat-close-collapse right"><i class="mdi-navigation-close"></i></a>
+            <div id="right-search" class="row">
+              <form class="col s12">
+                <div class="input-field">
+                  <i class="mdi-action-search prefix"></i>
+                  <input id="icon_prefix" type="text" class="validate">
+                  <label for="icon_prefix">Search</label>
+                </div>
+              </form>
+            </div>
+          </li>
+        </ul>
+        </li>
+        <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px;">
+          <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+        </div>
+        <div class="ps-scrollbar-y-rail" style="top: 0px; height: 1049px; right: 3px;">
+          <div class="ps-scrollbar-y" style="top: 0px; height: 992px;"></div>
+        </div>
+        </ul>
+      </aside>
+      <!-- LEFT RIGHT SIDEBAR NAV-->
+    </div>
+    <!-- END WRAPPER -->
 
   </div>
-  </div>
-  </div>
+  <!-- END MAIN -->
+
+
+  <!-- ================================================
+      Scripts
+      ================================================ -->
+
+  <!-- jQuery Library -->
+  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+
+  <!--materialize js-->
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <!--prism-->
+  <script type="text/javascript" src="js/prism.js"></script>
+  <!--scrollbar-->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.10/js/min/perfect-scrollbar.jquery.min.js"></script>
+
+  <div class="hiddendiv common"></div>
+  <div class="drag-target" style="left: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); right: 0px;"></div>
+  <div class="drag-target" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
+
   <script type="text/ng-template" id="/studies/create.html">
     <form ng-submit="addStudy()" class="form-horizontal">
       <fieldset>
@@ -79,7 +173,7 @@
           <button ng-click="addAuthor()">Add Author</button>
 
           <div id="authorDisplay">
-          {{authors}}
+            {{authors}}
           </div>
 
         </div>
