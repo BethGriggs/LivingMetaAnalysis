@@ -22,7 +22,6 @@
     <div class="loader-section section-right"></div>
   </div>
 
-
   <!-- START HEADER -->
   <header id="header" class="page-topbar">
     <div class="navbar-fixed">
@@ -73,7 +72,7 @@
               <li class="bold"><a href="#/metaanalysis" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
                 <div class="collapsible-body" style="">
                   <ul>
-                    <li><a href="#/metaanalysis/create"><i class="fa fa-plus"></i>New</a>
+                    <li><a href="#/metaanalyses/create"><i class="fa fa-plus"></i>New</a>
                     </li>
                   </ul>
                 </div>
@@ -213,10 +212,10 @@
   </script>
 
 
-  <script type="text/ng-template" id="metaanalysis/create.html">
+  <script type="text/ng-template" id="metaanalyses/create.html">
     <h1> Create Meta-Analysis </h1>
 
-    <div  ng-submit="newMetaAnalysis()" class="row">
+    <div ng-submit="newMetaAnalysis()" class="row">
       <form class="col s12">
         <div class="row">
           <div class="input-field col s12">
@@ -236,10 +235,10 @@
 
   </script>
 
-  <script type="text/ng-template" id="metaanalysis.html">
+  <script type="text/ng-template" id="/metaanalysis.html">
     <h1> Add Data to Meta-Analysis </h1>
     <h2>Title </h2>
-    <p>description blahblahlabhalb</p>
+    <p>{{ metaAnalysis }}</p>
     <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items" height="300" width="700">
       <hot-column data="name" title="'Name'"></hot-column>
     </hot-table>

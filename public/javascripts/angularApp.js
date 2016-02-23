@@ -52,18 +52,18 @@ app.config([
           }]
         }
       })
-      .state('metaanalysis/create', {
-        url: '/metaanalysis/create',
-        templateUrl: 'metaanalysis/create.html',
+      .state('metaanalyses/create', {
+        url: '/metaanalyses/create',
+        templateUrl: 'metaanalyses/create.html',
         controller: 'MetaAnalysesCtrl'
       })
       .state('metaanalysis', {
-        url: '/metaanalysis',
-        templateUrl: 'metaanalysis.html',
+        url: '/metaanalyses/:id',
+        templateUrl: '/metaanalysis.html',
         controller: 'MetaAnalysisCtrl',
         resolve: {
-          metaanalysisPromise: ['metaAnalyses', function(studies) {
-            return studies.getAll();
+          metaAnalysis: ['$stateParams', 'metaAnalyses', function($stateParams, metaAnalyses) {
+            return metaAnalyses.get($stateParams.id);
           }]
         }
       });
@@ -114,6 +114,7 @@ app.factory('metaAnalyses', ['$http', function($http) {
   };
 
   o.get = function(id) {
+    console.log('.get');
     return $http.get('/api/metaanalyses/' + id).then(function(res) {
       return res.data;
     })
@@ -153,9 +154,9 @@ app.controller('StudyCtrl', [
 
 app.controller('MainCtrl', [
   '$scope',
-  function($scope) {
-  }
+  function($scope) {}
 ]);
+
 app.controller('StudiesCtrl', [
   '$scope', 'studies',
   function($scope, studies) {
@@ -184,18 +185,28 @@ app.controller('StudiesCtrl', [
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope',
-  function($scope) {
-
+  '$scope', 'metaAnalysis',
+  function($scope, metaAnalysis) {
+    $scope.metaAnalysis = metaAnalysis;
     $scope.settings = {
-    contextMenu: [
-      'row_above', 'row_below', 'remove_row'
-    ]
-  };
+      contextMenu: [
+        'row_above', 'row_below', 'remove_row'
+      ]
+    };
     $scope.minSpareRows = 5;
     $scope.rowHeaders = true;
     $scope.colHeaders = true;
-    $scope.items = [{name:1},{name:2},{name:2},{name:4},{name:5}];
+    $scope.items = [{
+      name: 1
+    }, {
+      name: 2
+    }, {
+      name: 2
+    }, {
+      name: 4
+    }, {
+      name: 5
+    }];
     console.log($scope);
   }
 ]);
@@ -203,16 +214,15 @@ app.controller('MetaAnalysisCtrl', [
 app.controller('MetaAnalysesCtrl', [
   '$scope', 'metaAnalyses',
   function($scope, metaAnalyses) {
-
     $scope.newMetaAnalysis = function() {
       metaAnalyses.create({
-          title: $scope.title,
-          description: $scope.description
+        title: $scope.title,
+        description: $scope.description
       });
       $scope.title = '';
       $scope.description = '';
     }
-}
+  }
 ]);
 
 
