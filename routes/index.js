@@ -8,6 +8,7 @@ var Study = mongoose.model('Study');
 var Experiment = mongoose.model('Experiment');
 var Interpretation = mongoose.model('Interpretation');
 var DerivedData = mongoose.model('DerivedData');
+var MetaAnalysis = mongoose.model('MetaAnalysis');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -57,6 +58,52 @@ router.param('study', function(req, res, next, id) {
 
 router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
+});
+
+/* Meta-analysis routes */
+
+// get meta-analyses route
+router.get('/api/metaanalyses', function(req, res, next) {
+  MetaAnalysis.find(function(err, metaAnalyses) {
+    if (err) {
+      return next(err);
+    }
+    res.json(metaAnalyses);
+  });
+});
+
+// post meta-analyses route
+router.post('/api/metaanalyses', function(req, res, next) {
+  console.log(req.body);
+  var metaAnalysis = new MetaAnalysis(req.body);
+  console.log(metaAnalysis);
+  metaAnalysis.save(function(err, metaAnalysis) {
+    if (err) {
+      return next(err);
+    }
+    res.json(metaAnalysis);
+  });
+});
+
+// param
+router.param('metaanalysis', function(req, res, next, id) {
+  var query = MetaAnalysis.findById(id);
+
+  query.exec(function(err, metaAnalysis) {
+    if (err) {
+      return next(err);
+    }
+    if (!metaAnalysis) {
+      return next(new Error('can\'t find thing'));
+    }
+
+    req.metaAnalysis = metaAnalysis;
+    return next();
+  });
+});
+
+router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
+  res.json(req.metaAnalysis);
 });
 
 module.exports = router;

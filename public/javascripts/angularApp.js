@@ -1,4 +1,4 @@
-var app = angular.module('livingmetaanalysis', ['ui.router']);
+var app = angular.module('livingmetaanalysis', ['ui.router', 'ngHandsontable']);
 
 // app state config
 app.config([
@@ -51,6 +51,21 @@ app.config([
             return experiments.getAll();
           }]
         }
+      })
+      .state('metaanalysis/create', {
+        url: '/metaanalysis/create',
+        templateUrl: 'metaanalysis/create.html',
+        controller: 'MetaAnalysesCtrl'
+      })
+      .state('metaanalysis', {
+        url: '/metaanalysis',
+        templateUrl: 'metaanalysis.html',
+        controller: 'MetaAnalysisCtrl',
+        resolve: {
+          metaanalysisPromise: ['metaAnalyses', function(studies) {
+            return studies.getAll();
+          }]
+        }
       });
 
     $urlRouterProvider.otherwise('home');
@@ -70,7 +85,6 @@ app.factory('studies', ['$http', function($http) {
     });
   };
   o.create = function(study) {
-    console.log(study);
     return $http.post('/api/studies', study).success(function(data) {
       o.studies.push(data);
     });
@@ -78,6 +92,29 @@ app.factory('studies', ['$http', function($http) {
 
   o.get = function(id) {
     return $http.get('/api/studies/' + id).then(function(res) {
+      return res.data;
+    })
+  };
+
+  return o;
+}]);
+
+// services
+app.factory('metaAnalyses', ['$http', function($http) {
+
+  var o = {
+    metaAnalyses: []
+  };
+  o.create = function(metaAnalysis) {
+    console.log(metaAnalysis);
+    return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
+      console.log("get here");
+      o.metaAnalyses.push(data);
+    });
+  };
+
+  o.get = function(id) {
+    return $http.get('/api/metaanalyses/' + id).then(function(res) {
       return res.data;
     })
   };
@@ -104,6 +141,7 @@ app.factory('experiments', ['$http', function($http) {
 
   return o;
 }]);
+
 
 /* Controllers */
 app.controller('StudyCtrl', [
@@ -144,6 +182,39 @@ app.controller('StudiesCtrl', [
     };
   }
 ]);
+
+app.controller('MetaAnalysisCtrl', [
+  '$scope',
+  function($scope) {
+
+    $scope.settings = {
+    contextMenu: [
+      'row_above', 'row_below', 'remove_row'
+    ]
+  };
+    $scope.minSpareRows = 5;
+    $scope.rowHeaders = true;
+    $scope.colHeaders = true;
+    $scope.items = [{name:1},{name:2},{name:2},{name:4},{name:5}];
+    console.log($scope);
+  }
+]);
+
+app.controller('MetaAnalysesCtrl', [
+  '$scope', 'metaAnalyses',
+  function($scope, metaAnalyses) {
+
+    $scope.newMetaAnalysis = function() {
+      metaAnalyses.create({
+          title: $scope.title,
+          description: $scope.description
+      });
+      $scope.title = '';
+      $scope.description = '';
+    }
+}
+]);
+
 
 app.controller('ExperimentsCtrl', [
   '$scope', 'experiments',

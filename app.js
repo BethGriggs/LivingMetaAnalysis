@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var $ = require('jquery');
 // models
+require('./models/MetaAnalyses'); 
 require('./models/Studies');
 require('./models/Experiments');
 require('./models/Interpretations');

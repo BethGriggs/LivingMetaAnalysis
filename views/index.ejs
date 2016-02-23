@@ -2,14 +2,16 @@
 
 <head>
   <title>Living Meta Analysis</title>
-  <link href="/vendor/bootstrap.min.css" rel="stylesheet">
-  <link href="/stylesheets/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  <link rel="stylesheet" href="vendor/materialize.min.css">
+  <link rel="stylesheet" media="screen" href="vendor/handsontable.full.min.css">
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
-  <!-- Compiled and minified CSS -->
+  <script src="vendor/handsontable.full.min.js"></script>
+  <script src="vendor/ngHandsontable.min.js"></script>
 
 </head>
 
@@ -68,10 +70,10 @@
                   </ul>
                 </div>
               </li>
-              <li class="bold"><a class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
+              <li class="bold"><a href="#/metaanalysis" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
                 <div class="collapsible-body" style="">
                   <ul>
-                    <li><a href="#/"><i class="fa fa-plus"></i>Meta-Analysis</a>
+                    <li><a href="#/metaanalysis/create"><i class="fa fa-plus"></i>New</a>
                     </li>
                   </ul>
                 </div>
@@ -101,15 +103,11 @@
       ================================================ -->
 
   <!-- jQuery Library -->
-  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script src="vendor/jquery-2.2.0.min.js"></script>
 
   <!--materialize js-->
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-  <!--prism-->
-  <script type="text/javascript" src="js/prism.js"></script>
-  <!--scrollbar-->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.10/js/min/perfect-scrollbar.jquery.min.js"></script>
 
   <div class="hiddendiv common"></div>
   <div class="drag-target" style="left: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); right: 0px;"></div>
@@ -123,46 +121,63 @@
         <!-- Form Name -->
         <legend>Add new study</legend>
 
-        <!-- Text input-->
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="title">Title</label>
-          <div class="col-md-6">
-            <input id="title" ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
-            <span class="help-block">Title of the article/study </span>
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="title" type="title" class="validate">
+                <label for="title">Title of Study</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input id="" type="" class="validate">
+                <label for=""></label>
+              </div>
+            </div>
+          </form>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="title">Title</label>
+            <div class="col-md-6">
+              <input id="title" ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
+              <span class="help-block">Title of the article/study </span>
+            </div>
           </div>
-        </div>
 
 
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="author">Authors</label>
-          <div ng-repeat="author in authors track by $index">
-            <input type="text" ng-model="author.author">
-            <button ng-click="removeAuthor($index)">X</button>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="author">Authors</label>
+            <div ng-repeat="author in authors track by $index">
+              <input type="text" ng-model="author.author">
+              <button ng-click="removeAuthor($index)">X</button>
+            </div>
+            <button ng-click="addAuthor()">Add Author</button>
+
+            <div id="authorDisplay">
+              {{authors}}
+            </div>
+
           </div>
-          <button ng-click="addAuthor()">Add Author</button>
 
-          <div id="authorDisplay">
-            {{authors}}
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="year">Year Published</label>
+            <div class="col-md-2">
+              <input id="year" ng-model="year" name="year" type="text" placeholder="yyyy" class="form-control input-md">
+            </div>
           </div>
 
-        </div>
-
-
-        <!-- Text input-->
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="year">Year Published</label>
-          <div class="col-md-2">
-            <input id="year" ng-model="year" name="year" type="text" placeholder="yyyy" class="form-control input-md">
+          <!-- Button -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="addStudy"></label>
+            <div class="col-md-4">
+              <button id="addStudy" name="addStudy" class="btn btn-success">Add Study</button>
+            </div>
           </div>
-        </div>
-
-        <!-- Button -->
-        <div class="form-group">
-          <label class="col-md-4 control-label" for="addStudy"></label>
-          <div class="col-md-4">
-            <button id="addStudy" name="addStudy" class="btn btn-success">Add Study</button>
-          </div>
-        </div>
 
       </fieldset>
     </form>
@@ -196,6 +211,44 @@
   <script type="text/ng-template" id="/experiments.html">
     <h1>Experiments page</h1> {{experiments}}
   </script>
+
+
+  <script type="text/ng-template" id="metaanalysis/create.html">
+    <h1> Create Meta-Analysis </h1>
+
+    <div  ng-submit="newMetaAnalysis()" class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="title" ng-model="title" type="text" class="validate">
+            <label for="title">Title of Meta-Analysis</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="description" ng-model="description" class="materialize-textarea"></textarea>
+            <label for="description">Description</label>
+          </div>
+        </div>
+        <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Create</button>
+      </form>
+    </div>
+
+  </script>
+
+  <script type="text/ng-template" id="metaanalysis.html">
+    <h1> Add Data to Meta-Analysis </h1>
+    <h2>Title </h2>
+    <p>description blahblahlabhalb</p>
+    <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items" height="300" width="700">
+      <hot-column data="name" title="'Name'"></hot-column>
+    </hot-table>
+    <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Study</a>
+    <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Interpretation</a>
+
+  </script>
+
+
 </body>
 
 </html>
