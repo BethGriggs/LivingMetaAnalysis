@@ -237,14 +237,14 @@
 
   <script type="text/ng-template" id="/metaanalysis.html">
     <h1> Add Data to Meta-Analysis </h1>
-    <h2>Title </h2>
-    <p>{{ metaAnalysis }}</p>
+    <h2>Title: {{ metaAnalysis.title}} </h2>
+    <p>Description: {{ metaAnalysis.description }}</p>
     <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items" height="300" width="700">
       <hot-column data="name" title="'Name'"></hot-column>
     </hot-table>
     <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Study</a>
     <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Interpretation</a>
-
+    <a class="waves-effect waves-light btn" ng-click="updateMetaAnalysis()">Save</a>
   </script>
 
 

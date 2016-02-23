@@ -114,8 +114,13 @@ app.factory('metaAnalyses', ['$http', function($http) {
   };
 
   o.get = function(id) {
-    console.log('.get');
     return $http.get('/api/metaanalyses/' + id).then(function(res) {
+      return res.data;
+    })
+  };
+
+  o.update = function(id, metaAnalysis) {
+    return $http.put('/api/metaanalyses/' + id, metaAnalysis).then(function(res) {
       return res.data;
     })
   };
@@ -185,8 +190,8 @@ app.controller('StudiesCtrl', [
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', 'metaAnalysis',
-  function($scope, metaAnalysis) {
+  '$scope', 'metaAnalyses', 'metaAnalysis',
+  function($scope, metaAnalyses, metaAnalysis) {
     $scope.metaAnalysis = metaAnalysis;
     $scope.settings = {
       contextMenu: [
@@ -207,8 +212,11 @@ app.controller('MetaAnalysisCtrl', [
     }, {
       name: 5
     }];
-    console.log($scope);
-  }
+    $scope.updateMetaAnalysis = function(){
+      console.log(metaAnalysis._id);
+      $scope.metaAnalysis.title = "updated yo";
+      metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
+  }}
 ]);
 
 app.controller('MetaAnalysesCtrl', [

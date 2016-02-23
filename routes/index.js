@@ -74,9 +74,7 @@ router.get('/api/metaanalyses', function(req, res, next) {
 
 // post meta-analyses route
 router.post('/api/metaanalyses', function(req, res, next) {
-  console.log(req.body);
   var metaAnalysis = new MetaAnalysis(req.body);
-  console.log(metaAnalysis);
   metaAnalysis.save(function(err, metaAnalysis) {
     if (err) {
       return next(err);
@@ -105,5 +103,12 @@ router.param('metaanalysis', function(req, res, next, id) {
 router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
   res.json(req.metaAnalysis);
 });
+
+router.put('/api/metaanalyses/:metaanalysis',  function(req, res, next) {
+  MetaAnalysis.findOneAndUpdate({_id:req.params.id}, req.body, function (err, metaAnalysis) {
+  res.send(metaAnalysis);
+});
+});
+
 
 module.exports = router;
