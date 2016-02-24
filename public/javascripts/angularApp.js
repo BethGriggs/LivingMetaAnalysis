@@ -47,6 +47,16 @@ app.config([
         templateUrl: '/experiments.html',
         controller: 'ExperimentsCtrl',
         resolve: {
+          experiments: ['$stateParams', 'experiments', function($stateParams, experiments) {
+            return experiments.getAll();
+          }]
+        }
+      })
+      .state('experiments/create', {
+        url: '/experiments/create',
+        templateUrl: '/experiments/create.html',
+        controller: 'ExperimentsCtrl',
+        resolve: {
           post: ['$stateParams', 'experiments', function($stateParams, experiments) {
             return experiments.getAll();
           }]
@@ -125,6 +135,14 @@ app.factory('metaAnalyses', ['$http', function($http) {
     })
   };
 
+  o.create = function(metaAnalysis) {
+    console.log(metaAnalysis);
+    return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
+      console.log("get here");
+      o.metaAnalyses.push(data);
+    });
+  };
+
   return o;
 }]);
 
@@ -136,15 +154,16 @@ app.factory('experiments', ['$http', function($http) {
   };
 
   o.getAll = function() {
-    return $http.get('/api/studies').success(function(data) {
-      var experiments = res.data;
-      console.log(experiments);
-      // for (experiment in experiments) {
-      //   o.experiments.push(experiment);
-      // }
+    return $http.get('/api/experiments').success(function(data) {
+      angular.copy(data, o.experiments);
     });
   };
 
+  o.create = function(experiments) {
+    return $http.post('/api/experiments', experiments).success(function(data) {
+      o.experiments.push(data);
+    });
+  };
   return o;
 }]);
 
@@ -247,6 +266,18 @@ app.controller('MetaAnalysesCtrl', [
 app.controller('ExperimentsCtrl', [
   '$scope', 'experiments',
   function($scope, experiments) {
-    $scope.experiments = experiments.experiments;
+    console.log(experiments);
+    $scope.experiments = experiments.data;
+    $scope.addExperiment = function(){
+      experiments.create({
+        experimentRef: 'default ref',
+        titleOfPaper: $scope.titleOfPaper,
+        authors: $scope.authors,
+        year: $scope.year,
+        link: $scope.link,
+        tags: $scope.tags
+      });
+      console.log("HELLO");
+    }
   }
 ]);

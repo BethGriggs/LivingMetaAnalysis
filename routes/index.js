@@ -3,8 +3,7 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 
-// import models
-var Study = mongoose.model('Study');
+/* import models */
 var Experiment = mongoose.model('Experiment');
 var Interpretation = mongoose.model('Interpretation');
 var DerivedData = mongoose.model('DerivedData');
@@ -15,49 +14,49 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
+/* experiments routes */
 
-/* Studies routes */
-
-// get studies route
-router.get('/api/studies', function(req, res, next) {
-  Study.find(function(err, studies) {
+// get experiments route
+router.get('/api/experiments', function(req, res, next) {
+  Experiment.find(function(err, experiments) {
     if (err) {
       return next(err);
     }
-    res.json(studies);
+    res.json(experiments);
   });
 });
 
-// post studies route
-router.post('/api/studies', function(req, res, next) {
-  var study = new Study(req.body);
-  study.save(function(err, study) {
+// post experiments route
+router.post('/api/experiments', function(req, res, next) {
+  var experiment = new Experiment(req.body);
+  console.log(experiment);
+  experiment.save(function(err, experiment) {
     if (err) {
       return next(err);
     }
-    res.json(study);
+    res.json(experiment);
   });
 });
 
 // param
-router.param('study', function(req, res, next, id) {
-  var query = Study.findById(id);
+router.param('experiment', function(req, res, next, id) {
+  var query = Experiment.findById(id);
 
-  query.exec(function(err, study) {
+  query.exec(function(err, experiment) {
     if (err) {
       return next(err);
     }
-    if (!study) {
+    if (!experiment) {
       return next(new Error('can\'t find thing'));
     }
 
-    req.study = study;
+    req.experiment = experiment;
     return next();
   });
 });
 
-router.get('/api/studies/:study', function(req, res) {
-  res.json(req.study);
+router.get('/api/experiments/:experiment', function(req, res) {
+  res.json(req.experiment);
 });
 
 /* Meta-analysis routes */

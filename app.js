@@ -5,9 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var $ = require('jquery');
+
 // models
-require('./models/MetaAnalyses'); 
-require('./models/Studies');
+require('./models/MetaAnalyses');
 require('./models/Experiments');
 require('./models/Interpretations');
 require('./models/DerivedData');

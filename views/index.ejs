@@ -53,18 +53,10 @@
           </li>
           <li class="no-padding">
             <ul class="collapsible collapsible-accordion">
-              <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="fa fa-book"></i>Studies</a>
-                <div class="collapsible-body" style="">
-                  <ul>
-                    <li><a href="#/studies/create"><i class="fa fa-plus"></i>Add Study</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
               <li class="bold"><a class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-flask"></i>Experiments</a>
                 <div class="collapsible-body" style="">
                   <ul>
-                    <li><a href="#/"><i class="fa fa-plus"></i> Add Experiment</a>
+                    <li><a href="#/experiments/create"><i class="fa fa-plus"></i> Add Experiment</a>
                     </li>
                   </ul>
                 </div>
@@ -74,7 +66,7 @@
                   <ul>
                     <li><a href="#/metaanalyses/create"><i class="fa fa-plus"></i>New</a>
                     </li>
-                    <li><a href="#/metaanalyses/56ccfa726bb7b01d1437f364"><i class="fa fa-archive"></i>
+                    <li><a href="#/metaanalyses/56ce2a2f872a858c0fd51336"><i class="fa fa-archive"></i>
 Existing</a></li>
                   </ul>
                 </div>
@@ -114,41 +106,46 @@ Existing</a></li>
   <div class="drag-target" style="left: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); right: 0px;"></div>
   <div class="drag-target" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
 
-  <script type="text/ng-template" id="/studies/create.html">
-
-    <h1>Add new study </h1>
-    <form ng-submit="addStudy()" class="form-horizontal">
+  <script type="text/ng-template" id="/experiments/create.html">
+    <h1>Add new experiment </h1>
+    <form ng-submit="addExperiment()" class="form-horizontal">
       <fieldset>
 
-
-        <!-- Form Name -->
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="experimentRef" ng-model="experimentRef" type="text" class="validate">
+          <label for="experimentRef">Experiment Reference
+            <label>
+        </div>
+      </div>
 
         <div class="row">
           <div class="input-field col s12">
-            <input id="title" ng-model="title" type="text" class="validate">
-            <label for="title">Title of Study<label>
+            <input id="title" ng-model="titleOfPaper" type="text" class="validate">
+            <label for="title">Title of paper
+              <label>
           </div>
         </div>
 
-
         <div class="row">
-            <div ng-repeat="author in authors track by $index">
-            <div class="input-field col s12">
-
-              <input id="author{{$index}}" type="text" ng-model="author.author" class="validate">
-              <label for="author{{$index}}">Author {{$index +1}}</label>
-              <button class="btn-floating btn-small waves-effect waves-light red" ng-click="removeAuthor($index)"><i class="fa fa-times"></i></button>
-
-            </div>
-            </div>
-
-              <button ng-click="addAuthor()" class="btn waves-effect waves-light"><i class="fa fa-plus"></i> Add Author</button>
+          <div class="input-field col s12">
+            <input id="authors" ng-model="authors" type="text" class="validate">
+            <label for="title">Authors of paper
+              <label>
+          </div>
         </div>
 
         <div class="row">
           <div class="input-field col s12">
             <input id="year" ng-model="year" type="text" class="validate">
             <label for="year">Year</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="link" ng-model="link" type="text" class="validate">
+            <label for="link">Link</label>
           </div>
         </div>
 
@@ -161,31 +158,45 @@ Existing</a></li>
 
         <div class="row">
           <div class="input-field col s12">
-            <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add Study</button>
+            <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add experiment</button>
           </div>
         </div>
       </fieldset>
     </form>
-
-
-    <p> Test output:{{authors}}</p>
+    </div>
   </script>
 
   <script type="text/ng-template" id="/home.html">
-    <h1>Test Home Template</h1>
-  </script>
 
-  <script type="text/ng-template" id="/studies.html">
-    <h1>Studies Home Template</h1>
+    <h1>Contributions</h1>
+    <div class="row">
+      <div class="col s12 m8 l8">
+        <div class="card">
+          <div class="card-move-up waves-effect waves-block waves-light">
+            <div class="move-up cyan">
+              <div>
+                <span class="white-text">experiments</span>
 
-    <div ng-repeat="study in studies">
-      <a href="#/studies/{{study._id}}">  {{study.title}} </a>
+                <p><a>BE94-Ex1</a></p>
+                <p><a>BI98-Ex2</a></p>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div>
   </script>
 
-  <script type="text/ng-template" id="/study.html">
-    <p>Blah : {{study}}</p>
+  <script type="text/ng-template" id="/experiments.html">
+    <h1>Experiments Home Template</h1>
+     <p>  {{experiments}} </p>
+  </script>
+
+  <script type="text/ng-template" id="/experiment.html">
+    <p>Blah : {{experiment}}</p>
     <p>Authors: </p>
 
     <p>Year: </p>
@@ -194,11 +205,6 @@ Existing</a></li>
     <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
     <p ng-show="showExperimentForm">Form here!</p>
   </script>
-
-  <script type="text/ng-template" id="/experiments.html">
-    <h1>Experiments page</h1> {{experiments}}
-  </script>
-
 
   <script type="text/ng-template" id="metaanalyses/create.html">
     <h1> Create Meta-Analysis </h1>
@@ -232,27 +238,46 @@ Existing</a></li>
 
   <script type="text/ng-template" id="/metaanalysis.html">
     <h1> Add Data to Meta-Analysis </h1>
+
+
     <h2>Title: {{ metaAnalysis.title}} </h2>
     <p>Description: {{ metaAnalysis.description }}</p>
     <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items">
     </hot-table>
-
-    <h1></h1>
-    <a class="waves-effect waves-light btn" ng-click="show = !show"><i class="fa fa-plus"></i> Add Study</a>
-    <a class="waves-effect waves-light btn" ng-click="addInterpretation()"><i class="fa fa-plus"></i> Add Interpretation</a>
     <a class="waves-effect waves-light btn" ng-click="updateMetaAnalysis()">Save</a>
-    <a class="waves-effect waves-light btn" ng-click="log()">log</a>
 
+    <h1> Search for experiments </h1>
 
-    <div ng-show="show" ng-controller="StudiesCtrl">
-      <h1>Add Study</h1>
+    <div class="search">
+      <div class="search-wrapper card">
+        <input id="search"><i class="fa fa-search"></i>
+        <div class="search-results"></div>
+      </div>
+    </div>
+    <ul>
+      <li>BE94-Ex1
+        <button><i class="fa fa-plus"></i></button>
+      </li>
+      <li>BI98-Ex2
+        <button><i class="fa fa-plus"></i></button>
+      </li>
+    </ul>
+
+    <div class="row">
+      <a class="waves-effect waves-light btn" ng-click="show = !show"><i class="fa fa-plus"></i> Add New experiment</a>
+      <a class="waves-effect waves-light btn" ng-click="addInterpretation()"><i class="fa fa-plus"></i> Add Interpretation</a>
+      <a class="waves-effect waves-light btn-large" ng-click="log()">Apply Statistics<i class="fa fa-arrow-right"></i></a>
+    </div>
+
+    <div ng-show="show" ng-controller="experimentsCtrl">
+      <h1>Add new Experiment</h1>
 
       <div ng-submit="" class="row">
         <form class="col s12">
           <div class="row">
             <div class="input-field col s12">
               <input id="title" ng-model="title" type="text" class="validate">
-              <label for="title">Title of Study</label>
+              <label for="title">Title of experiment</label>
             </div>
           </div>
 
@@ -270,11 +295,10 @@ Existing</a></li>
             </div>
           </div>
 
-          <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add Study</button>
+          <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add experiment</button>
         </form>
       </div>
     </div>
-
   </script>
 
 
