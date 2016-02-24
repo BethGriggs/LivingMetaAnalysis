@@ -69,11 +69,13 @@
                   </ul>
                 </div>
               </li>
-              <li class="bold"><a href="#/metaanalysis" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
+              <li class="bold"><a href="#/" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
                 <div class="collapsible-body" style="">
                   <ul>
                     <li><a href="#/metaanalyses/create"><i class="fa fa-plus"></i>New</a>
                     </li>
+                    <li><a href="#/metaanalyses/56ccfa726bb7b01d1437f364"><i class="fa fa-archive"></i>
+Existing</a></li>
                   </ul>
                 </div>
               </li>
@@ -229,6 +231,13 @@
             <label for="description">Description</label>
           </div>
         </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="tags" ng-model="tags" type="text" class="validate">
+            <label for="tags">Tags</label>
+          </div>
+        </div>
+
         <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Create</button>
       </form>
     </div>
