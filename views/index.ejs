@@ -115,74 +115,60 @@ Existing</a></li>
   <div class="drag-target" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
 
   <script type="text/ng-template" id="/studies/create.html">
+
+    <h1>Add new study </h1>
     <form ng-submit="addStudy()" class="form-horizontal">
       <fieldset>
 
 
         <!-- Form Name -->
-        <legend>Add new study</legend>
 
         <div class="row">
-          <form class="col s12">
-            <div class="row">
-              <div class="input-field col s12">
-                <input id="title" type="title" class="validate">
-                <label for="title">Title of Study</label>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="input-field col s12">
-                <input id="" type="" class="validate">
-                <label for=""></label>
-              </div>
-            </div>
-          </form>
-
-          <!-- Text input-->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="title">Title</label>
-            <div class="col-md-6">
-              <input id="title" ng-model="title" name="title" type="text" placeholder="" class="form-control input-md" required="">
-              <span class="help-block">Title of the article/study </span>
-            </div>
+          <div class="input-field col s12">
+            <input id="title" ng-model="title" type="text" class="validate">
+            <label for="title">Title of Study<label>
           </div>
+        </div>
 
 
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="author">Authors</label>
+        <div class="row">
             <div ng-repeat="author in authors track by $index">
-              <input type="text" ng-model="author.author">
-              <button ng-click="removeAuthor($index)">X</button>
-            </div>
-            <button ng-click="addAuthor()">Add Author</button>
+            <div class="input-field col s12">
 
-            <div id="authorDisplay">
-              {{authors}}
+              <input id="author{{$index}}" type="text" ng-model="author.author" class="validate">
+              <label for="author{{$index}}">Author {{$index +1}}</label>
+              <button class="btn-floating btn-small waves-effect waves-light red" ng-click="removeAuthor($index)"><i class="fa fa-times"></i></button>
+
+            </div>
             </div>
 
+              <button ng-click="addAuthor()" class="btn waves-effect waves-light"><i class="fa fa-plus"></i> Add Author</button>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="year" ng-model="year" type="text" class="validate">
+            <label for="year">Year</label>
           </div>
+        </div>
 
-
-          <!-- Text input-->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="year">Year Published</label>
-            <div class="col-md-2">
-              <input id="year" ng-model="year" name="year" type="text" placeholder="yyyy" class="form-control input-md">
-            </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="tags" ng-model="tags" type="text" class="validate">
+            <label for="tags">Tags</label>
           </div>
+        </div>
 
-          <!-- Button -->
-          <div class="form-group">
-            <label class="col-md-4 control-label" for="addStudy"></label>
-            <div class="col-md-4">
-              <button id="addStudy" name="addStudy" class="btn btn-success">Add Study</button>
-            </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add Study</button>
           </div>
-
+        </div>
       </fieldset>
     </form>
 
+
+    <p> Test output:{{authors}}</p>
   </script>
 
   <script type="text/ng-template" id="/home.html">
@@ -252,10 +238,42 @@ Existing</a></li>
     </hot-table>
 
     <h1></h1>
-    <a class="waves-effect waves-light btn" ng-click="addStudy()"><i class="fa fa-plus"></i> Add Study</a>
+    <a class="waves-effect waves-light btn" ng-click="show = !show"><i class="fa fa-plus"></i> Add Study</a>
     <a class="waves-effect waves-light btn" ng-click="addInterpretation()"><i class="fa fa-plus"></i> Add Interpretation</a>
     <a class="waves-effect waves-light btn" ng-click="updateMetaAnalysis()">Save</a>
     <a class="waves-effect waves-light btn" ng-click="log()">log</a>
+
+
+    <div ng-show="show" ng-controller="StudiesCtrl">
+      <h1>Add Study</h1>
+
+      <div ng-submit="" class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="title" ng-model="title" type="text" class="validate">
+              <label for="title">Title of Study</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="author" ng-model="author" class="materialize-textarea"></textarea>
+              <label for="author">Author</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="year" ng-model="year" type="text" class="validate">
+              <label for="year">Year</label>
+            </div>
+          </div>
+
+          <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add Study</button>
+        </form>
+      </div>
+    </div>
 
   </script>
 

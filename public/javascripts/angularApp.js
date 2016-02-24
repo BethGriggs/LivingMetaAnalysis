@@ -166,7 +166,7 @@ app.controller('StudiesCtrl', [
   '$scope', 'studies',
   function($scope, studies) {
     $scope.studies = studies.studies;
-    $scope.authors = [];
+    $scope.authors = [{"author":""}];
     var testArray = ['one', 'two'];
     $scope.addAuthor = function() {
       $scope.authors.push({
