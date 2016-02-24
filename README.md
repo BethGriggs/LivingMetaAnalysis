@@ -3,6 +3,7 @@ MEAN.io stack version
 
 
 ### NOTES
-- fix update meta Analysis
+- fix update meta-analysis
 - manipulate table
-- route to return all users meta analyses
+- remove studies ctrls
+- implement addInterpretation
