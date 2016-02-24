@@ -3,7 +3,6 @@ MEAN.io stack version
 
 
 ### NOTES
-- Redo forms
-- Not using the method? using the form...
-- Write up design
-- try manually adding to schema?
+- fix update meta Analysis
+- manipulate table
+- route to return all users meta analyses

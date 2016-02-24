@@ -192,31 +192,41 @@ app.controller('StudiesCtrl', [
 app.controller('MetaAnalysisCtrl', [
   '$scope', 'metaAnalyses', 'metaAnalysis',
   function($scope, metaAnalyses, metaAnalysis) {
+
     $scope.metaAnalysis = metaAnalysis;
     $scope.settings = {
-      contextMenu: [
-        'row_above', 'row_below', 'remove_row'
-      ]
+      colHeaders: ['Experiment', 'No. Participants', 'Type of Participants', 'Misinformation Paradigm', 'Delay of Misinformation', 'No. of Misleading Details', 'Type of Misleading Details', '', '', '', ''],
+      rowHeaders: false,
+      comments: true,
+      cell: [
+        {row: 0, col: 0, comment: 'In all of Belli et al.’s (1994) experiments, memory for both original and misleading details was assessed.'},
+        {row: 1, col: 0, comment: 'The memory performances in Exp. 2 are aggregated across several experimental and control conditions (that used different sources of original and misleading information'}
+   ]
     };
-    $scope.minSpareRows = 5;
+    $scope.minSpareRows = 0;
     $scope.rowHeaders = true;
     $scope.colHeaders = true;
     $scope.items = [{
-      name: 1
-    }, {
-      name: 2
-    }, {
-      name: 2
-    }, {
-      name: 4
-    }, {
-      name: 5
-    }];
+       experiment: 'BE94-Ex1', numberOfParticpants: 72 , typeOfParticipants: 'Students', misinformationParadigm: 'Standard', delayOfMisinformation: 'Short', noOfMisleadingDetails: 2, test: 'CON'
+    }, { experiment: 'Bl98-Ex2', numberOfParticpants: 55 , typeOfParticipants: 'Students', misinformationParadigm: 'Standard', delayOfMisinformation: 'Short', noOfMisleadingDetails: 2, test: 'CON'}];
+
+    $scope.log = function(){
+      console.log($scope.items);
+    };
+
+    $scope.addInterpretation = function(){
+
+    };
     $scope.updateMetaAnalysis = function(){
       console.log(metaAnalysis._id);
       $scope.metaAnalysis.title = "updated yo";
       metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
-  }}
+  }
+
+  $scope.addStudy = function(){;
+    console.log($scope.items);
+  };
+}
 ]);
 
 app.controller('MetaAnalysesCtrl', [

@@ -239,12 +239,15 @@
     <h1> Add Data to Meta-Analysis </h1>
     <h2>Title: {{ metaAnalysis.title}} </h2>
     <p>Description: {{ metaAnalysis.description }}</p>
-    <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items" height="300" width="700">
-      <hot-column data="name" title="'Name'"></hot-column>
+    <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items">
     </hot-table>
-    <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Study</a>
-    <a class="waves-effect waves-light btn"><i class="fa fa-plus"></i> Add Interpretation</a>
+
+    <h1></h1>
+    <a class="waves-effect waves-light btn" ng-click="addStudy()"><i class="fa fa-plus"></i> Add Study</a>
+    <a class="waves-effect waves-light btn" ng-click="addInterpretation()"><i class="fa fa-plus"></i> Add Interpretation</a>
     <a class="waves-effect waves-light btn" ng-click="updateMetaAnalysis()">Save</a>
+    <a class="waves-effect waves-light btn" ng-click="log()">log</a>
+
   </script>
 
 
