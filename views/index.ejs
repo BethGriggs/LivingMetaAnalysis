@@ -61,12 +61,12 @@
                   </ul>
                 </div>
               </li>
-              <li class="bold"><a href="#/" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
+              <li class="bold"><a href="#/metaanalyses" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
                 <div class="collapsible-body" style="">
                   <ul>
                     <li><a href="#/metaanalyses/create"><i class="fa fa-plus"></i>New</a>
                     </li>
-                    <li><a href="#/metaanalyses/56ce2a2f872a858c0fd51336"><i class="fa fa-archive"></i>
+                    <li><a href="#/metaanalyses/56cedc54b3aa3a0c02c16b75"><i class="fa fa-archive"></i>
 Existing</a></li>
                   </ul>
                 </div>
@@ -195,6 +195,11 @@ Existing</a></li>
      <p>  {{experiments}} </p>
   </script>
 
+  <script type="text/ng-template" id="/metaanalyses.html">
+    <h1>metaanalyses template</h1>
+     <p><div ng-repeat="metaAnalysis in metaAnalyses track by $index">{{$index}} {{metaAnalysis}}</div></p>
+  </script>
+
   <script type="text/ng-template" id="/experiment.html">
     <p>Blah : {{experiment}}</p>
     <p>Authors: </p>
@@ -269,7 +274,7 @@ Existing</a></li>
       <a class="waves-effect waves-light btn-large" ng-click="log()">Apply Statistics<i class="fa fa-arrow-right"></i></a>
     </div>
 
-    <div ng-show="show" ng-controller="experimentsCtrl">
+    <div ng-show="show" ng-controller="ExperimentsCtrl">
       <h1>Add new Experiment</h1>
 
       <div ng-submit="" class="row">

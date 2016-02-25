@@ -12,36 +12,6 @@ app.config([
         templateUrl: '/home.html',
         controller: 'MainCtrl'
       })
-      .state('studies', {
-        url: '/studies',
-        templateUrl: '/studies.html',
-        controller: 'StudiesCtrl',
-        resolve: {
-          studyPromise: ['studies', function(studies) {
-            return studies.getAll();
-          }]
-        }
-      })
-      .state('studies/create', {
-        url: '/studies/create',
-        templateUrl: '/studies/create.html',
-        controller: 'StudiesCtrl',
-        resolve: {
-          postPromise: ['studies', function(studies) {
-            return studies.getAll();
-          }]
-        }
-      })
-      .state('study', {
-        url: '/studies/:id',
-        templateUrl: '/study.html',
-        controller: 'StudyCtrl',
-        resolve: {
-          study: ['$stateParams', 'studies', function($stateParams, studies) {
-            return studies.get($stateParams.id);
-          }]
-        }
-      })
       .state('experiments', {
         url: '/experiments',
         templateUrl: '/experiments.html',
@@ -62,12 +32,22 @@ app.config([
           }]
         }
       })
+      .state('metaanalyses', {
+        url: '/metaanalyses',
+        templateUrl: '/metaanalyses.html',
+        controller: 'MetaAnalysesCtrl',
+        resolve: {
+          metaAnalyses: ['$stateParams', 'metaAnalyses', function($stateParams, metaAnalyses) {
+            return metaAnalyses.getAll();
+          }]
+        }
+      })
       .state('metaanalyses/create', {
         url: '/metaanalyses/create',
         templateUrl: 'metaanalyses/create.html',
         controller: 'MetaAnalysesCtrl'
       })
-      .state('metaanalysis', {
+      .state('metaanalyses/id', {
         url: '/metaanalyses/:id',
         templateUrl: '/metaanalysis.html',
         controller: 'MetaAnalysisCtrl',
@@ -77,7 +57,6 @@ app.config([
           }]
         }
       });
-
     $urlRouterProvider.otherwise('home');
   }
 ]);
@@ -129,6 +108,12 @@ app.factory('metaAnalyses', ['$http', function($http) {
     })
   };
 
+  o.getAll = function() {
+    return $http.get('/api/metaanalyses').success(function(data) {
+      angular.copy(data, o.metaAnalyses);
+    });
+  };
+
   o.update = function(id, metaAnalysis) {
     return $http.put('/api/metaanalyses/' + id, metaAnalysis).then(function(res) {
       return res.data;
@@ -166,7 +151,6 @@ app.factory('experiments', ['$http', function($http) {
   };
   return o;
 }]);
-
 
 /* Controllers */
 app.controller('StudyCtrl', [
@@ -211,7 +195,7 @@ app.controller('StudiesCtrl', [
 app.controller('MetaAnalysisCtrl', [
   '$scope', 'metaAnalyses', 'metaAnalysis',
   function($scope, metaAnalyses, metaAnalysis) {
-
+    $scope.metaAnalyses = metaAnalyses.metaAnalyses;
     $scope.metaAnalysis = metaAnalysis;
     $scope.settings = {
       colHeaders: ['Experiment', 'No. Participants', 'Type of Participants', 'Misinformation Paradigm', 'Delay of Misinformation', 'No. of Misleading Details', 'Type of Misleading Details', '', '', '', ''],
@@ -251,6 +235,7 @@ app.controller('MetaAnalysisCtrl', [
 app.controller('MetaAnalysesCtrl', [
   '$scope', 'metaAnalyses',
   function($scope, metaAnalyses) {
+    $scope.metaAnalyses = metaAnalyses.data;
     $scope.newMetaAnalysis = function() {
       metaAnalyses.create({
         title: $scope.title,
