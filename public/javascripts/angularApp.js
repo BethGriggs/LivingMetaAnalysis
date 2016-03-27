@@ -5,32 +5,11 @@ app.config([
   '$stateProvider',
   '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
-    // name: home, url = /home, templateurl = /home.html
     $stateProvider
       .state('home', {
         url: '/home',
         templateUrl: '/home.html',
-        controller: 'MainCtrl'
-      })
-      .state('experiments', {
-        url: '/experiments',
-        templateUrl: '/experiments.html',
-        controller: 'ExperimentsCtrl',
-        resolve: {
-          experiments: ['$stateParams', 'experiments', function($stateParams, experiments) {
-            return experiments.getAll();
-          }]
-        }
-      })
-      .state('experiments/create', {
-        url: '/experiments/create',
-        templateUrl: '/experiments/create.html',
-        controller: 'ExperimentsCtrl',
-        resolve: {
-          post: ['$stateParams', 'experiments', function($stateParams, experiments) {
-            return experiments.getAll();
-          }]
-        }
+        controller: 'UserCtrl'
       })
       .state('metaanalyses', {
         url: '/metaanalyses',
@@ -61,8 +40,7 @@ app.config([
   }
 ]);
 
-
-// services
+/* services */
 app.factory('studies', ['$http', function($http) {
 
   var o = {
@@ -82,7 +60,7 @@ app.factory('studies', ['$http', function($http) {
   o.get = function(id) {
     return $http.get('/api/studies/' + id).then(function(res) {
       return res.data;
-    })
+    });
   };
 
   return o;
@@ -97,7 +75,6 @@ app.factory('metaAnalyses', ['$http', function($http) {
   o.create = function(metaAnalysis) {
     console.log(metaAnalysis);
     return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
-      console.log("get here");
       o.metaAnalyses.push(data);
     });
   };
@@ -105,7 +82,7 @@ app.factory('metaAnalyses', ['$http', function($http) {
   o.get = function(id) {
     return $http.get('/api/metaanalyses/' + id).then(function(res) {
       return res.data;
-    })
+    });
   };
 
   o.getAll = function() {
@@ -117,13 +94,12 @@ app.factory('metaAnalyses', ['$http', function($http) {
   o.update = function(id, metaAnalysis) {
     return $http.put('/api/metaanalyses/' + id, metaAnalysis).then(function(res) {
       return res.data;
-    })
+    });
   };
 
   o.create = function(metaAnalysis) {
     console.log(metaAnalysis);
     return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
-      console.log("get here");
       o.metaAnalyses.push(data);
     });
   };
@@ -132,21 +108,21 @@ app.factory('metaAnalyses', ['$http', function($http) {
 }]);
 
 // services
-app.factory('experiments', ['$http', function($http) {
+app.factory('studies', ['$http', function($http) {
 
   var o = {
-    experiments: []
+    studies: []
   };
 
   o.getAll = function() {
-    return $http.get('/api/experiments').success(function(data) {
-      angular.copy(data, o.experiments);
+    return $http.get('/api/studies').success(function(data) {
+      angular.copy(data, o.studies);
     });
   };
 
-  o.create = function(experiments) {
-    return $http.post('/api/experiments', experiments).success(function(data) {
-      o.experiments.push(data);
+  o.create = function(studies) {
+    return $http.post('/api/studies', studies).success(function(data) {
+      o.studies.push(data);
     });
   };
   return o;
@@ -160,9 +136,13 @@ app.controller('StudyCtrl', [
   }
 ]);
 
-app.controller('MainCtrl', [
+app.controller('UserCtrl', ['$http',
   '$scope',
-  function($scope) {}
+  function($http, $scope, user) {
+    $http.get('/api/user/1/metaanalyses').then(function(res) {
+          $scope.userMetaAnalyses = res.data;
+      });
+  }
 ]);
 
 app.controller('StudiesCtrl', [
@@ -175,15 +155,15 @@ app.controller('StudiesCtrl', [
       $scope.authors.push({
         'author': ''
       });
-    }
+    };
     $scope.removeAuthor = function(index) {
       $scope.authors.splice(index, 1);
-    }
+    };
     $scope.addStudy = function() {
       studies.create({
         title: $scope.title,
-        author: ['Author1', 'Author2'],
-        year: '2000'
+        author: [$scope.author],
+        year: $scope.year
       });
       $scope.title = '';
       $scope.author = '';
@@ -224,9 +204,9 @@ app.controller('MetaAnalysisCtrl', [
       console.log(metaAnalysis._id);
       $scope.metaAnalysis.title = "updated yo";
       metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
-  }
+  };
 
-  $scope.addStudy = function(){;
+  $scope.addStudy = function(){
     console.log($scope.items);
   };
 }
@@ -239,30 +219,11 @@ app.controller('MetaAnalysesCtrl', [
     $scope.newMetaAnalysis = function() {
       metaAnalyses.create({
         title: $scope.title,
-        description: $scope.description
+        description: $scope.description,
+        owner: "1"
       });
       $scope.title = '';
       $scope.description = '';
-    }
-  }
-]);
-
-
-app.controller('ExperimentsCtrl', [
-  '$scope', 'experiments',
-  function($scope, experiments) {
-    console.log(experiments);
-    $scope.experiments = experiments.data;
-    $scope.addExperiment = function(){
-      experiments.create({
-        experimentRef: 'default ref',
-        titleOfPaper: $scope.titleOfPaper,
-        authors: $scope.authors,
-        year: $scope.year,
-        link: $scope.link,
-        tags: $scope.tags
-      });
-      console.log("HELLO");
-    }
+    };
   }
 ]);

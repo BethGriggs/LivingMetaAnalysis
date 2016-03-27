@@ -4,7 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 /* import models */
-var Experiment = mongoose.model('Experiment');
+var Study = mongoose.model('Study');
 var Interpretation = mongoose.model('Interpretation');
 var DerivedData = mongoose.model('DerivedData');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
@@ -14,52 +14,52 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
-/* experiments routes */
+/* studies routes */
 
-// get experiments route
-router.get('/api/experiments', function(req, res, next) {
-  Experiment.find(function(err, experiments) {
+// get studies route
+router.get('/api/studies', function(req, res, next) {
+  Study.find(function(err, studies) {
     if (err) {
       return next(err);
     }
-    res.json(experiments);
+    res.json(studies);
   });
 });
 
-// post experiments route
-router.post('/api/experiments', function(req, res, next) {
-  var experiment = new Experiment(req.body);
-  console.log(experiment);
-  experiment.save(function(err, experiment) {
+// post study route
+router.post('/api/studies', function(req, res, next) {
+  var study = new Study(req.body);
+  console.log(study);
+  study.save(function(err, study) {
     if (err) {
       return next(err);
     }
-    res.json(experiment);
+    res.json(study);
   });
 });
 
 // param
-router.param('experiment', function(req, res, next, id) {
-  var query = Experiment.findById(id);
+router.param('study', function(req, res, next, id) {
+  var query = Study.findById(id);
 
-  query.exec(function(err, experiment) {
+  query.exec(function(err, study) {
     if (err) {
       return next(err);
     }
-    if (!experiment) {
+    if (!study) {
       return next(new Error('can\'t find thing'));
     }
 
-    req.experiment = experiment;
+    req.study = study;
     return next();
   });
 });
 
-router.get('/api/experiments/:experiment', function(req, res) {
-  res.json(req.experiment);
+router.get('/api/studies/:study', function(req, res) {
+  res.json(req.study);
 });
 
-/* Meta-analysis routes */
+/* meta-analysis routes */
 
 // get meta-analyses route
 router.get('/api/metaanalyses', function(req, res, next) {
@@ -99,15 +99,31 @@ router.param('metaanalysis', function(req, res, next, id) {
   });
 });
 
+
 router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
   res.json(req.metaAnalysis);
 });
 
-router.put('/api/metaanalyses/:metaanalysis',  function(req, res, next) {
-  MetaAnalysis.findOneAndUpdate({_id:req.params.id}, req.body, function (err, metaAnalysis) {
-  res.send(metaAnalysis);
+router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
+  MetaAnalysis.findOneAndUpdate({
+    _id: req.params.id
+  }, req.body, function(err, metaAnalysis) {
+    res.send(metaAnalysis);
+  });
 });
+
+// get meta-analyses for particular user
+router.get('/api/user/1/metaanalyses', function(req, res, next) {
+  MetaAnalysis.find({
+    "owner": "1"
+  }, function(err, metaAnalyses) {
+    if (err) {
+      return next(err);
+    }
+    res.json(metaAnalyses);
+  });
 });
+
 
 
 module.exports = router;

@@ -2,94 +2,59 @@
 
 <head>
   <title>Living Meta Analysis</title>
-  <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="vendor/materialize.min.css">
   <link rel="stylesheet" media="screen" href="vendor/handsontable.full.min.css">
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
   <script src="vendor/handsontable.full.min.js"></script>
   <script src="vendor/ngHandsontable.min.js"></script>
-
 </head>
 
 <body ng-app="livingmetaanalysis" class="loaded">
-  <div id="loader-wrapper">
-    <div id="loader"></div>
-    <div class="loader-section section-left"></div>
-    <div class="loader-section section-right"></div>
-  </div>
 
-  <!-- START HEADER -->
-  <header id="header" class="page-topbar">
-    <div class="navbar-fixed">
-      <nav class="cyan">
-        <div class="nav-wrapper">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#/home">LivingMetaAnalysis</a>
+      </div>
 
-          <ul class="left">
-            <li>Living Meta Analysis</li>
-          </ul>
+      <div class="collapse navbar-collapse">
 
-          <ul class="right hide-on-med-and-down">
-            <li>Joe Bloggs</li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-  </header>
-  <!-- END HEADER -->
-
-  <!-- START MAIN -->
-  <div id="main">
-    <!-- START WRAPPER -->
-    <div class="wrapper">
-      <!-- START LEFT SIDEBAR NAV-->
-      <aside id="left-sidebar-nav">
-        <ul id="slide-out" class="side-nav fixed leftside-navigation ps-container ps-active-y" style="left: 0px; height: 1045px;">
-
-          <li class="bold"><a href="#/home" class="waves-effect waves-cyan"><i class="fa fa-home"></i>Home</a>
-          </li>
-          <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-              <li class="bold"><a href="#/experiments" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-flask"></i>Experiments</a>
-                <div class="collapsible-body" style="">
-                  <ul>
-                    <li><a href="#/experiments/create"><i class="fa fa-plus"></i> Add Experiment</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="bold"><a href="#/metaanalyses" class="collapsible-header  waves-effect waves-cyan"><i class="fa fa-line-chart"></i>Meta-Analyses</a>
-                <div class="collapsible-body" style="">
-                  <ul>
-                    <li><a href="#/metaanalyses/create"><i class="fa fa-plus"></i>New</a>
-                    </li>
-                    <li><a href="#/metaanalyses/56cedc54b3aa3a0c02c16b75"><i class="fa fa-archive"></i>
-Existing</a></li>
-                  </ul>
-                </div>
-              </li>
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown"><a href="#"><i  class="fa fa-plus fa-2x"> <span class="caret"></i></a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Joe Bloggs <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Logout</a></li>
             </ul>
           </li>
-      </aside>
-      <!-- END LEFT SIDEBAR NAV-->
-
-      <!-- START CONTENT -->
-      <section id="content">
-        <!--start container-->
-        <div class="container">
-          <ui-view></ui-view>
-        </div>
-      </section>
-      <!-- END CONTENT -->
-
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
     </div>
-    <!-- END WRAPPER -->
+    <!-- /.container-fluid -->
+  </nav>
 
+  <div class="container">
+    <ui-view></ui-view>
   </div>
-  <!-- END MAIN -->
 
   <!-- ================================================
       Scripts
@@ -97,216 +62,191 @@ Existing</a></li>
 
   <!-- jQuery Library -->
   <script src="vendor/jquery-2.2.0.min.js"></script>
-
-  <!--materialize js-->
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-
-  <div class="hiddendiv common"></div>
-  <div class="drag-target" style="left: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); right: 0px;"></div>
-  <div class="drag-target" style="right: 0px; touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>
-
-  <script type="text/ng-template" id="/experiments/create.html">
-    <h1>Add new experiment </h1>
-    <form ng-submit="addExperiment()" class="form-horizontal">
-      <fieldset>
-
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="experimentRef" ng-model="experimentRef" type="text" class="validate">
-          <label for="experimentRef">Experiment Reference
-            <label>
-        </div>
-      </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="title" ng-model="titleOfPaper" type="text" class="validate">
-            <label for="title">Title of paper
-              <label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="authors" ng-model="authors" type="text" class="validate">
-            <label for="title">Authors of paper
-              <label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="year" ng-model="year" type="text" class="validate">
-            <label for="year">Year</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="link" ng-model="link" type="text" class="validate">
-            <label for="link">Link</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="tags" ng-model="tags" type="text" class="validate">
-            <label for="tags">Tags</label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="input-field col s12">
-            <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add experiment</button>
-          </div>
-        </div>
-      </fieldset>
-    </form>
-    </div>
-  </script>
+  <script src="javascripts/bootstrap.min.js"></script>
 
   <script type="text/ng-template" id="/home.html">
 
-    <h1>Contributions</h1>
     <div class="row">
-      <div class="col s12 m8 l8">
-        <div class="card">
-          <div class="card-move-up waves-effect waves-block waves-light">
-            <div class="move-up cyan">
-              <div>
-                <span class="white-text">experiments</span>
-
-                <p><a>BE94-Ex1</a></p>
-                <p><a>BI98-Ex2</a></p>
-                </ul>
-              </div>
-            </div>
-          </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title pull-left"><a href="#/metaanalyses">Meta-Analyses</a></h3>
+          <a type="button" class="btn btn-success pull-right" href="#/metaanalyses/create"><i class="fa fa-plus"></i> New</a>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <ul>
+          <li ng-repeat="userMetaAnalysis in userMetaAnalyses"><a ng-href="#/metaanalyses/{{userMetaAnalysis._id}}">{{userMetaAnalysis.title}}</a></li>
+          </ul>
         </div>
       </div>
 
-
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title pull-left">Interpretations</h3>
+          <a type="button" class="btn btn-success pull-right" href="#/studies/create"><i class="fa fa-plus"></i> New</a>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body">
+          <ul>
+          </ul>
+        </div>
+      </div>
     </div>
-  </script>
-
-  <script type="text/ng-template" id="/experiments.html">
-    <h1>Experiments Home Template</h1>
-     <p>  {{experiments}} </p>
   </script>
 
   <script type="text/ng-template" id="/metaanalyses.html">
     <h1>metaanalyses template</h1>
-     <p><div ng-repeat="metaAnalysis in metaAnalyses track by $index">{{$index}} {{metaAnalysis}}</div></p>
-  </script>
-
-  <script type="text/ng-template" id="/experiment.html">
-    <p>Blah : {{experiment}}</p>
-    <p>Authors: </p>
-
-    <p>Year: </p>
-    <h2> Experiments </h2>
-
-    <button ng-click="showExperimentForm= !showExperimentForm">Add Experiment</button>
-    <p ng-show="showExperimentForm">Form here!</p>
+    <p>
+      <div ng-repeat="metaAnalysis in metaAnalyses track by $index">{{metaAnalysis}}</div>
+    </p>
   </script>
 
   <script type="text/ng-template" id="metaanalyses/create.html">
-    <h1> Create Meta-Analysis </h1>
 
     <div ng-submit="newMetaAnalysis()" class="row">
-      <form class="col s12">
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="title" ng-model="title" type="text" class="validate">
-            <label for="title">Title of Meta-Analysis</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <textarea id="description" ng-model="description" class="materialize-textarea"></textarea>
-            <label for="description">Description</label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
-            <input id="tags" ng-model="tags" type="text" class="validate">
-            <label for="tags">Tags</label>
-          </div>
-        </div>
 
-        <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Create</button>
+      <form class="form-horizontal">
+        <fieldset>
+
+          <!-- Form Name -->
+          <legend>Create new meta-analysis</legend>
+
+          <!-- Text input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="title">Title</label>
+            <div class="col-md-6">
+              <input id="title" name="title" ng-model="title" type="text" placeholder="title of meta-analysis" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Textarea -->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="description">Description</label>
+            <div class="col-md-4">
+              <textarea class="form-control" id="description" ng-model="description" name="description"></textarea>
+            </div>
+          </div>
+
+          <!-- Search input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="tags">Tags</label>
+            <div class="col-md-6">
+              <input id="tags" name="tags" ng-model="tags" type="search" placeholder="tags" class="form-control input-md" required="">
+
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="form-group pull-right">
+            <label class="col-md-4 control-label" for="create"></label>
+            <div class="col-md-4">
+              <button id="create" name="create" class="btn btn-success"><i class="fa fa-plus"></i> Create</button>
+            </div>
+          </div>
+
+        </fieldset>
       </form>
     </div>
 
   </script>
 
   <script type="text/ng-template" id="/metaanalysis.html">
-    <h1> Add Data to Meta-Analysis </h1>
+    <h1> {{ metaAnalysis.title}}
+    <button ng-click="log()" class="btn btn-success pull-right">Apply Statistics <i class="fa fa-arrow-right"></i></button>
+    </h1>
 
-
-    <h2>Title: {{ metaAnalysis.title}} </h2>
-    <p>Description: {{ metaAnalysis.description }}</p>
+    <div class="well">
+      <p>{{ metaAnalysis.description }}</p>
+    </div>
     <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items">
     </hot-table>
-    <a class="waves-effect waves-light btn" ng-click="updateMetaAnalysis()">Save</a>
 
-    <h1> Search for experiments </h1>
-
-    <div class="search">
-      <div class="search-wrapper card">
-        <input id="search"><i class="fa fa-search"></i>
-        <div class="search-results"></div>
-      </div>
     </div>
-    <ul>
-      <li>BE94-Ex1
-        <button><i class="fa fa-plus"></i></button>
-      </li>
-      <li>BI98-Ex2
-        <button><i class="fa fa-plus"></i></button>
-      </li>
-    </ul>
-
     <div class="row">
-      <a class="waves-effect waves-light btn" ng-click="show = !show"><i class="fa fa-plus"></i> Add New experiment</a>
-      <a class="waves-effect waves-light btn" ng-click="addInterpretation()"><i class="fa fa-plus"></i> Add Interpretation</a>
-      <a class="waves-effect waves-light btn-large" ng-click="log()">Apply Statistics<i class="fa fa-arrow-right"></i></a>
+      <button ng-click="existingStudy = !existingStudy" class="btn btn-primary"><i class="fa fa-search"></i> Search for existing study</button>
+      <button ng-click="showNewStudyForm = !showNewStudyForm" class="btn btn-primary"><i class="fa fa-plus"></i> Add new study</button>
+      <button ng-click="addInterpretation()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Interpretation</button>
+      <button ng-click="updateMetaAnalysis()" class="btn btn-primary">Save</a>
     </div>
 
-    <div ng-show="show" ng-controller="ExperimentsCtrl">
-      <h1>Add new Experiment</h1>
+    <div ng-show="showNewStudyForm" ng-controller="StudiesCtrl">
+      <div class="well">
+        <div class="row">
+          <form  ng-submit="addStudy()" class="form-horizontal">
+            <fieldset>
+              <!-- Form Name -->
+              <legend>Add new study</legend>
 
-      <div ng-submit="" class="row">
-        <form class="col s12">
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="title" ng-model="title" type="text" class="validate">
-              <label for="title">Title of experiment</label>
-            </div>
-          </div>
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="title">Title</label>
+                <div class="col-md-6">
+                  <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
 
-          <div class="row">
-            <div class="input-field col s12">
-              <textarea id="author" ng-model="author" class="materialize-textarea"></textarea>
-              <label for="author">Author</label>
-            </div>
-          </div>
+                </div>
+              </div>
 
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="year" ng-model="year" type="text" class="validate">
-              <label for="year">Year</label>
-            </div>
-          </div>
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="author">Author</label>
+                <div class="col-md-6">
+                  <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
 
-          <button class="waves-effect waves-light btn center-align"><i class="fa fa-plus"></i> Add experiment</button>
-        </form>
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="year">Year</label>
+                <div class="col-md-2">
+                  <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Tags</label>
+                <div class="col-md-6">
+                  <input id="tags" name="tags" type="text" placeholder="tags" class="form-control input-md">
+
+                </div>
+              </div>
+
+              <!-- Button -->
+              <div class="form-group pull-right">
+                <div class="col-md-4">
+                  <button id="study" name="study" class="btn btn-success"><i class="fa fa-plus"></i> Study</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
       </div>
-    </div>
+</div>
+
+      <div ng-show="existingStudy">
+        <div class="well">
+          <h1> Add existing study</h1>
+
+          <div class="row">
+            <!-- /.col-lg-6 -->
+            <div class="col-lg-6">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Search</button>
+            </span>
+              </div>
+              <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-6 -->
+          </div>
+          <!-- /.row -->
+        </div>
+        </div>
   </script>
-
-
 </body>
 
 </html>

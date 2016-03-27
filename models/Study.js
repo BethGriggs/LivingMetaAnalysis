@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 
-var ExperimentSchema = new mongoose.Schema({
-  experimentRef: String,
-  titleOfPaper: String,
-  authors: String,
+var StudySchema = new mongoose.Schema({
+  title: String,
+  author: String,
   year: String,
   link: String,
   tags: String,
@@ -13,4 +12,4 @@ var ExperimentSchema = new mongoose.Schema({
   }]
 });
 
-mongoose.model('Experiment', ExperimentSchema);
+mongoose.model('Study', StudySchema);

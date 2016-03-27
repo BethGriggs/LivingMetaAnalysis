@@ -8,7 +8,7 @@ var $ = require('jquery');
 
 // models
 require('./models/MetaAnalyses');
-require('./models/Experiments');
+require('./models/Study');
 require('./models/Interpretations');
 require('./models/DerivedData');
 
