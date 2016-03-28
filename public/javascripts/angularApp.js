@@ -196,8 +196,7 @@ app.controller('MetaAnalysisCtrl', [
         comment: "anpthereffddaf"
       }, {
         property: "typeOfParticipants",
-        value: "STUDENT",
-        comment: "HI THEREsdfrghjkl sdfghjkl; sdfghjk sdfghjkl asdfghjkl asdfghj"
+        value: "STUDENT"
       }]
     }, {
       id: "study2",
@@ -206,7 +205,8 @@ app.controller('MetaAnalysisCtrl', [
         value: 59
       }, {
         property: "typeOfParticipants",
-        value: "STUDENT"
+        value: "STUDENT",
+        comment: "HI THEREsdfrghjkl sdfghjkl; sdfghjk sdfghjkl asdfghjkl asdfghj"
       }, {
         property: "typeExample",
         value: "example"
@@ -231,8 +231,8 @@ app.controller('MetaAnalysisCtrl', [
               testRow.push(studyArray[i].derivedData[j].value);
               if (studyArray[i].derivedData[j].comment !== undefined) {
                 var commentObject = {
-                  row: i,
-                  col: j,
+                  row: j,
+                  col: (i+1),
                   comment: studyArray[i].derivedData[j].comment
                 };
                 console.log(commentObject);
