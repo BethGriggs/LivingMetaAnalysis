@@ -6,3 +6,8 @@
     width: 75%;
     padding-top: 8px;
 }
+
+/* change width CSS */
+.handsontable col.rowHeader {
+    width: 180px;
+}

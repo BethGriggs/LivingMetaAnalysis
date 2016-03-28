@@ -72,6 +72,7 @@ app.factory('metaAnalyses', ['$http', function($http) {
   var o = {
     metaAnalyses: []
   };
+
   o.create = function(metaAnalysis) {
     console.log(metaAnalysis);
     return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
@@ -140,8 +141,8 @@ app.controller('UserCtrl', ['$http',
   '$scope',
   function($http, $scope, user) {
     $http.get('/api/user/1/metaanalyses').then(function(res) {
-          $scope.userMetaAnalyses = res.data;
-      });
+      $scope.userMetaAnalyses = res.data;
+    });
   }
 ]);
 
@@ -149,7 +150,9 @@ app.controller('StudiesCtrl', [
   '$scope', 'studies',
   function($scope, studies) {
     $scope.studies = studies.studies;
-    $scope.authors = [{"author":""}];
+    $scope.authors = [{
+      "author": ""
+    }];
     var testArray = ['one', 'two'];
     $scope.addAuthor = function() {
       $scope.authors.push({
@@ -175,41 +178,83 @@ app.controller('StudiesCtrl', [
 app.controller('MetaAnalysisCtrl', [
   '$scope', 'metaAnalyses', 'metaAnalysis',
   function($scope, metaAnalyses, metaAnalysis) {
-    $scope.metaAnalyses = metaAnalyses.metaAnalyses;
     $scope.metaAnalysis = metaAnalysis;
+
     $scope.settings = {
-      colHeaders: ['Experiment', 'No. Participants', 'Type of Participants', 'Misinformation Paradigm', 'Delay of Misinformation', 'No. of Misleading Details', 'Type of Misleading Details', '', '', '', ''],
-      rowHeaders: false,
-      comments: true,
-      cell: [
-        {row: 0, col: 0, comment: 'In all of Belli et al.’s (1994) experiments, memory for both original and misleading details was assessed.'},
-        {row: 1, col: 0, comment: 'The memory performances in Exp. 2 are aggregated across several experimental and control conditions (that used different sources of original and misleading information'}
-   ]
+      colHeaders: true
     };
-    $scope.minSpareRows = 0;
-    $scope.rowHeaders = true;
-    $scope.colHeaders = true;
-    $scope.items = [{
-       experiment: 'BE94-Ex1', numberOfParticpants: 72 , typeOfParticipants: 'Students', misinformationParadigm: 'Standard', delayOfMisinformation: 'Short', noOfMisleadingDetails: 2, test: 'CON'
-    }, { experiment: 'Bl98-Ex2', numberOfParticpants: 55 , typeOfParticipants: 'Students', misinformationParadigm: 'Standard', delayOfMisinformation: 'Short', noOfMisleadingDetails: 2, test: 'CON'}];
+    $scope.properties = ["numberOfParticipants", "typeOfParticipants"];
+    $scope.studies = ["study1", "study2"];
+    $scope.minSpareRows = 1;
+    $scope.killMeNow = [
+      ["numberOfParticipants", "1", "2"],
+      ["3", "4"]
+    ];
+    var studyArray = [{
+      id: "study1",
+      derivedData: [{
+        property: "numberOfParticipants",
+        value: 58
+      }, {
+        property: "typeOfParticipants",
+        value: "STUDENT"
+      }]
+    }, {
+      id: "study2",
+      derivedData: [{
+        property: "numberOfParticipants",
+        value: 59
+      }, {
+        property: "typeOfParticipants",
+        value: "STUDENT"
+      }, {
+        property: "typeExample",
+        value: "example"
+      }]
+    }];
+    generateArray();
 
-    $scope.log = function(){
-      console.log($scope.items);
+    function generateArray() {
+      var testArray = [];
+
+      for (var k = 0; k < $scope.properties.length; k++) {
+        // property is property string
+        var testRow = [];
+        testRow.push($scope.properties[k]);
+        // for all studies
+        for (var i = 0; i < studyArray.length; i++) {
+          // for all bits of derived data
+          var foundProperty = false;
+          for (var j = 0; j < studyArray[i].derivedData.length; j++) {
+            console.log(studyArray[i].derivedData[j]);
+            if (studyArray[i].derivedData[j].property == $scope.properties[k]) {
+              foundProperty = true;
+              testRow.push(studyArray[i].derivedData[j].value);
+            }
+          }
+          if (!foundProperty) {
+            testRow.push(null);
+          }
+        }
+        testArray.push(testRow);
+      }
+      $scope.testArray = testArray;
+    }
+    $scope.addInterpretation = function() {
+      $scope.properties.push("typeExample");
+      generateArray();
     };
 
-    $scope.addInterpretation = function(){
-
+    $scope.updateMetaAnalysis = function() {
+      //console.log(metaAnalysis._id);
+      //$scope.metaAnalysis.title = "updated yo";
+      //  metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
     };
-    $scope.updateMetaAnalysis = function(){
-      console.log(metaAnalysis._id);
-      $scope.metaAnalysis.title = "updated yo";
-      metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
-  };
 
-  $scope.addStudy = function(){
-    console.log($scope.items);
-  };
-}
+    $scope.addStudy = function() {
+      //$scope.colHeaders.push("next study");
+    };
+  }
 ]);
 
 app.controller('MetaAnalysesCtrl', [

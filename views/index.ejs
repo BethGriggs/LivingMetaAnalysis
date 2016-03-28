@@ -69,13 +69,17 @@
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title pull-left"><a href="#/metaanalyses">Meta-Analyses</a></h3>
-          <a type="button" class="btn btn-success pull-right" href="#/metaanalyses/create"><i class="fa fa-plus"></i> New</a>
+          <h3 class="panel-title pull-left">
+            <a href="#/metaanalyses">Meta-Analyses</a>
+          </h3>
+          <a type="button" class="btn btn-success pull-right" href="#/metaanalyses/create">
+            <i class="fa fa-plus"></i>New
+          </a>
           <div class="clearfix"></div>
         </div>
         <div class="panel-body">
           <ul>
-          <li ng-repeat="userMetaAnalysis in userMetaAnalyses"><a ng-href="#/metaanalyses/{{userMetaAnalysis._id}}">{{userMetaAnalysis.title}}</a></li>
+            <li ng-repeat="userMetaAnalysis in userMetaAnalyses"><a ng-href="#/metaanalyses/{{userMetaAnalysis._id}}">{{userMetaAnalysis.title}}</a></li>
           </ul>
         </div>
       </div>
@@ -159,10 +163,25 @@
     <div class="well">
       <p>{{ metaAnalysis.description }}</p>
     </div>
-    <hot-table settings="settings" row-headers="rowHeaders" min-spare-rows="minSpareRows" datarows="items">
+
+
+
+    <hot-table
+        settings="settings"
+        min-spare-rows="minSpareRows"
+        col-headers="true"
+        datarows="testArray">
+      <hot-column title="'Property'"></hot-column>
+      <hot-column ng-repeat="study in studies" title="study"></hot-column>
     </hot-table>
 
-    </div>
+    <style type="text/css">
+    /* change width CSS */
+    .handsontable col.rowHeader {
+        width: 15em;
+    }
+    </style>
+
     <div class="row">
       <button ng-click="existingStudy = !existingStudy" class="btn btn-primary"><i class="fa fa-search"></i> Search for existing study</button>
       <button ng-click="showNewStudyForm = !showNewStudyForm" class="btn btn-primary"><i class="fa fa-plus"></i> Add new study</button>
@@ -173,7 +192,7 @@
     <div ng-show="showNewStudyForm" ng-controller="StudiesCtrl">
       <div class="well">
         <div class="row">
-          <form  ng-submit="addStudy()" class="form-horizontal">
+          <form ng-submit="addStudy()" class="form-horizontal">
             <fieldset>
               <!-- Form Name -->
               <legend>Add new study</legend>
@@ -224,28 +243,28 @@
           </form>
         </div>
       </div>
-</div>
+    </div>
 
-      <div ng-show="existingStudy">
-        <div class="well">
-          <h1> Add existing study</h1>
+    <div ng-show="existingStudy">
+      <div class="well">
+        <h1> Add existing study</h1>
 
-          <div class="row">
-            <!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search for...">
-                <span class="input-group-btn">
+        <div class="row">
+          <!-- /.col-lg-6 -->
+          <div class="col-lg-6">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
               <button class="btn btn-default" type="button">Search</button>
             </span>
-              </div>
-              <!-- /input-group -->
             </div>
-            <!-- /.col-lg-6 -->
+            <!-- /input-group -->
           </div>
-          <!-- /.row -->
+          <!-- /.col-lg-6 -->
         </div>
-        </div>
+        <!-- /.row -->
+      </div>
+    </div>
   </script>
 </body>
 
