@@ -4,6 +4,7 @@ var MetaAnalysisSchema = new mongoose.Schema({
   title: String,
   description: String,
   owner: String,
+  tags: [String],
   testJson: String
 });
 

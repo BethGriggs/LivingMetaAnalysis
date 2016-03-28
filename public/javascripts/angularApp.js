@@ -1,4 +1,4 @@
-var app = angular.module('livingmetaanalysis', ['ui.router', 'ngHandsontable']);
+var app = angular.module('livingmetaanalysis', ['ui.router', 'ngHandsontable', 'ngTagsInput']);
 
 // app state config
 app.config([
@@ -176,18 +176,29 @@ app.controller('StudiesCtrl', [
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', 'metaAnalyses', 'metaAnalysis',
-  function($scope, metaAnalyses, metaAnalysis) {
+  '$scope', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',
+  function($scope, metaAnalyses, metaAnalysis, hotRegisterer) {
+
+
     $scope.metaAnalysis = metaAnalysis;
-
-
     $scope.properties = ["numberOfParticipants", "typeOfParticipants"];
-    $scope.studies = ["study1", "study2"];
+    $scope.colArray = [{
+      title: "property"
+    }, {
+      title: "study1"
+    }, {
+      title: "study2"
+    }];
     $scope.minSpareRows = 1;
     $scope.killMeNow = [
       ["numberOfParticipants", "1", "2"],
       ["3", "4"]
     ];
+
+    // settings
+    $scope.comments=true;
+
+    var commentsArray;
     var studyArray = [{
       id: "study1",
       derivedData: [{
@@ -197,6 +208,9 @@ app.controller('MetaAnalysisCtrl', [
       }, {
         property: "typeOfParticipants",
         value: "STUDENT"
+      }, {
+        property: "aNewProperty",
+        value: "value"
       }]
     }, {
       id: "study2",
@@ -209,14 +223,16 @@ app.controller('MetaAnalysisCtrl', [
         comment: "HI THEREsdfrghjkl sdfghjkl; sdfghjk sdfghjkl asdfghjkl asdfghj"
       }, {
         property: "typeExample",
-        value: "example"
+        value: "example",
+        comment: "wtf"
       }]
-    }];
+    }, ];
     generateArray();
-
+    $scope.settings = {comments: true,
+      cell: commentsArray};
     function generateArray() {
       var testArray = [];
-      var commentsArray = [];
+      commentsArray = [];
       for (var k = 0; k < $scope.properties.length; k++) {
         // property is property string
         var testRow = [];
@@ -232,10 +248,9 @@ app.controller('MetaAnalysisCtrl', [
               if (studyArray[i].derivedData[j].comment !== undefined) {
                 var commentObject = {
                   row: j,
-                  col: (i+1),
+                  col: (i + 1),
                   comment: studyArray[i].derivedData[j].comment
                 };
-                console.log(commentObject);
                 commentsArray.push(commentObject);
               }
             }
@@ -247,22 +262,13 @@ app.controller('MetaAnalysisCtrl', [
         testArray.push(testRow);
       }
       $scope.testArray = testArray;
-      var testCommentArray = [
-         {row: 0, col: 0, comment: 'In all of Belli et al.’s (1994) experiments, memory for both original and misleading details was assessed.'},
-         {row: 1 , col: 1, comment: 'The memory performances in Exp. 2 are aggregated across several experimental and control conditions (that used different sources of original and misleading information'}
-    ];
-    console.log(commentsArray);
-    console.log(testCommentArray);
 
-      $scope.settings = {
-        colHeaders: ['Property', 'Study1', 'Study2'],
-        comments: true,
-        cell: commentsArray
-      };
+      $scope.commentsArray = commentsArray;
     }
     $scope.addInterpretation = function() {
-      $scope.properties.push("typeExample");
+      $scope.properties.push("aNewProperty");
       generateArray();
+      $scope.commentsArray = commentsArray;
     };
 
     $scope.updateMetaAnalysis = function() {
@@ -272,8 +278,21 @@ app.controller('MetaAnalysisCtrl', [
     };
 
     $scope.addStudy = function() {
-      $scope.study.push("next study");
+      $scope.colArray.push({title: "newStudy"});
+      var newStudyObj = {
+        id: "newStudy",
+        derivedData: [{
+          property: "numberOfParticipants",
+          value: 25,
+          comment: "anpthereffddaf"
+        }, {
+          property: "typeOfParticipants",
+          value: "STUDENT"
+        }]
+      };
+      studyArray.push(newStudyObj);
       generateArray();
+      $scope.commentsArray = commentsArray;
     };
   }
 ]);
@@ -282,14 +301,25 @@ app.controller('MetaAnalysesCtrl', [
   '$scope', 'metaAnalyses',
   function($scope, metaAnalyses) {
     $scope.metaAnalyses = metaAnalyses.data;
+    console.log($scope.tags);
+
     $scope.newMetaAnalysis = function() {
+      var tagsArray = [];
+      for (var i = 0; i< $scope.tags.length; i++){
+          tagsArray.push($scope.tags[i].text);
+      }
+      console.log(tagsArray);
       metaAnalyses.create({
         title: $scope.title,
         description: $scope.description,
-        owner: "1"
+        owner: "1",
+        tags: tagsArray
       });
+      console.log($scope.tags);
       $scope.title = '';
       $scope.description = '';
+      $scope.tags= [];
+
     };
   }
 ]);

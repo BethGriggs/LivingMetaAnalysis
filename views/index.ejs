@@ -6,11 +6,14 @@
   <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" media="screen" href="vendor/handsontable.full.min.css">
+  <link rel="stylesheet" href="vendor/ng-tags-input.min.css">
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
   <script src="vendor/handsontable.full.min.js"></script>
   <script src="vendor/ngHandsontable.min.js"></script>
+  <script type="text/javascript" src="vendor/ng-tags-input.min.js"></script>
+
 </head>
 
 <body ng-app="livingmetaanalysis" class="loaded">
@@ -136,8 +139,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label" for="tags">Tags</label>
             <div class="col-md-6">
-              <input id="tags" name="tags" ng-model="tags" type="search" placeholder="tags" class="form-control input-md" required="">
-
+                <tags-input ng-model="tags"></tags-input>
             </div>
           </div>
 
@@ -167,8 +169,10 @@
 
 
     <hot-table
+        hot-id="handsontable1"
         settings="settings"
         min-spare-rows="minSpareRows"
+        columns="colArray"
         col-headers="true"
         datarows="testArray">
     </hot-table>
@@ -185,6 +189,8 @@
       <button ng-click="showNewStudyForm = !showNewStudyForm" class="btn btn-primary"><i class="fa fa-plus"></i> Add new study</button>
       <button ng-click="addInterpretation()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Interpretation</button>
       <button ng-click="updateMetaAnalysis()" class="btn btn-primary">Save</a>
+      <button ng-click="addStudy()" class="btn btn-primary">Add study (test)</a>
+
     </div>
 
     <div ng-show="showNewStudyForm" ng-controller="StudiesCtrl">
