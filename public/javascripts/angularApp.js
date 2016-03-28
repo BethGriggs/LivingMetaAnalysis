@@ -180,9 +180,7 @@ app.controller('MetaAnalysisCtrl', [
   function($scope, metaAnalyses, metaAnalysis) {
     $scope.metaAnalysis = metaAnalysis;
 
-    $scope.settings = {
-      colHeaders: true
-    };
+
     $scope.properties = ["numberOfParticipants", "typeOfParticipants"];
     $scope.studies = ["study1", "study2"];
     $scope.minSpareRows = 1;
@@ -194,10 +192,12 @@ app.controller('MetaAnalysisCtrl', [
       id: "study1",
       derivedData: [{
         property: "numberOfParticipants",
-        value: 58
+        value: 58,
+        comment: "anpthereffddaf"
       }, {
         property: "typeOfParticipants",
-        value: "STUDENT"
+        value: "STUDENT",
+        comment: "HI THEREsdfrghjkl sdfghjkl; sdfghjk sdfghjkl asdfghjkl asdfghj"
       }]
     }, {
       id: "study2",
@@ -216,7 +216,7 @@ app.controller('MetaAnalysisCtrl', [
 
     function generateArray() {
       var testArray = [];
-
+      var commentsArray = [];
       for (var k = 0; k < $scope.properties.length; k++) {
         // property is property string
         var testRow = [];
@@ -226,10 +226,18 @@ app.controller('MetaAnalysisCtrl', [
           // for all bits of derived data
           var foundProperty = false;
           for (var j = 0; j < studyArray[i].derivedData.length; j++) {
-            console.log(studyArray[i].derivedData[j]);
             if (studyArray[i].derivedData[j].property == $scope.properties[k]) {
               foundProperty = true;
               testRow.push(studyArray[i].derivedData[j].value);
+              if (studyArray[i].derivedData[j].comment !== undefined) {
+                var commentObject = {
+                  row: i,
+                  col: j,
+                  comment: studyArray[i].derivedData[j].comment
+                };
+                console.log(commentObject);
+                commentsArray.push(commentObject);
+              }
             }
           }
           if (!foundProperty) {
@@ -239,6 +247,18 @@ app.controller('MetaAnalysisCtrl', [
         testArray.push(testRow);
       }
       $scope.testArray = testArray;
+      var testCommentArray = [
+         {row: 0, col: 0, comment: 'In all of Belli et al.’s (1994) experiments, memory for both original and misleading details was assessed.'},
+         {row: 1 , col: 1, comment: 'The memory performances in Exp. 2 are aggregated across several experimental and control conditions (that used different sources of original and misleading information'}
+    ];
+    console.log(commentsArray);
+    console.log(testCommentArray);
+
+      $scope.settings = {
+        colHeaders: ['Property', 'Study1', 'Study2'],
+        comments: true,
+        cell: commentsArray
+      };
     }
     $scope.addInterpretation = function() {
       $scope.properties.push("typeExample");
@@ -252,7 +272,8 @@ app.controller('MetaAnalysisCtrl', [
     };
 
     $scope.addStudy = function() {
-      //$scope.colHeaders.push("next study");
+      $scope.study.push("next study");
+      generateArray();
     };
   }
 ]);

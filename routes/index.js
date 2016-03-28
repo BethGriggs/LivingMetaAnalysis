@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 
 /* import models */
 var Study = mongoose.model('Study');
-var Interpretation = mongoose.model('Interpretation');
 var DerivedData = mongoose.model('DerivedData');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
 
