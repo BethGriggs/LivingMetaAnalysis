@@ -28,7 +28,6 @@ router.get('/api/studies', function(req, res, next) {
 // post study route
 router.post('/api/studies', function(req, res, next) {
   var study = new Study(req.body);
-  console.log(study);
   study.save(function(err, study) {
     if (err) {
       return next(err);
@@ -46,7 +45,7 @@ router.param('study', function(req, res, next, id) {
       return next(err);
     }
     if (!study) {
-      return next(new Error('can\'t find thing'));
+      return next(new Error('cannot find study'));
     }
 
     req.study = study;
@@ -60,7 +59,7 @@ router.get('/api/studies/:study', function(req, res) {
 
 /* meta-analysis routes */
 
-// get meta-analyses route
+// GET all meta-analyses 
 router.get('/api/metaanalyses', function(req, res, next) {
   MetaAnalysis.find(function(err, metaAnalyses) {
     if (err) {

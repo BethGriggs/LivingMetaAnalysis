@@ -176,8 +176,8 @@ app.controller('StudiesCtrl', [
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',
-  function($scope, metaAnalyses, metaAnalysis, hotRegisterer) {
+  '$scope', '$http','metaAnalyses', 'metaAnalysis', 'hotRegisterer',
+  function($scope, $http, metaAnalyses, metaAnalysis, hotRegisterer) {
 
 
     $scope.metaAnalysis = metaAnalysis;
@@ -294,6 +294,17 @@ app.controller('MetaAnalysisCtrl', [
       generateArray();
       $scope.commentsArray = commentsArray;
     };
+
+    $scope.addNewStudy = function(){
+      $http.post('/api/studies', {
+        title: $scope.title,
+        author: $scope.author,
+        year: $scope.year,
+        link: $scope.link,
+        tags: $scope.tags
+      });
+
+      };
   }
 ]);
 
