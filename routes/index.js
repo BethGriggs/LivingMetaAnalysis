@@ -36,7 +36,7 @@ router.post('/api/studies', function(req, res, next) {
   });
 });
 
-// param
+// study id param
 router.param('study', function(req, res, next, id) {
   var query = Study.findById(id);
 
@@ -57,9 +57,31 @@ router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
 });
 
+// param
+router.param('tag', function(req, res, next, tag) {
+  var query = Study.find({'tags': tag});
+
+  query.exec(function(err, studies) {
+    if (err) {
+      return next(err);
+    }
+    if (!studies) {
+      return next(new Error('cannot find study'));
+    }
+
+    req.studies = studies;
+    return next();
+  });
+});
+
+router.get('/api/studies/tag/:tag', function(req, res) {
+  res.json(req.studies);
+ });
+
+//api/studies/tag/
 /* meta-analysis routes */
 
-// GET all meta-analyses 
+// GET all meta-analyses
 router.get('/api/metaanalyses', function(req, res, next) {
   MetaAnalysis.find(function(err, metaAnalyses) {
     if (err) {
@@ -96,7 +118,6 @@ router.param('metaanalysis', function(req, res, next, id) {
     return next();
   });
 });
-
 
 router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
   res.json(req.metaAnalysis);

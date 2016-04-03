@@ -74,7 +74,6 @@ app.factory('metaAnalyses', ['$http', function($http) {
   };
 
   o.create = function(metaAnalysis) {
-    console.log(metaAnalysis);
     return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
       o.metaAnalyses.push(data);
     });
@@ -108,27 +107,6 @@ app.factory('metaAnalyses', ['$http', function($http) {
   return o;
 }]);
 
-// services
-app.factory('studies', ['$http', function($http) {
-
-  var o = {
-    studies: []
-  };
-
-  o.getAll = function() {
-    return $http.get('/api/studies').success(function(data) {
-      angular.copy(data, o.studies);
-    });
-  };
-
-  o.create = function(studies) {
-    return $http.post('/api/studies', studies).success(function(data) {
-      o.studies.push(data);
-    });
-  };
-  return o;
-}]);
-
 /* Controllers */
 app.controller('StudyCtrl', [
   '$scope', 'study',
@@ -146,9 +124,9 @@ app.controller('UserCtrl', ['$http',
   }
 ]);
 
-app.controller('StudiesCtrl', [
+app.controller('StudiesCtrl', [ '$http',
   '$scope', 'studies',
-  function($scope, studies) {
+  function($http, $scope, studies) {
     $scope.studies = studies.studies;
     $scope.authors = [{
       "author": ""
@@ -172,13 +150,18 @@ app.controller('StudiesCtrl', [
       $scope.author = '';
       $scope.year = '';
     };
+    $scope.search = function() {
+      $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res){
+        $scope.searchResults= res.data;
+        return res.data;
+      });
+    };
   }
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', '$http','metaAnalyses', 'metaAnalysis', 'hotRegisterer',
+  '$scope', '$http', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',
   function($scope, $http, metaAnalyses, metaAnalysis, hotRegisterer) {
-
 
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = ["numberOfParticipants", "typeOfParticipants"];
@@ -196,7 +179,7 @@ app.controller('MetaAnalysisCtrl', [
     ];
 
     // settings
-    $scope.comments=true;
+    $scope.comments = true;
 
     var commentsArray;
     var studyArray = [{
@@ -228,8 +211,11 @@ app.controller('MetaAnalysisCtrl', [
       }]
     }, ];
     generateArray();
-    $scope.settings = {comments: true,
-      cell: commentsArray};
+    $scope.settings = {
+      comments: true,
+      cell: commentsArray
+    };
+
     function generateArray() {
       var testArray = [];
       commentsArray = [];
@@ -278,7 +264,9 @@ app.controller('MetaAnalysisCtrl', [
     };
 
     $scope.addStudy = function() {
-      $scope.colArray.push({title: "newStudy"});
+      $scope.colArray.push({
+        title: "newStudy"
+      });
       var newStudyObj = {
         id: "newStudy",
         derivedData: [{
@@ -295,16 +283,19 @@ app.controller('MetaAnalysisCtrl', [
       $scope.commentsArray = commentsArray;
     };
 
-    $scope.addNewStudy = function(){
+    $scope.addNewStudy = function() {
+      var tagsArray = [];
+      for (var i = 0; i < $scope.tags.length; i++) {
+        tagsArray.push($scope.tags[i].text);
+      }
       $http.post('/api/studies', {
         title: $scope.title,
         author: $scope.author,
         year: $scope.year,
         link: $scope.link,
-        tags: $scope.tags
+        tags: tagsArray
       });
-
-      };
+    };
   }
 ]);
 
@@ -312,12 +303,11 @@ app.controller('MetaAnalysesCtrl', [
   '$scope', 'metaAnalyses',
   function($scope, metaAnalyses) {
     $scope.metaAnalyses = metaAnalyses.data;
-    console.log($scope.tags);
 
     $scope.newMetaAnalysis = function() {
       var tagsArray = [];
-      for (var i = 0; i< $scope.tags.length; i++){
-          tagsArray.push($scope.tags[i].text);
+      for (var i = 0; i < $scope.tags.length; i++) {
+        tagsArray.push($scope.tags[i].text);
       }
       console.log(tagsArray);
       metaAnalyses.create({
@@ -329,7 +319,7 @@ app.controller('MetaAnalysesCtrl', [
       console.log($scope.tags);
       $scope.title = '';
       $scope.description = '';
-      $scope.tags= [];
+      $scope.tags = [];
 
     };
   }

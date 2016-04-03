@@ -5,7 +5,7 @@ var StudySchema = new mongoose.Schema({
   author: String,
   year: String,
   link: String,
-  tags: String,
+  tags: [String],
   derivedData: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'DerivedData'
