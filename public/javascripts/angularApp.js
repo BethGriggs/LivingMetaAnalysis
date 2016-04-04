@@ -167,7 +167,7 @@ app.controller('StudiesCtrl', [ '$http',
       });
     };
   }
-]);
+]); 
 
 app.controller('MetaAnalysisCtrl', [
   '$scope', '$http', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',

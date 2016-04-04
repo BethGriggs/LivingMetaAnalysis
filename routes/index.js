@@ -143,6 +143,4 @@ router.get('/api/user/1/metaanalyses', function(req, res, next) {
   });
 });
 
-
-
 module.exports = router;
