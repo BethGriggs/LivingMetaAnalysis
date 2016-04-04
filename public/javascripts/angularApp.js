@@ -35,6 +35,16 @@ app.config([
             return metaAnalyses.get($stateParams.id);
           }]
         }
+      })
+      .state('studies/id', {
+        url: '/studies/:id',
+        templateUrl: '/study.html',
+        controller: 'StudyCtrl',
+        resolve: {
+          study: ['$stateParams', 'studies', function($stateParams, studies) {
+            return studies.get($stateParams.id);
+          }]
+        }
       });
     $urlRouterProvider.otherwise('home');
   }
