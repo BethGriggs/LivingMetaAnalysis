@@ -36,6 +36,11 @@ app.config([
           }]
         }
       })
+      .state('studies/create', {
+        url: '/studies/create',
+        templateUrl: 'studies/create.html',
+        controller: 'StudiesCtrl'
+      })
       .state('studies/id', {
         url: '/studies/:id',
         templateUrl: '/study.html',
@@ -152,6 +157,10 @@ app.controller('UserCtrl', ['$http',
   function($http, $scope, user) {
     $http.get('/api/user/1/metaanalyses').then(function(res) {
       $scope.userMetaAnalyses = res.data;
+    });
+
+    $http.get('/api/user/1/studies').then(function(res) {
+      $scope.userStudies = res.data;
     });
   }
 ]);

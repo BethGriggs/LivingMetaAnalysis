@@ -37,7 +37,7 @@
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i  class="fa fa-plus fa-2x"></i><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">New Meta-analysis</a></li>
-            <li><a href="#">New Study</a></li>
+            <li><a href="#/studies/create">New Study</a></li>
           </ul>
         </li>
         <li class="dropdown">
@@ -86,12 +86,13 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title pull-left">Study Data</h3>
+          <h3 class="panel-title pull-left">Studies you have contributed to</h3>
           <a type="button" class="btn btn-success pull-right" href="#/studies/create"><i class="fa fa-plus"></i> New Study</a>
-          <div class="clearfix"></div>
+                    <div class="clearfix"></div>
         </div>
         <div class="panel-body">
           <ul>
+          <li ng-repeat="study in userStudies"><a href="#/studies/create/{{userStudies._id}}">{{study.title}}</a></li>
           </ul>
         </div>
       </div>
@@ -333,6 +334,57 @@
             </div>
           </div>
         </div>
+  </script>
+
+  <script type="text/ng-template" id="studies/create.html">
+  <form class="form-horizontal">
+    <fieldset>
+
+      <legend> Add new study</legend>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="title">Title</label>
+        <div class="col-md-6">
+          <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
+
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="author">Author</label>
+        <div class="col-md-6">
+          <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="link">Link</label>
+        <div class="col-md-6">
+          <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
+        </div>
+      </div>
+
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="year">Year</label>
+        <div class="col-md-2">
+          <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+        </div>
+      </div>
+
+      <!-- Search input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="tags">Tags</label>
+        <div class="col-md-6">
+          <tags-input ng-model="tags"></tags-input>
+        </div>
+      </div>
+
+      <button class="btn btn-success pull-right" ng-click="addStudy()"><i class="fa fa-plus"></i> Add study</button>
+    </fieldset>
+  </form>
   </script>
 </body>
 

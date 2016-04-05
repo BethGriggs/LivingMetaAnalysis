@@ -169,4 +169,17 @@ router.get('/api/user/1/metaanalyses', function(req, res, next) {
   });
 });
 
+// get study data added by particular user
+router.get('/api/user/1/studies', function(req, res, next) {
+  Study.find({
+    "derivedData.addedBy": "1"
+  }, function(err, studies) {
+    if (err) {
+      return next(err);
+    }
+    res.json(studies);
+  });
+});
+
+
 module.exports = router;
