@@ -114,7 +114,7 @@ app.factory('metaAnalyses', ['$http', function($http) {
   };
 
   o.update = function(id, metaAnalysis) {
-    return $http.put('/api/metaanalyses/' + id, metaAnalysis).then(function(res) {
+    return $http.put('/api/metaanalyses/' + id, metaAnalysis).success(function(res) {
       return res.data;
     });
   };
@@ -130,18 +130,19 @@ app.factory('metaAnalyses', ['$http', function($http) {
 }]);
 
 /* Controllers */
-app.controller('StudyCtrl', [
-  '$scope', 'studies', 'study',
+app.controller('StudyCtrl',['$scope', 'studies', 'study',
   function($scope, studies, study) {
     $scope.study = study;
     $scope.derivedData = study.derivedData;
 
     $scope.addStudyData = function(){
-      var newDerivedData= {
-        comment: "comment", value: "value", property: "prop", addedBy: "1"
+      var newDerivedData =  {
+          value: $scope.value,
+          property: $scope.property,
+          comment: $scope.comment,
+          addedBy: "1"
       };
-      console.log(newDerivedData);
-      studies.addData(study._id, newDerivedData);
+      studies.addData(study._id,newDerivedData);
     };
   }
 ]);
@@ -175,6 +176,7 @@ app.controller('StudiesCtrl', [ '$http',
       studies.create({
         title: $scope.title,
         author: [$scope.author],
+        link: $scope.link,
         year: $scope.year
       });
       $scope.title = '';

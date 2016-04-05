@@ -206,7 +206,14 @@
                   <label class="col-md-4 control-label" for="author">Author</label>
                   <div class="col-md-6">
                     <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
+                  </div>
+                </div>
 
+                <!-- Text input-->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="link">Link</label>
+                  <div class="col-md-6">
+                    <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
                   </div>
                 </div>
 
@@ -215,7 +222,6 @@
                   <label class="col-md-4 control-label" for="year">Year</label>
                   <div class="col-md-2">
                     <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
-
                   </div>
                 </div>
 
@@ -285,11 +291,13 @@
     <h1>{{study.title}}</h1>
     <p>Author : {{study.author}} </p>
     <p>Year published: {{study.year}} </p>
-
-    <p> Derived Data: {{study.derivedData}}</p>
-    <hot-table settings="settings" min-spare-rows="0" col-headers="['Property', 'Value', 'Comments']" datarows="derivedData">
-    </hot-table>
-
+    <p>Link: <a href={{study.link}}>{{study.link}}</a> </p>
+    <hot-table col-headers="true" datarows="derivedData">
+     <hot-column data="property" title="'Property'" read-only></hot-column>
+     <hot-column data="value" title="'Value'" read-only></hot-column>
+     <hot-column data="comment" title="'Comment'" read-only></hot-column>
+     <hot-column data="addedBy" title="'Added By User'" read-only></hot-column>
+   </hot-table>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudyData">
       <i class="fa fa-plus"></i> Add study data
@@ -324,7 +332,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success" ng-click="addStudyData()" data-dismis="modal"><i class="fa fa-plus"></i>Add Property</button>
+              <button type="button" class="btn btn-success" ng-click="addStudyData()" data-dismiss="modal"><i class="fa fa-plus"></i>Add Property</button>
             </div>
           </div>
         </div>
