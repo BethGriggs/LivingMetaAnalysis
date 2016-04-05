@@ -73,6 +73,18 @@ app.factory('studies', ['$http', function($http) {
     });
   };
 
+  o.update = function(id, study) {
+    return $http.put('/api/studies/' + id, study).then(function(res) {
+      return res.data;
+    });
+  };
+
+  o.addData = function(id, derivedData){
+    return $http.put('/api/studies/' + id + "/derivedData", derivedData).then(function(res){
+      return res.data;
+    });
+  };
+
   return o;
 }]);
 
@@ -119,9 +131,18 @@ app.factory('metaAnalyses', ['$http', function($http) {
 
 /* Controllers */
 app.controller('StudyCtrl', [
-  '$scope', 'study',
-  function($scope, study) {
+  '$scope', 'studies', 'study',
+  function($scope, studies, study) {
     $scope.study = study;
+    $scope.derivedData = study.derivedData;
+
+    $scope.addStudyData = function(){
+      var newDerivedData= {
+        comment: "comment", value: "value", property: "prop", addedBy: "1"
+      };
+      console.log(newDerivedData);
+      studies.addData(study._id, newDerivedData);
+    };
   }
 ]);
 
@@ -160,6 +181,7 @@ app.controller('StudiesCtrl', [ '$http',
       $scope.author = '';
       $scope.year = '';
     };
+
     $scope.search = function() {
       $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res){
         $scope.searchResults= res.data;
@@ -167,7 +189,7 @@ app.controller('StudiesCtrl', [ '$http',
       });
     };
   }
-]); 
+]);
 
 app.controller('MetaAnalysisCtrl', [
   '$scope', '$http', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',

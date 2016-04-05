@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 
 /* import models */
 var Study = mongoose.model('Study');
-var DerivedData = mongoose.model('DerivedData');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
 
 /* GET home page. */
@@ -53,13 +52,40 @@ router.param('study', function(req, res, next, id) {
   });
 });
 
+// GET: study
 router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
 });
 
+router.put('/api/studies/:study/derivedData', function(req, res, next) {
+  Study.findByIdAndUpdate(
+        req.params.study,
+        {$push: {"derivedData": req.body}},
+        {safe: true, upsert: true, new : true},
+        function(err, study) {
+            console.log(err);
+        }
+    );
+});
+// get meta-analyses for particular user
+router.get('/api/user/1/metaanalyses', function(req, res, next) {
+  MetaAnalysis.find({
+    "owner": "1"
+  }, function(err, metaAnalyses) {
+    if (err) {
+      return next(err);
+    }
+    res.json(metaAnalyses);
+  });
+});
+
+
+
 // param
 router.param('tag', function(req, res, next, tag) {
-  var query = Study.find({'tags': tag});
+  var query = Study.find({
+    'tags': tag
+  });
 
   query.exec(function(err, studies) {
     if (err) {
@@ -76,7 +102,7 @@ router.param('tag', function(req, res, next, tag) {
 
 router.get('/api/studies/tag/:tag', function(req, res) {
   res.json(req.studies);
- });
+});
 
 //api/studies/tag/
 /* meta-analysis routes */

@@ -9,7 +9,6 @@ var $ = require('jquery');
 // models
 require('./models/MetaAnalyses');
 require('./models/Study');
-require('./models/DerivedData');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

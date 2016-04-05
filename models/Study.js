@@ -7,8 +7,10 @@ var StudySchema = new mongoose.Schema({
   link: String,
   tags: [String],
   derivedData: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'DerivedData'
+    property: String,
+    value: String,
+    comment: String,
+    addedBy: String
   }]
 });
 
