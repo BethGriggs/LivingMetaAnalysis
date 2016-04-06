@@ -86,6 +86,7 @@ app.factory('studies', ['$http', function($http) {
 
   o.addData = function(id, derivedData){
     return $http.put('/api/studies/' + id + "/derivedData", derivedData).then(function(res){
+      studies.getAll();
       return res.data;
     });
   };
@@ -203,8 +204,8 @@ app.controller('StudiesCtrl', [ '$http',
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', '$http', 'metaAnalyses', 'metaAnalysis',
-  function($scope, $http, metaAnalyses, metaAnalysis) {
+  '$scope', '$http', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
+  function($scope, $http, $state, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
 
     var allStudies;
@@ -213,56 +214,29 @@ app.controller('MetaAnalysisCtrl', [
     });
 
     $scope.minSpareRows = 0;
-
-
     $scope.properties = ['numberOfParticipants', 'typeOfParticipants'];
-    var studyArray = [];
-    var commentsArray;
-    var colArray = [{title:"Property"}];
-    generateArray();
-    $scope.settings = {
-            comments: true,
-            cell: {row:0, col:0, comment: 'bla'}
-    };
-    function generateArray(){
-      var testArray = [];
-      commentsArray = [];
-      for (var k = 0; k < $scope.properties.length; k++) {
-        // property is property string
-        var testRow = [];
-        testRow.push($scope.properties[k]);
-        // for all studies
-        for (var i = 0; i < studyArray.length; i++) {
-          // for all bits of derived data
-          var foundProperty = false;
-          for (var j = 0; j < studyArray[i].derivedData.length; j++) {
-            if (studyArray[i].derivedData[j].property == $scope.properties[k]) {
-              foundProperty = true;
-              testRow.push(studyArray[i].derivedData[j].value);
-              if (studyArray[i].derivedData[j].comment !== undefined) {
-                var commentObject = {
-                  row: j,
-                  col: (i + 1),
-                  comment: studyArray[i].derivedData[j].comment
-                };
-                commentsArray.push(commentObject);
-              }
-            }
-          }
-          if (!foundProperty) {
-            testRow.push(null);
-          }
-        }
-        testArray.push(testRow);
-      }
-      $scope.testArray = testArray;
 
-    }
+
+    $scope.setupStudyPropertyScope = function(study, property){
+      $scope.study = study;
+      $scope.property = property;
+    };
+
+    $scope.addPropertyToStudy = function(study){
+      var newDerivedData =  {
+          value: $scope.value,
+          property: $scope.property,
+          comment: $scope.comment,
+          addedBy: "1"
+      };
+      studies.addData($scope.study._id,newDerivedData);
+      $state.go($state.current, {}, {reload: true});
+    };
 
     $scope.getStudyProperty =function(study,property){
        for(var i=0; i < study.derivedData.length; i++){
          if (study.derivedData[i].property == property){
-           return study.derivedData[i];
+           return study.derivedData[i].value;
          }
        }
        return null;

@@ -13,7 +13,6 @@
   <script src="vendor/handsontable.full.min.js"></script>
   <script src="vendor/ngHandsontable.min.js"></script>
   <script type="text/javascript" src="vendor/ng-tags-input.min.js"></script>
-
 </head>
 
 <body ng-app="livingmetaanalysis" class="loaded">
@@ -47,9 +46,7 @@
           </ul>
         </li>
       </ul>
-      <!-- /.navbar-collapse -->
     </div>
-    <!-- /.container-fluid -->
   </nav>
 
   <div class="container">
@@ -65,7 +62,6 @@
   <script src="javascripts/bootstrap.min.js"></script>
 
   <script type="text/ng-template" id="/home.html">
-
     <div class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -83,7 +79,6 @@
           </ul>
         </div>
       </div>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">Studies you have contributed to</h3>
@@ -102,12 +97,9 @@
   <script type="text/ng-template" id="metaanalyses/create.html">
 
     <div ng-submit="newMetaAnalysis()" class="row">
-
       <form class="form-horizontal">
         <fieldset>
-
           <legend>Create new meta-analysis</legend>
-
           <div class="form-group">
             <label class="col-md-4 control-label" for="title">Title</label>
             <div class="col-md-6">
@@ -139,11 +131,10 @@
         </fieldset>
       </form>
     </div>
-
   </script>
 
   <script type="text/ng-template" id="/metaanalysis.html">
-    <h1> {{ metaAnalysis.title}}
+    <h1>{{metaAnalysis.title}}
     <button ng-click="log()" class="btn btn-success pull-right">Apply Statistics <i class="fa fa-arrow-right"></i></button>
     </h1>
 
@@ -151,35 +142,40 @@
       <p>{{ metaAnalysis.description }}</p>
     </div>
 
-    <table style="width:100%">
+    <div class="row">
+      <button class="btn btn-success"><i class="fa fa-plus"></i> Add Property</button>
 
-      <tr>
-        <th>Property</th>
-        <th ng-repeat="study in studies"><a href="#/studies/{{study._id}}">{{study.title}}</a></th>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNewStudyModal">
+        <i class="fa fa-plus"></i> Add new study
+      </button>
 
-      </tr>
-      <tr ng-repeat="property in properties">
-        <td>{{property}}</td>
-        <td ng-repeat="study in studies">
-          <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="{{getStudyProperty(study,property).comment}}"
-          onmouseenter="$(this).tooltip('show')"> {{getStudyProperty(study,property).value}}</p>
+      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addExistingStudyModal">
+        <i class="fa fa-search"></i> Search for existing studies
+      </button>
+    </div>
+
+    <div class="row">
+      <table style="width:100%">
+        <tr>
+          <th>Properties</th>
+          <th ng-repeat="study in studies"><a href="#/studies/{{study._id}}">{{study.title}}</a>
+            <button class="btn btn-warning btn-sm"><i class="fa fa-minus"></i></button>
+          </th>
+        </tr>
+        <tr ng-repeat="property in properties">
+          <td>
+            <button class="btn btn-warning btn-sm"><i class="fa fa-minus"></i></button> {{property}}</td>
+          <td ng-repeat="study in studies">
+            <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="{{getStudyProperty(study,property).comment}}" onmouseenter="$(this).tooltip('show')">
+                {{getStudyProperty(study,property)}}
           </span>
-          <span ng-if="getStudyProperty(study,property) == null"><i ng-click="addCell" class="fa fa-plus"> </i></button></span>
-        </td>
-      </tr>
+            <span ng-if="getStudyProperty(study,property) == null"><i ng-click="setupStudyPropertyScope(study, property)" data-toggle="modal" data-target="#addPropertyToStudyModal" class="fa fa-plus"> </i></span>
+          </td>
+        </tr>
+      </table>
+    </div>
 
-    </table>
-
-    <!--  trigger new study modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewStudyModal">
-      <i class="fa fa-plus"></i> Add new study
-    </button>
-
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addExistingStudyModal">
-      <i class="fa fa-search"></i> Search for existing studies
-    </button>
-
-    <!-- Modal -->
+    <!-- Add new study modal -->
     <div class="modal fade" id="addNewStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -190,16 +186,14 @@
           <div class="modal-body">
             <form class="form-horizontal">
               <fieldset>
-                <!-- Text input-->
+
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="title">Title</label>
                   <div class="col-md-6">
                     <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
-
                   </div>
                 </div>
 
-                <!-- Text input-->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="author">Author</label>
                   <div class="col-md-6">
@@ -207,7 +201,6 @@
                   </div>
                 </div>
 
-                <!-- Text input-->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="link">Link</label>
                   <div class="col-md-6">
@@ -215,7 +208,6 @@
                   </div>
                 </div>
 
-                <!-- Text input-->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="year">Year</label>
                   <div class="col-md-2">
@@ -223,7 +215,6 @@
                   </div>
                 </div>
 
-                <!-- Search input-->
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="tags">Tags</label>
                   <div class="col-md-6">
@@ -242,38 +233,38 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Add existing study modal -->
     <div class="modal fade" id="addExistingStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="addNewStudyModal">Search for existing studies</h4>
+            <h4 class="modal-title" id="addExistingStudyModal">Search for existing studies</h4>
           </div>
           <div class="modal-body">
             <div class="input-group">
               <div ng-controller="StudiesCtrl">
-
-                <!-- The search box puts the term into $scope.searchTerm and calls $scope.search() on submit -->
-
                 <section class="searchField">
                   <form>
                     <div class="input-group">
                       <input type="text" class="form-control" ng-model="searchTerm">
                       <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="search()">Search by tag <i class="fa fa-search"></i></button>
+                         <button class="btn btn-default" type="button" ng-click="search()">Search by tag
+                         <i class="fa fa-search"></i>
+                        </button>
                       </span>
                     </div>
                   </form>
                 </section>
 
-                <!-- show the list of results-->
                 <section>
                   <ul>
-                    <li ng-repeat="study in searchResults"><a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a></li>
+                    <li ng-repeat="study in searchResults">
+                      <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+                      <button class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis()"><i class="fa fa-plus"></i></button>
+                    </li>
                   </ul>
                 </section>
-                </span>
               </div>
             </div>
             <div class="modal-footer">
@@ -282,8 +273,55 @@
           </div>
         </div>
       </div>
-  </script>
+      </div>
+      <!-- Add property to study modal -->
+      <div class="modal fade" id="addPropertyToStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="addPropertyToStudyModal">Add property to study</h4>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal">
+                <fieldset>
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="study">Study</label>
+                    <div class="col-md-5">
+                      <input id="study" name="study" type="text" value="{{study.title}}" readonly="true" class="form-control input-md" required="">
+                    </div>
+                  </div>
 
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="property">Property</label>
+                    <div class="col-md-5">
+                      <input id="property" name="property" type="text" value="{{property}}" readonly="true" class="form-control input-md">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="value">Value</label>
+                    <div class="col-md-5">
+                      <input id="value" name="value" type="text" ng-model="value" class="form-control input-md">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="comment">Comment</label>
+                    <div class="col-md-5">
+                      <input id="comment" name="comment" type="text" ng-model="comment" class="form-control input-md">
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPropertyToStudy()">Add Property</button>
+            </div>
+          </div>
+        </div>
+  </script>
 
   <script type="text/ng-template" id="/study.html">
     <h1>{{study.title}}</h1>
@@ -339,18 +377,14 @@
   <script type="text/ng-template" id="studies/create.html">
     <form class="form-horizontal">
       <fieldset>
-
         <legend> Add new study</legend>
-        <!-- Text input-->
         <div class="form-group">
           <label class="col-md-4 control-label" for="title">Title</label>
           <div class="col-md-6">
             <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
-
           </div>
         </div>
 
-        <!-- Text input-->
         <div class="form-group">
           <label class="col-md-4 control-label" for="author">Author</label>
           <div class="col-md-6">
@@ -358,7 +392,6 @@
           </div>
         </div>
 
-        <!-- Text input-->
         <div class="form-group">
           <label class="col-md-4 control-label" for="link">Link</label>
           <div class="col-md-6">
@@ -366,7 +399,6 @@
           </div>
         </div>
 
-        <!-- Text input-->
         <div class="form-group">
           <label class="col-md-4 control-label" for="year">Year</label>
           <div class="col-md-2">
@@ -374,7 +406,6 @@
           </div>
         </div>
 
-        <!-- Search input-->
         <div class="form-group">
           <label class="col-md-4 control-label" for="tags">Tags</label>
           <div class="col-md-6">
