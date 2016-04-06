@@ -70,7 +70,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
-            <a href="#/metaanalyses">Meta-Analyses</a>
+            <a href="#/metaanalyses">Your Meta-Analyses</a>
           </h3>
           <a type="button" class="btn btn-success pull-right" href="#/metaanalyses/create">
             <i class="fa fa-plus"></i> New Meta-analysis
@@ -88,11 +88,11 @@
         <div class="panel-heading">
           <h3 class="panel-title pull-left">Studies you have contributed to</h3>
           <a type="button" class="btn btn-success pull-right" href="#/studies/create"><i class="fa fa-plus"></i> New Study</a>
-                    <div class="clearfix"></div>
+          <div class="clearfix"></div>
         </div>
         <div class="panel-body">
           <ul>
-          <li ng-repeat="study in userStudies"><a href="#/studies/create/{{userStudies._id}}">{{study.title}}</a></li>
+            <li ng-repeat="study in userStudies"><a href="#/studies/{{study._id}}">{{study.title}}</a></li>
           </ul>
         </div>
       </div>
@@ -151,24 +151,24 @@
       <p>{{ metaAnalysis.description }}</p>
     </div>
 
-    <hot-table hot-id="handsontable1" settings="settings" min-spare-rows="minSpareRows" columns="colArray" col-headers="true" datarows="testArray">
-    </hot-table>
+    <table style="width:100%">
 
-    <style type="text/css">
-      /* change width CSS */
+      <tr>
+        <th>Property</th>
+        <th ng-repeat="study in studies"><a href="#/studies/{{study._id}}">{{study.title}}</a></th>
 
-      .handsontable col.rowHeader {
-        width: 15em;
-      }
-    </style>
+      </tr>
+      <tr ng-repeat="property in properties">
+        <td>{{property}}</td>
+        <td ng-repeat="study in studies">
+          <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="{{getStudyProperty(study,property).comment}}"
+          onmouseenter="$(this).tooltip('show')"> {{getStudyProperty(study,property).value}}</p>
+          </span>
+          <span ng-if="getStudyProperty(study,property) == null"><i ng-click="addCell" class="fa fa-plus"> </i></button></span>
+        </td>
+      </tr>
 
-    <div class="row">
-      <button ng-click="existingStudy = !existingStudy" class="btn btn-primary"><i class="fa fa-search"></i> Search for existing study</button>
-      <button ng-click="addInterpretation()" class="btn btn-primary"><i class="fa fa-plus"></i> Add Interpretation</button>
-      <button ng-click="updateMetaAnalysis()" class="btn btn-primary">Save</a>
-        <button ng-click="addStudy()" class="btn btn-primary">Add study (test)</a>
-
-    </div>
+    </table>
 
     <!--  trigger new study modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addNewStudyModal">
@@ -291,11 +291,11 @@
     <p>Year published: {{study.year}} </p>
     <p>Link: <a href={{study.link}}>{{study.link}}</a> </p>
     <hot-table col-headers="true" datarows="derivedData">
-     <hot-column data="property" title="'Property'" read-only></hot-column>
-     <hot-column data="value" title="'Value'" read-only></hot-column>
-     <hot-column data="comment" title="'Comment'" read-only></hot-column>
-     <hot-column data="addedBy" title="'Added By User'" read-only></hot-column>
-   </hot-table>
+      <hot-column data="property" title="'Property'" read-only></hot-column>
+      <hot-column data="value" title="'Value'" read-only></hot-column>
+      <hot-column data="comment" title="'Comment'" read-only></hot-column>
+      <hot-column data="addedBy" title="'Added By User'" read-only></hot-column>
+    </hot-table>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudyData">
       <i class="fa fa-plus"></i> Add study data
@@ -337,54 +337,54 @@
   </script>
 
   <script type="text/ng-template" id="studies/create.html">
-  <form class="form-horizontal">
-    <fieldset>
+    <form class="form-horizontal">
+      <fieldset>
 
-      <legend> Add new study</legend>
-      <!-- Text input-->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="title">Title</label>
-        <div class="col-md-6">
-          <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
+        <legend> Add new study</legend>
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="title">Title</label>
+          <div class="col-md-6">
+            <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
 
+          </div>
         </div>
-      </div>
 
-      <!-- Text input-->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="author">Author</label>
-        <div class="col-md-6">
-          <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="author">Author</label>
+          <div class="col-md-6">
+            <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
+          </div>
         </div>
-      </div>
 
-      <!-- Text input-->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="link">Link</label>
-        <div class="col-md-6">
-          <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="link">Link</label>
+          <div class="col-md-6">
+            <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
+          </div>
         </div>
-      </div>
 
-      <!-- Text input-->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="year">Year</label>
-        <div class="col-md-2">
-          <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+        <!-- Text input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="year">Year</label>
+          <div class="col-md-2">
+            <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+          </div>
         </div>
-      </div>
 
-      <!-- Search input-->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="tags">Tags</label>
-        <div class="col-md-6">
-          <tags-input ng-model="tags"></tags-input>
+        <!-- Search input-->
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="tags">Tags</label>
+          <div class="col-md-6">
+            <tags-input ng-model="tags"></tags-input>
+          </div>
         </div>
-      </div>
 
-      <button class="btn btn-success pull-right" ng-click="addStudy()"><i class="fa fa-plus"></i> Add study</button>
-    </fieldset>
-  </form>
+        <button class="btn btn-success pull-right" ng-click="addStudy()"><i class="fa fa-plus"></i> Add study</button>
+      </fieldset>
+    </form>
   </script>
 </body>
 

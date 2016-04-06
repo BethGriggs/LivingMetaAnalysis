@@ -203,63 +203,28 @@ app.controller('StudiesCtrl', [ '$http',
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', '$http', 'metaAnalyses', 'metaAnalysis', 'hotRegisterer',
-  function($scope, $http, metaAnalyses, metaAnalysis, hotRegisterer) {
-
+  '$scope', '$http', 'metaAnalyses', 'metaAnalysis',
+  function($scope, $http, metaAnalyses, metaAnalysis) {
     $scope.metaAnalysis = metaAnalysis;
-    $scope.properties = ["numberOfParticipants", "typeOfParticipants"];
-    $scope.colArray = [{
-      title: "property"
-    }, {
-      title: "study1"
-    }, {
-      title: "study2"
-    }];
-    $scope.minSpareRows = 1;
-    $scope.killMeNow = [
-      ["numberOfParticipants", "1", "2"],
-      ["3", "4"]
-    ];
 
-    // settings
-    $scope.comments = true;
+    var allStudies;
+    $http.get("/api/studies").then(function(res){
+        $scope.studies = res.data;
+    });
 
+    $scope.minSpareRows = 0;
+
+
+    $scope.properties = ['numberOfParticipants', 'typeOfParticipants'];
+    var studyArray = [];
     var commentsArray;
-    var studyArray = [{
-      id: "study1",
-      derivedData: [{
-        property: "numberOfParticipants",
-        value: 58,
-        comment: "anpthereffddaf"
-      }, {
-        property: "typeOfParticipants",
-        value: "STUDENT"
-      }, {
-        property: "aNewProperty",
-        value: "value"
-      }]
-    }, {
-      id: "study2",
-      derivedData: [{
-        property: "numberOfParticipants",
-        value: 59
-      }, {
-        property: "typeOfParticipants",
-        value: "STUDENT",
-        comment: "HI THEREsdfrghjkl sdfghjkl; sdfghjk sdfghjkl asdfghjkl asdfghj"
-      }, {
-        property: "typeExample",
-        value: "example",
-        comment: "wtf"
-      }]
-    }, ];
+    var colArray = [{title:"Property"}];
     generateArray();
     $scope.settings = {
-      comments: true,
-      cell: commentsArray
+            comments: true,
+            cell: {row:0, col:0, comment: 'bla'}
     };
-
-    function generateArray() {
+    function generateArray(){
       var testArray = [];
       commentsArray = [];
       for (var k = 0; k < $scope.properties.length; k++) {
@@ -292,8 +257,17 @@ app.controller('MetaAnalysisCtrl', [
       }
       $scope.testArray = testArray;
 
-      $scope.commentsArray = commentsArray;
     }
+
+    $scope.getStudyProperty =function(study,property){
+       for(var i=0; i < study.derivedData.length; i++){
+         if (study.derivedData[i].property == property){
+           return study.derivedData[i];
+         }
+       }
+       return null;
+    };
+
     $scope.addInterpretation = function() {
       $scope.properties.push("aNewProperty");
       generateArray();
