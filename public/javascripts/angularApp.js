@@ -214,8 +214,7 @@ app.controller('MetaAnalysisCtrl', [
     });
 
     $scope.minSpareRows = 0;
-    $scope.properties = ['numberOfParticipants', 'typeOfParticipants'];
-
+    $scope.properties = metaAnalysis.properties;
 
     $scope.setupStudyPropertyScope = function(study, property){
       $scope.study = study;
@@ -233,6 +232,21 @@ app.controller('MetaAnalysisCtrl', [
       $state.go($state.current, {}, {reload: true});
     };
 
+    // adds a new property to the meta-analysis
+    $scope.addPropertyToMetaAnalysis = function(){
+       metaAnalysis.properties.push($scope.newProperty);
+       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    };
+
+    // removes a property from the meta-analysis
+    $scope.removePropertyFromMetaAnalysis = function(property){
+      console.log("hi");
+       var index = metaAnalysis.properties.indexOf(property);
+       metaAnalysis.properties.splice(index, 1);
+       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    };
+
+    // used to detect whether the study has had that property derived
     $scope.getStudyProperty =function(study,property){
        for(var i=0; i < study.derivedData.length; i++){
          if (study.derivedData[i].property == property){
@@ -241,39 +255,8 @@ app.controller('MetaAnalysisCtrl', [
        }
        return null;
     };
-
-    $scope.addInterpretation = function() {
-      $scope.properties.push("aNewProperty");
-      generateArray();
-      $scope.commentsArray = commentsArray;
-    };
-
-    $scope.updateMetaAnalysis = function() {
-      //console.log(metaAnalysis._id);
-      //$scope.metaAnalysis.title = "updated yo";
-      //  metaAnalyses.update(metaAnalysis._id, $scope.metaAnalysis);
-    };
-
-    $scope.addStudy = function() {
-      $scope.colArray.push({
-        title: "newStudy"
-      });
-      var newStudyObj = {
-        id: "newStudy",
-        derivedData: [{
-          property: "numberOfParticipants",
-          value: 25,
-          comment: "anpthereffddaf"
-        }, {
-          property: "typeOfParticipants",
-          value: "STUDENT"
-        }]
-      };
-      studyArray.push(newStudyObj);
-      generateArray();
-      $scope.commentsArray = commentsArray;
-    };
-
+    
+    // adds a new study
     $scope.addNewStudy = function() {
       var tagsArray = [];
       for (var i = 0; i < $scope.tags.length; i++) {

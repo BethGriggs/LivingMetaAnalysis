@@ -5,7 +5,9 @@ var MetaAnalysisSchema = new mongoose.Schema({
   description: String,
   owner: String,
   tags: [String],
-  testJson: String
+  properties: [String],
+  studies: [{type: mongoose.Schema.Types.ObjectId,
+      ref: 'Study'}]
 });
 
 mongoose.model('MetaAnalysis', MetaAnalysisSchema);
