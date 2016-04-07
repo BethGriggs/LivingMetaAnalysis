@@ -209,15 +209,7 @@ app.controller('MetaAnalysisCtrl', [
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = metaAnalysis.properties;
 
-    var i = 0;
-    var studiesArray = [];
-
-    for (i; i < metaAnalysis.studies.length; i++) {
-      var currentStudy = studies.get(metaAnalysis.studies[i]);
-      studiesArray.push(currentStudy);
-    }
-    $scope.studies = studiesArray;
-    console.log(studiesArray);
+    $scope.studies = metaAnalysis.studies;
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
       metaAnalysis.properties.push($scope.newProperty);

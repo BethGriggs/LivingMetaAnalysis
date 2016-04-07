@@ -130,6 +130,8 @@ router.post('/api/metaanalyses', function(req, res, next) {
 router.param('metaanalysis', function(req, res, next, id) {
   var query = MetaAnalysis.findById(id);
 
+  // populates the referenced objects
+  query.populate('studies');
   query.exec(function(err, metaAnalysis) {
     if (err) {
       return next(err);
@@ -182,6 +184,5 @@ router.get('/api/user/1/studies', function(req, res, next) {
     res.json(studies);
   });
 });
-
 
 module.exports = router;
