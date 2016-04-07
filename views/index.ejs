@@ -355,6 +355,22 @@
     <p>Link: <a href={{study.link}}>{{study.link}}</a> </p>
 
 
+    <div class="row table-responsive">
+      <table class="table table-striped">
+        <tr>
+          <th>Property</th>
+          <th>Value</th>
+          <th>Comment</th>
+          <th>Added By</th>
+        </tr>
+        <tr ng-repeat="property in study.derivedData">
+          <td>{{property.property}}</td>
+          <td>{{property.value}}</td>
+          <td>{{property.comment}}</td>
+          <td>{{property.addedBy}}</td>
+        </tr>
+      </table>
+      </div>
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudyData">
       <i class="fa fa-plus"></i> Add study data
     </button>
