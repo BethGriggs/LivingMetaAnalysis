@@ -1,4 +1,4 @@
-var app = angular.module('livingmetaanalysis', ['ui.router', 'ngHandsontable', 'ngTagsInput']);
+var app = angular.module('livingmetaanalysis', ['ui.router', 'ngTagsInput']);
 
 // app state config
 app.config([
@@ -175,7 +175,7 @@ app.controller('UserCtrl', ['$http',
 
 /**
 /* Studies controller
-/* 
+/*
 /**/
 app.controller('StudiesCtrl', ['$http',
   '$scope', 'studies',
