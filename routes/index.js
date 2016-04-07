@@ -148,21 +148,15 @@ router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
 });
 
 router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
+  console.log(req.body);
   MetaAnalysis.findByIdAndUpdate(
         req.params.metaanalysis,
          req.body,
         {safe: true, upsert: true, new : true},
         function(err, study) {
-            console.log(err);
+          console.log(err);
         }
     );
-
-  MetaAnalysis.findByIdAndUpdate({
-    _id: req.params.id
-  }, req.body, function(err, metaAnalysis) {
-    console.log(req.body);
-    res.send(metaAnalysis);
-  });
 });
 
 // get meta-analyses for particular user

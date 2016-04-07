@@ -84,8 +84,8 @@ app.factory('studies', ['$http', function($http) {
     });
   };
 
-  o.addData = function(id, derivedData){
-    return $http.put('/api/studies/' + id + "/derivedData", derivedData).then(function(res){
+  o.addData = function(id, derivedData) {
+    return $http.put('/api/studies/' + id + "/derivedData", derivedData).then(function(res) {
       studies.getAll();
       return res.data;
     });
@@ -136,19 +136,19 @@ app.factory('metaAnalyses', ['$http', function($http) {
 }]);
 
 /* Controllers */
-app.controller('StudyCtrl',['$scope', 'studies', 'study',
+app.controller('StudyCtrl', ['$scope', 'studies', 'study',
   function($scope, studies, study) {
     $scope.study = study;
     $scope.derivedData = study.derivedData;
 
-    $scope.addStudyData = function(){
-      var newDerivedData =  {
-          value: $scope.value,
-          property: $scope.property,
-          comment: $scope.comment,
-          addedBy: "1"
+    $scope.addStudyData = function() {
+      var newDerivedData = {
+        value: $scope.value,
+        property: $scope.property,
+        comment: $scope.comment,
+        addedBy: "1"
       };
-      studies.addData(study._id,newDerivedData);
+      studies.addData(study._id, newDerivedData);
     };
   }
 ]);
@@ -166,7 +166,7 @@ app.controller('UserCtrl', ['$http',
   }
 ]);
 
-app.controller('StudiesCtrl', [ '$http',
+app.controller('StudiesCtrl', ['$http',
   '$scope', 'studies',
   function($http, $scope, studies) {
     $scope.studies = studies.studies;
@@ -195,8 +195,8 @@ app.controller('StudiesCtrl', [ '$http',
     };
 
     $scope.search = function() {
-      $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res){
-        $scope.searchResults= res.data;
+      $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res) {
+        $scope.searchResults = res.data;
         return res.data;
       });
     };
@@ -204,58 +204,70 @@ app.controller('StudiesCtrl', [ '$http',
 ]);
 
 app.controller('MetaAnalysisCtrl', [
-  '$scope', '$http', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
-  function($scope, $http, $state, metaAnalyses, metaAnalysis, studies) {
+  '$http', '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
+  function($http, $scope, $state, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
-
-    var allStudies;
-    $http.get("/api/studies").then(function(res){
-        $scope.studies = res.data;
-    });
-
-    $scope.minSpareRows = 0;
     $scope.properties = metaAnalysis.properties;
 
-    $scope.setupStudyPropertyScope = function(study, property){
+    var i = 0;
+    var studiesArray = [];
+
+    for (i; i < metaAnalysis.studies.length; i++) {
+      var currentStudy = studies.get(metaAnalysis.studies[i]);
+      studiesArray.push(currentStudy);
+    }
+    $scope.studies = studiesArray;
+    console.log(studiesArray);
+    // adds a new property to the meta-analysis
+    $scope.addPropertyToMetaAnalysis = function() {
+      metaAnalysis.properties.push($scope.newProperty);
+      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    };
+
+    // adds study to meta-analysis
+    $scope.addStudyToMetaAnalysis = function(study) {
+      metaAnalysis.studies.push(study);
+      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    };
+
+    // used to obtain scope values
+    $scope.setupStudyPropertyScope = function(study, property) {
       $scope.study = study;
       $scope.property = property;
     };
 
-    $scope.addPropertyToStudy = function(study){
-      var newDerivedData =  {
-          value: $scope.value,
-          property: $scope.property,
-          comment: $scope.comment,
-          addedBy: "1"
+    // adds a propety to the study
+    $scope.addPropertyToStudy = function(study) {
+      var newDerivedData = {
+        value: $scope.value,
+        property: $scope.property,
+        comment: $scope.comment,
+        addedBy: "1"
       };
-      studies.addData($scope.study._id,newDerivedData);
-      $state.go($state.current, {}, {reload: true});
-    };
-
-    // adds a new property to the meta-analysis
-    $scope.addPropertyToMetaAnalysis = function(){
-       metaAnalysis.properties.push($scope.newProperty);
-       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+      studies.addData($scope.study._id, newDerivedData);
+      // refresh state is needed to repopulate table
+      $state.go($state.current, {}, {
+        reload: true
+      });
     };
 
     // removes a property from the meta-analysis
-    $scope.removePropertyFromMetaAnalysis = function(property){
-      console.log("hi");
-       var index = metaAnalysis.properties.indexOf(property);
-       metaAnalysis.properties.splice(index, 1);
-       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    $scope.removePropertyFromMetaAnalysis = function(property) {
+      var index = metaAnalysis.properties.indexOf(property);
+      metaAnalysis.properties.splice(index, 1);
+      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
     };
 
     // used to detect whether the study has had that property derived
-    $scope.getStudyProperty =function(study,property){
-       for(var i=0; i < study.derivedData.length; i++){
-         if (study.derivedData[i].property == property){
-           return study.derivedData[i].value;
-         }
-       }
-       return null;
+    $scope.getStudyProperty = function(study, property) {
+      for (var i = 0; i < study.derivedData.length; i++) {
+        if (study.derivedData[i].property == property) {
+          return study.derivedData[i].value;
+        }
+      }
+      return null;
     };
-    
+
     // adds a new study
     $scope.addNewStudy = function() {
       var tagsArray = [];

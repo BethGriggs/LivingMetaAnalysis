@@ -5,6 +5,5 @@ MEAN.io stack version
 - studies tags
 - add blanks/ required
 - gain rep for contributions (github style - contributed to: etc)
-- implement addStudy
-- just query meta-analysis as opposed to all studies
+- implement addStudy ------- achieve this
 - addExpose api route

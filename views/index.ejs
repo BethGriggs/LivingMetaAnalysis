@@ -175,7 +175,6 @@
       </table>
     </div>
 
-    <!-- Add new study modal -->
     <div class="modal fade" id="addNewStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -261,7 +260,7 @@
                   <ul>
                     <li ng-repeat="study in searchResults">
                       <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
-                      <button class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis()"><i class="fa fa-plus"></i></button>
+                      <button class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis(study)"><i class="fa fa-plus"></i></button>
                     </li>
                   </ul>
                 </section>
@@ -274,6 +273,7 @@
         </div>
       </div>
       </div>
+
       <!-- Add property to study modal -->
       <div class="modal fade" id="addPropertyToStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
