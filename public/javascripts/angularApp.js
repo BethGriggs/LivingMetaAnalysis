@@ -183,11 +183,19 @@ app.controller('StudiesCtrl', ['$http',
       $scope.authors.splice(index, 1);
     };
     $scope.addStudy = function() {
+      var tagsArray= [];
+      var i = 0;
+      for (i; i< $scope.tags.length; i++){
+          tagsArray.push($scope.tags[i].text);
+      }
+      console.log($scope.tags);
+      console.log(tagsArray);
       studies.create({
         title: $scope.title,
         author: [$scope.author],
         link: $scope.link,
-        year: $scope.year
+        year: $scope.year,
+        tags: tagsArray
       });
       $scope.title = '';
       $scope.author = '';
@@ -219,6 +227,12 @@ app.controller('MetaAnalysisCtrl', [
     // adds study to meta-analysis
     $scope.addStudyToMetaAnalysis = function(study) {
       metaAnalysis.studies.push(study);
+      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    };
+
+    $scope.removeStudyFromMetaAnalysis = function(study){
+      var index = metaAnalysis.studies.indexOf(study);
+      metaAnalysis.studies.splice(index, 1);
       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
     };
 
@@ -273,6 +287,17 @@ app.controller('MetaAnalysisCtrl', [
         link: $scope.link,
         tags: tagsArray
       });
+    };
+
+    $scope.studyInMetaAnalysis = function(study) {
+      console.log("call");
+      var i = 0;
+      for (i; i < metaAnalysis.studies.length; i++){
+        if (study._id === metaAnalysis.studies[i]._id){
+          return true;
+        }
+      }
+      return false;
     };
   }
 ]);
