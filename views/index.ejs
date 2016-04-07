@@ -5,13 +5,10 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link rel="stylesheet" media="screen" href="vendor/handsontable.full.min.css">
   <link rel="stylesheet" href="vendor/ng-tags-input.min.css">
   <script src="/vendor/angular.min.js"></script>
   <script src="/vendor/angular-ui-router.min.js"></script>
   <script src="/javascripts/angularApp.js"></script>
-  <script src="vendor/handsontable.full.min.js"></script>
-  <script src="vendor/ngHandsontable.min.js"></script>
   <script type="text/javascript" src="vendor/ng-tags-input.min.js"></script>
 </head>
 
@@ -31,11 +28,11 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="search"><i class="fa fa-search fa-2x"></i></a></li>
+        <li><a href="#/studies/search"><i class="fa fa-search fa-2x"></i></a></li>
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i  class="fa fa-plus fa-2x"></i><span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">New Meta-analysis</a></li>
+            <li><a href="#/metaanalyses/create">New Meta-analysis</a></li>
             <li><a href="#/studies/create">New Study</a></li>
           </ul>
         </li>
@@ -96,7 +93,7 @@
 
   <script type="text/ng-template" id="metaanalyses/create.html">
 
-    <div ng-submit="newMetaAnalysis()" class="row">
+    <div ng-submit="createMetaAnalysis()" class="row">
       <form class="form-horizontal">
         <fieldset>
           <legend>Create new meta-analysis</legend>
@@ -272,83 +269,83 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
 
-      <!-- Add property to study modal -->
-      <div class="modal fade" id="addPropertyToStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="addPropertyToStudyModal">Add property to study</h4>
-            </div>
-            <div class="modal-body">
-              <form class="form-horizontal">
-                <fieldset>
-                  <div class="form-group">
-                    <label class="col-md-4 control-label" for="study">Study</label>
-                    <div class="col-md-5">
-                      <input id="study" name="study" type="text" value="{{study.title}}" readonly="true" class="form-control input-md" required="">
-                    </div>
+    <!-- Add property to study modal -->
+    <div class="modal fade" id="addPropertyToStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addPropertyToStudyModal">Add property to study</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <fieldset>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="study">Study</label>
+                  <div class="col-md-5">
+                    <input id="study" name="study" type="text" value="{{study.title}}" readonly="true" class="form-control input-md" required="">
                   </div>
+                </div>
 
-                  <div class="form-group">
-                    <label class="col-md-4 control-label" for="property">Property</label>
-                    <div class="col-md-5">
-                      <input id="property" name="property" type="text" value="{{property}}" readonly="true" class="form-control input-md">
-                    </div>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="property">Property</label>
+                  <div class="col-md-5">
+                    <input id="property" name="property" type="text" value="{{property}}" readonly="true" class="form-control input-md">
                   </div>
+                </div>
 
-                  <div class="form-group">
-                    <label class="col-md-4 control-label" for="value">Value</label>
-                    <div class="col-md-5">
-                      <input id="value" name="value" type="text" ng-model="value" class="form-control input-md">
-                    </div>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="value">Value</label>
+                  <div class="col-md-5">
+                    <input id="value" name="value" type="text" ng-model="value" class="form-control input-md">
                   </div>
+                </div>
 
-                  <div class="form-group">
-                    <label class="col-md-4 control-label" for="comment">Comment</label>
-                    <div class="col-md-5">
-                      <input id="comment" name="comment" type="text" ng-model="comment" class="form-control input-md">
-                    </div>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="comment">Comment</label>
+                  <div class="col-md-5">
+                    <input id="comment" name="comment" type="text" ng-model="comment" class="form-control input-md">
                   </div>
-                </fieldset>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPropertyToStudy()">Add Property</button>
-            </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPropertyToStudy()">Add Property</button>
           </div>
         </div>
+      </div>
     </div>
-        <!-- Add property to meta-analysis -->
-        <div class="modal fade" id="addPropertyToMetaAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="addPropertyToMetaAnalysisModal">Add property to study</h4>
-              </div>
-              <div class="modal-body">
-                <form class="form-horizontal">
-                  <fieldset>
-                    <div class="form-group">
-                      <label class="col-md-4 control-label" for="newProperty">Property</label>
-                      <div class="col-md-5">
-                        <input id="newProperty" name="newProperty" ng-model="newProperty" type="text" class="form-control input-md" required="">
-                      </div>
-                    </div>
-                  </fieldset>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPropertyToMetaAnalysis()">Add Property</button>
-              </div>
-            </div>
+    <!-- Add property to meta-analysis -->
+    <div class="modal fade" id="addPropertyToMetaAnalysisModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addPropertyToMetaAnalysisModal">Add property to study</h4>
           </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <fieldset>
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="newProperty">Property</label>
+                  <div class="col-md-5">
+                    <input id="newProperty" name="newProperty" ng-model="newProperty" type="text" class="form-control input-md" required="">
+                  </div>
+                </div>
+              </fieldset>
+            </form>
           </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="addPropertyToMetaAnalysis()">Add Property</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </script>
 
   <script type="text/ng-template" id="/study.html">
@@ -356,12 +353,7 @@
     <p>Author : {{study.author}} </p>
     <p>Year published: {{study.year}} </p>
     <p>Link: <a href={{study.link}}>{{study.link}}</a> </p>
-    <hot-table col-headers="true" datarows="derivedData">
-      <hot-column data="property" title="'Property'" read-only></hot-column>
-      <hot-column data="value" title="'Value'" read-only></hot-column>
-      <hot-column data="comment" title="'Comment'" read-only></hot-column>
-      <hot-column data="addedBy" title="'Added By User'" read-only></hot-column>
-    </hot-table>
+
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStudyData">
       <i class="fa fa-plus"></i> Add study data
@@ -444,6 +436,30 @@
         <button class="btn btn-success pull-right" ng-click="addStudy()"><i class="fa fa-plus"></i> Add study</button>
       </fieldset>
     </form>
+  </script>
+
+  <script type="text/ng-template" id="studies/search.html">
+    <div class="row">
+      <div class="col-lg-offset-4">
+        <form ng-submit="search()">
+        <div class="input-group">
+          <input type="text" class="form-control input-sm" ng-model="searchTerm" placeholder="Search for studies by tag" />
+          <span class="input-group-btn">
+                <button class="btn btn-success" type="submit">
+                  <span class=" fa fa-search"></span>
+                </button>
+          </span>
+        </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <ul>
+      <li ng-repeat="study in searchResults">
+        <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+      </li>
+      </ul>
+    </div>
   </script>
 </body>
 

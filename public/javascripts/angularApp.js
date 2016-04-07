@@ -41,6 +41,11 @@ app.config([
         templateUrl: 'studies/create.html',
         controller: 'StudiesCtrl'
       })
+      .state('studies/search', {
+        url: '/studies/search',
+        templateUrl: 'studies/search.html',
+        controller: 'StudiesCtrl'
+      })
       .state('studies/id', {
         url: '/studies/:id',
         templateUrl: '/study.html',
@@ -104,6 +109,8 @@ app.factory('metaAnalyses', ['$http', function($http) {
   o.create = function(metaAnalysis) {
     return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
       o.metaAnalyses.push(data);
+      console.log(data);
+      return data;
     });
   };
 
@@ -166,6 +173,10 @@ app.controller('UserCtrl', ['$http',
   }
 ]);
 
+/**
+/* Studies controller
+/* 
+/**/
 app.controller('StudiesCtrl', ['$http',
   '$scope', 'studies',
   function($http, $scope, studies) {
@@ -211,9 +222,14 @@ app.controller('StudiesCtrl', ['$http',
   }
 ]);
 
+/**
+/* MetaAnalysis controller
+/* Provides methods to: add studies and properties to a meta-analysis, and add
+/* data to a particular study
+/**/
 app.controller('MetaAnalysisCtrl', [
-  '$http', '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
-  function($http, $scope, $state, metaAnalyses, metaAnalysis, studies) {
+   '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
+  function($scope, $state, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = metaAnalysis.properties;
 
@@ -302,28 +318,38 @@ app.controller('MetaAnalysisCtrl', [
   }
 ]);
 
+/**
+/* MetaAnalyses controller
+/* Provides methods to add a new meta-analysis
+/**/
 app.controller('MetaAnalysesCtrl', [
-  '$scope', 'metaAnalyses',
-  function($scope, metaAnalyses) {
+  '$scope', '$state','metaAnalyses',
+  function($scope, $state, metaAnalyses) {
     $scope.metaAnalyses = metaAnalyses.data;
 
-    $scope.newMetaAnalysis = function() {
+    // function to create a new meta analysis
+    $scope.createMetaAnalysis = function() {
+      // get tags from view
       var tagsArray = [];
       for (var i = 0; i < $scope.tags.length; i++) {
         tagsArray.push($scope.tags[i].text);
       }
-      console.log(tagsArray);
+
+      // creates a new meta-analysis
       metaAnalyses.create({
         title: $scope.title,
         description: $scope.description,
-        owner: "1",
+        owner: '1',
         tags: tagsArray
       });
-      console.log($scope.tags);
       $scope.title = '';
       $scope.description = '';
       $scope.tags = [];
 
+      // return to dashboard state
+      $state.go('home', {}, {
+        reload: true
+      });
     };
   }
 ]);
