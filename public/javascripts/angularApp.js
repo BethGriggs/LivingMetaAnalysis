@@ -143,10 +143,9 @@ app.factory('metaAnalyses', ['$http', function($http) {
 }]);
 
 /* Controllers */
-app.controller('StudyCtrl', ['$scope', 'studies', 'study',
-  function($scope, studies, study) {
+app.controller('StudyCtrl', ['$scope', '$state', 'studies', 'study',
+  function($scope, $state, studies, study) {
     $scope.study = study;
-    $scope.derivedData = study.derivedData;
 
     $scope.addStudyData = function() {
       var newDerivedData = {
@@ -156,6 +155,12 @@ app.controller('StudyCtrl', ['$scope', 'studies', 'study',
         addedBy: "1"
       };
       studies.addData(study._id, newDerivedData);
+      $scope.property= '';
+      $scope.value = '';
+      $scope.comment ='';
+      $state.go($state.current, {}, {
+        reload: true
+      });
     };
   }
 ]);
@@ -199,8 +204,7 @@ app.controller('StudiesCtrl', ['$http',
       for (i; i< $scope.tags.length; i++){
           tagsArray.push($scope.tags[i].text);
       }
-      console.log($scope.tags);
-      console.log(tagsArray);
+
       studies.create({
         title: $scope.title,
         author: [$scope.author],
@@ -211,6 +215,7 @@ app.controller('StudiesCtrl', ['$http',
       $scope.title = '';
       $scope.author = '';
       $scope.year = '';
+
     };
 
     $scope.search = function() {
