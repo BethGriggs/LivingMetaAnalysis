@@ -109,16 +109,44 @@ router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
         }
     );
 });
-// get meta-analyses for particular user
-router.get('/api/user/1/metaanalyses', function(req, res, next) {
-  MetaAnalysis.find({
-    "owner": "1"
-  }, function(err, metaAnalyses) {
+
+
+// user param
+router.param('username', function(req, res, next, username) {
+  var query = MetaAnalysis.find({
+    'owner': username
+  });
+
+  query.exec(function(err, metaAnalyses, studies) {
     if (err) {
       return next(err);
     }
-    res.json(metaAnalyses);
+    if (!metaAnalyses) {
+      return next(new Error('cannot find study'));
+    }
+
+    var query = Study.find({
+      'derivedData.addedBy': username
+    });
+
+    query.exec(function(err, studies) {
+      if (err) {
+        return next(err);
+      }
+      if (!studies) {
+        return next(new Error('cannot find studies'));
+      }
+    });
+
+    req.metaAnalyses = metaAnalyses;
+    req.studies = studies;
+    return next();
   });
+});
+
+// get meta-analyses for particular user
+router.get('/api/user/:username/metaanalyses', function(req, res, next) {
+    res.json(req.metaAnalyses);
 });
 
 // param
@@ -158,10 +186,12 @@ router.get('/api/metaanalyses', function(req, res, next) {
 });
 
 // post meta-analyses route
-router.post('/api/metaanalyses', function(req, res, next) {
+router.post('/api/metaanalyses', auth, function(req, res, next) {
   var metaAnalysis = new MetaAnalysis(req.body);
+  metaAnalysis.owner = req.payload.username;
   metaAnalysis.save(function(err, metaAnalysis) {
     if (err) {
+      console.log(err);
       return next(err);
     }
     res.json(metaAnalysis);
@@ -192,7 +222,6 @@ router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
 });
 
 router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
-  console.log(req.body);
   MetaAnalysis.findByIdAndUpdate(
         req.params.metaanalysis,
          req.body,
@@ -204,27 +233,13 @@ router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
 });
 
 // get meta-analyses for particular user
-router.get('/api/user/1/metaanalyses', function(req, res, next) {
-  MetaAnalysis.find({
-    "owner": "1"
-  }, function(err, metaAnalyses) {
-    if (err) {
-      return next(err);
-    }
-    res.json(metaAnalyses);
-  });
+router.get('/api/user/:username/metaanalyses', function(req, res, next) {
+    res.json(req.metaAnalyses);
 });
 
 // get study data added by particular user
-router.get('/api/user/1/studies', function(req, res, next) {
-  Study.find({
-    "derivedData.addedBy": "1"
-  }, function(err, studies) {
-    if (err) {
-      return next(err);
-    }
-    res.json(studies);
-  });
+router.get('/api/user/:username/studies', function(req, res, next) {
+    res.json(req.studies);
 });
 
 module.exports = router;

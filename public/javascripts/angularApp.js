@@ -80,7 +80,8 @@ app.config([
   }
 ]);
 
-// also based on tutorial https://thinkster.io/mean-stack-tutorial
+// Authentication service is based on a tutorial
+// https://thinkster.io/mean-stack-tutorial
 app.factory('auth', ['$http', '$window', function($http, $window) {
   var auth = {};
 
@@ -173,7 +174,12 @@ app.factory('studies', ['$http', 'auth', function($http, auth) {
   };
 
   o.addData = function(id, derivedData) {
-    return $http.put('/api/studies/' + id + "/derivedData", derivedData).then(function(res) {
+    derivedData.addedBy = auth.currentUser;
+    return $http.put('/api/studies/' + id + "/derivedData", derivedData, {
+      headers: {
+        Authorization: 'Bearer ' + auth.getToken()
+      }
+    }).then(function(res) {
       studies.getAll();
       return res.data;
     });
@@ -183,16 +189,20 @@ app.factory('studies', ['$http', 'auth', function($http, auth) {
 }]);
 
 // services
-app.factory('metaAnalyses', ['$http', function($http) {
+app.factory('metaAnalyses', ['$http', 'auth',
+  function($http, auth) {
 
   var o = {
     metaAnalyses: []
   };
 
   o.create = function(metaAnalysis) {
-    return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
+    return $http.post('/api/metaanalyses', metaAnalysis, {
+      headers: {
+        Authorization: 'Bearer ' + auth.getToken()
+      }
+    }).success(function(data) {
       o.metaAnalyses.push(data);
-      console.log(data);
       return data;
     });
   };
@@ -212,13 +222,6 @@ app.factory('metaAnalyses', ['$http', function($http) {
   o.update = function(id, metaAnalysis) {
     return $http.put('/api/metaanalyses/' + id, metaAnalysis).success(function(res) {
       return res.data;
-    });
-  };
-
-  o.create = function(metaAnalysis) {
-    console.log(metaAnalysis);
-    return $http.post('/api/metaanalyses', metaAnalysis).success(function(data) {
-      o.metaAnalyses.push(data);
     });
   };
 
@@ -285,13 +288,13 @@ app.controller('NavCtrl', [
 ]);
 
 app.controller('UserCtrl', ['$http',
-  '$scope',
-  function($http, $scope, user) {
-    $http.get('/api/user/1/metaanalyses').then(function(res) {
+  '$scope', 'auth',
+  function($http, $scope, auth) {
+    $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').then(function(res) {
       $scope.userMetaAnalyses = res.data;
     });
 
-    $http.get('/api/user/1/studies').then(function(res) {
+    $http.get('/api/user/' + auth.currentUser() + '/studies').then(function(res) {
       $scope.userStudies = res.data;
     });
   }
@@ -301,7 +304,7 @@ app.controller('UserCtrl', ['$http',
 /* Studies controller
 /*
 /**/
-app.controller('StudiesCtrl', ['auth','$http',
+app.controller('StudiesCtrl', ['auth', '$http',
   '$scope', 'studies',
   function(auth, $http, $scope, studies) {
     console.log(auth.currentUser());
