@@ -9,6 +9,10 @@ var $ = require('jquery');
 // models
 require('./models/MetaAnalyses');
 require('./models/Study');
+require('./models/Users');
+
+// passport config
+require('./config/passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -16,6 +20,9 @@ var users = require('./routes/users');
 var app = express();
 
 var mongoose = require('mongoose');
+var passport = require('passport');
+
+
 
 mongoose.connect('mongodb://localhost/metaanalysis');
 // view engine setup
@@ -29,7 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(passport.initialize());
 app.use('/', routes);
 app.use('/users', users);
 
