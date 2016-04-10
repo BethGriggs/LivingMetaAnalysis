@@ -117,35 +117,22 @@ router.param('username', function(req, res, next, username) {
     'owner': username
   });
 
-  query.exec(function(err, metaAnalyses, studies) {
+  query.exec(function(err, metaAnalyses) {
     if (err) {
       return next(err);
     }
     if (!metaAnalyses) {
       return next(new Error('cannot find study'));
     }
-
-    var query = Study.find({
-      'derivedData.addedBy': username
-    });
-
-    query.exec(function(err, studies) {
-      if (err) {
-        return next(err);
-      }
-      if (!studies) {
-        return next(new Error('cannot find studies'));
-      }
-    });
-
     req.metaAnalyses = metaAnalyses;
-    req.studies = studies;
     return next();
   });
+
 });
 
 // get meta-analyses for particular user
 router.get('/api/user/:username/metaanalyses', function(req, res, next) {
+  console.log(req.metaAnalyses);
     res.json(req.metaAnalyses);
 });
 
@@ -230,16 +217,6 @@ router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
           console.log(err);
         }
     );
-});
-
-// get meta-analyses for particular user
-router.get('/api/user/:username/metaanalyses', function(req, res, next) {
-    res.json(req.metaAnalyses);
-});
-
-// get study data added by particular user
-router.get('/api/user/:username/studies', function(req, res, next) {
-    res.json(req.studies);
 });
 
 module.exports = router;

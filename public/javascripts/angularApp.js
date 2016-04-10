@@ -293,10 +293,6 @@ app.controller('UserCtrl', ['$http',
     $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').then(function(res) {
       $scope.userMetaAnalyses = res.data;
     });
-
-    $http.get('/api/user/' + auth.currentUser() + '/studies').then(function(res) {
-      $scope.userStudies = res.data;
-    });
   }
 ]);
 
@@ -307,10 +303,7 @@ app.controller('UserCtrl', ['$http',
 app.controller('StudiesCtrl', ['auth', '$http',
   '$scope', 'studies',
   function(auth, $http, $scope, studies) {
-    console.log(auth.currentUser());
-
     $scope.isLoggedIn = auth.isLoggedIn;
-
     $scope.studies = studies.studies;
     $scope.authors = [{
       "author": ""
