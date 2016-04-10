@@ -290,6 +290,7 @@ app.controller('NavCtrl', [
 app.controller('UserCtrl', ['$http',
   '$scope', 'auth',
   function($http, $scope, auth) {
+    $scope.user = auth.currentUser();
     $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').then(function(res) {
       $scope.userMetaAnalyses = res.data;
     });
@@ -388,10 +389,13 @@ app.controller('MetaAnalysisCtrl', [
         value: $scope.value,
         property: $scope.property,
         comment: $scope.comment,
-        addedBy: "1"
       };
       studies.addData($scope.study._id, newDerivedData);
-      // refresh state is needed to repopulate table
+
+      // Refresh state is needed to repopulate table
+      $state.go($state.current, {}, {
+        reload: true
+      });
       $state.go($state.current, {}, {
         reload: true
       });
@@ -440,7 +444,6 @@ app.controller('MetaAnalysisCtrl', [
     };
 
     $scope.studyInMetaAnalysis = function(study) {
-      console.log("call");
       var i = 0;
       for (i; i < metaAnalysis.studies.length; i++) {
         if (study._id === metaAnalysis.studies[i]._id) {

@@ -29,19 +29,19 @@
     <div ng-controller="NavCtrl" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#/studies/search"><i class="fa fa-search fa-2x"></i></a></li>
-        <li class="dropdown">
+        <li ng-show="isLoggedIn()" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i  class="fa fa-plus fa-2x"></i><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#/metaanalyses/create">New Meta-analysis</a></li>
             <li><a href="#/studies/create">New Study</a></li>
           </ul>
         </li>
-        <li class="dropdown">
+        <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+        <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+        <li ng-show="isLoggedIn()" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ currentUser() }}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
-            <li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
-            <li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
         </li>
       </ul>
     </div>
@@ -74,14 +74,11 @@
       <div class="form-group">
         <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary pull-right">Register</button>
     </form>
   </script>
 
   <script type="text/ng-template" id="/login.html">
-    <div class="page-header">
-      <h1>Flapper News</h1>
-    </div>
 
     <div ng-show="error" class="alert alert-danger row">
       <span>{{ error.message }}</span>
@@ -96,12 +93,13 @@
       <div class="form-group">
         <input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
       </div>
-      <button type="submit" class="btn btn-primary">Log In</button>
+      <button type="submit" class="btn btn-success pull-right">Log In</button>
     </form>
   </script>
 
   <script type="text/ng-template" id="/home.html">
-    <div class="row">
+
+   <div ng-show="user != null" class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
@@ -120,7 +118,7 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title pull-left">Studies you have contributed to</h3>
+          <h3 class="panel-title pull-left">Studies you have contributed data to</h3>
           <a type="button" class="btn btn-success pull-right" href="#/studies/create"><i class="fa fa-plus"></i> New Study</a>
           <div class="clearfix"></div>
         </div>
@@ -176,7 +174,7 @@
 
   <script type="text/ng-template" id="/metaanalysis.html">
     <h1>{{metaAnalysis.title}}
-    <button ng-click="log()" class="btn btn-success pull-right">Apply Statistics <i class="fa fa-arrow-right"></i></button>
+    <a href="api/metaanalyses/{{metaAnalysis._id}}" class="btn btn-success pull-right">Apply Statistics <i class="fa fa-arrow-right"></i></a>
     </h1>
 
     <div class="well">
