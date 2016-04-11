@@ -29,7 +29,12 @@ app.config([
       .state('home', {
         url: '/home',
         templateUrl: '/home.html',
-        controller: 'UserCtrl'
+        controller: 'UserCtrl',
+        onEnter: ['$state', 'auth', function($state, auth) {
+          if (!auth.isLoggedIn()) {
+            $state.go('login');
+          }
+        }]
       })
       .state('metaanalyses', {
         url: '/metaanalyses',
@@ -76,7 +81,7 @@ app.config([
           }]
         }
       });
-    $urlRouterProvider.otherwise('home');
+    $urlRouterProvider.otherwise('login');
   }
 ]);
 
@@ -192,41 +197,42 @@ app.factory('studies', ['$http', 'auth', function($http, auth) {
 app.factory('metaAnalyses', ['$http', 'auth',
   function($http, auth) {
 
-  var o = {
-    metaAnalyses: []
-  };
+    var o = {
+      metaAnalyses: []
+    };
 
-  o.create = function(metaAnalysis) {
-    return $http.post('/api/metaanalyses', metaAnalysis, {
-      headers: {
-        Authorization: 'Bearer ' + auth.getToken()
-      }
-    }).success(function(data) {
-      o.metaAnalyses.push(data);
-      return data;
-    });
-  };
+    o.create = function(metaAnalysis) {
+      return $http.post('/api/metaanalyses', metaAnalysis, {
+        headers: {
+          Authorization: 'Bearer ' + auth.getToken()
+        }
+      }).success(function(data) {
+        o.metaAnalyses.push(data);
+        return data;
+      });
+    };
 
-  o.get = function(id) {
-    return $http.get('/api/metaanalyses/' + id).then(function(res) {
-      return res.data;
-    });
-  };
+    o.get = function(id) {
+      return $http.get('/api/metaanalyses/' + id).then(function(res) {
+        return res.data;
+      });
+    };
 
-  o.getAll = function() {
-    return $http.get('/api/metaanalyses').success(function(data) {
-      angular.copy(data, o.metaAnalyses);
-    });
-  };
+    o.getAll = function() {
+      return $http.get('/api/metaanalyses').success(function(data) {
+        angular.copy(data, o.metaAnalyses);
+      });
+    };
 
-  o.update = function(id, metaAnalysis) {
-    return $http.put('/api/metaanalyses/' + id, metaAnalysis).success(function(res) {
-      return res.data;
-    });
-  };
+    o.update = function(id, metaAnalysis) {
+      return $http.put('/api/metaanalyses/' + id, metaAnalysis).success(function(res) {
+        return res.data;
+      });
+    };
 
-  return o;
-}]);
+    return o;
+  }
+]);
 
 /* Controllers */
 app.controller('AuthCtrl', [
@@ -278,12 +284,17 @@ app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
 ]);
 
 app.controller('NavCtrl', [
-  '$scope',
+  '$scope', '$state',
   'auth',
-  function($scope, auth) {
+  function($scope, $state, auth) {
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.currentUser = auth.currentUser;
-    $scope.logOut = auth.logOut;
+    $scope.logOut = function() {
+      auth.logOut();
+      $state.go('login', {}, {
+        reload: true
+      });
+    };
   }
 ]);
 
