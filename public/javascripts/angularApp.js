@@ -32,7 +32,9 @@ app.config([
         controller: 'UserCtrl',
         onEnter: ['$state', 'auth', function($state, auth) {
           if (!auth.isLoggedIn()) {
-            $state.go('login');
+            $state.go('login', {}, {
+              reload: true
+            });
           }
         }]
       })
@@ -335,7 +337,6 @@ app.controller('StudiesCtrl', ['auth', '$http',
       for (i; i < $scope.tags.length; i++) {
         tagsArray.push($scope.tags[i].text);
       }
-
       studies.create({
         title: $scope.title,
         author: [$scope.author],
@@ -364,12 +365,18 @@ app.controller('StudiesCtrl', ['auth', '$http',
 /* data to a particular study
 /**/
 app.controller('MetaAnalysisCtrl', [
-  '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
-  function($scope, $state, metaAnalyses, metaAnalysis, studies) {
+  '$http', '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
+  function($http, $scope, $state, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = metaAnalysis.properties;
 
     $scope.studies = metaAnalysis.studies;
+    // for view
+
+    $scope.toggleNewStudyForm = function () {
+      $scope.newStudyForm = !$scope.newStudyForm;
+    };
+
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
       metaAnalysis.properties.push($scope.newProperty);
@@ -442,8 +449,11 @@ app.controller('MetaAnalysisCtrl', [
     // adds a new study
     $scope.addNewStudy = function() {
       var tagsArray = [];
-      for (var i = 0; i < $scope.tags.length; i++) {
-        tagsArray.push($scope.tags[i].text);
+
+      if ($scope.tags.length) {
+        for (var i = 0; i < $scope.tags.length; i++) {
+          tagsArray.push($scope.tags[i].text);
+        }
       }
       $http.post('/api/studies', {
         title: $scope.title,

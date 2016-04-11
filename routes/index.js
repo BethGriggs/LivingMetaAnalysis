@@ -4,7 +4,10 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 
 var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+var auth = jwt({
+  secret: 'SECRET',
+  userProperty: 'payload'
+});
 
 /* import models */
 var User = mongoose.model('User');
@@ -18,9 +21,11 @@ router.get('/', function(req, res) {
 
 
 // user register routes
-router.post('/register', function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
+router.post('/register', function(req, res, next) {
+  if (!req.body.username || !req.body.password) {
+    return res.status(400).json({
+      message: 'Please fill out all fields'
+    });
   }
 
   var user = new User();
@@ -29,24 +34,39 @@ router.post('/register', function(req, res, next){
 
   user.setPassword(req.body.password);
 
-  user.save(function (err){
-    if(err){ return next(err); }
+  user.save(function(err) {
+    if (err) {
+      if (err.code == 11000) {
+        res.status(400).json({
+          message: 'Username taken, please select an alternative username.'
+        });
+      }
+      return next(err);
+    }
 
-    return res.json({token: user.generateJWT()});
+    return res.json({
+      token: user.generateJWT()
+    });
   });
 });
 
 // login route
-router.post('/login', function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
+router.post('/login', function(req, res, next) {
+  if (!req.body.username || !req.body.password) {
+    return res.status(400).json({
+      message: 'Please fill out all fields'
+    });
   }
 
-  passport.authenticate('local', function(err, user, info){
-    if(err){ return next(err); }
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
 
-    if(user){
-      return res.json({token: user.generateJWT()});
+    if (user) {
+      return res.json({
+        token: user.generateJWT()
+      });
     } else {
       return res.status(401).json(info);
     }
@@ -101,13 +121,19 @@ router.get('/api/studies/:study', function(req, res) {
 router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
   req.body.addedBy = req.payload.username;
   Study.findByIdAndUpdate(
-        req.params.study,
-        {$push: {"derivedData": req.body}},
-        {safe: true, upsert: true, new : true},
-        function(err, study) {
-            console.log(err);
-        }
-    );
+    req.params.study, {
+      $push: {
+        "derivedData": req.body
+      }
+    }, {
+      safe: true,
+      upsert: true,
+      new: true
+    },
+    function(err, study) {
+      console.log(err);
+    }
+  );
 });
 
 
@@ -133,7 +159,7 @@ router.param('username', function(req, res, next, username) {
 // get meta-analyses for particular user
 router.get('/api/user/:username/metaanalyses', function(req, res, next) {
   console.log(req.metaAnalyses);
-    res.json(req.metaAnalyses);
+  res.json(req.metaAnalyses);
 });
 
 // param
@@ -210,13 +236,16 @@ router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
 
 router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
   MetaAnalysis.findByIdAndUpdate(
-        req.params.metaanalysis,
-         req.body,
-        {safe: true, upsert: true, new : true},
-        function(err, study) {
-          console.log(err);
-        }
-    );
+    req.params.metaanalysis,
+    req.body, {
+      safe: true,
+      upsert: true,
+      new: true
+    },
+    function(err, study) {
+      console.log(err);
+    }
+  );
 });
 
 module.exports = router;
