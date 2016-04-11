@@ -195,6 +195,53 @@
 
     </div>
     <h1></h1>
+    <div ng-show="newStudyForm" class="well"
+      <div ng-controller="StudiesCtrl">
+        <button class="btn btn-primary pull-right" ng-click="toggleNewStudyForm()"><i class="fa fa-close"> </i></button>
+        <form class="form-horizontal">
+          <fieldset>
+            <legend>Add new study</legend>
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="title">Title</label>
+              <div class="col-md-6">
+                <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="author">Author</label>
+              <div class="col-md-6">
+                <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="link">Link to study/article</label>
+              <div class="col-md-6">
+                <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="year">Year</label>
+              <div class="col-md-2">
+                <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="tags">Tags</label>
+              <div class="col-md-6">
+                <tags-input ng-model="tags" min-length="1" placeholder="Add at least one tag"></tags-input>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-success pull-right" ng-click="addStudy()" data-dismiss="modal"><i class="fa fa-plus"></i> Add Study</button>
+          </fieldset>
+        </form>
+        </div>
+      </div>
+      
     <div class="row table-responsive">
       <table class="table table-striped">
         <tr>
@@ -216,52 +263,7 @@
       </table>
     </div>
 
-        <div ng-show="newStudyForm" class="well"
-          <div ng-controller="StudiesCtrl">
-            <button class="btn btn-primary pull-right" ng-click="toggleNewStudyForm()"><i class="fa fa-close"> </i></button>
-            <form class="form-horizontal">
-              <fieldset>
-                <legend>Add new study</legend>
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="title">Title</label>
-                  <div class="col-md-6">
-                    <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
-                  </div>
-                </div>
 
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="author">Author</label>
-                  <div class="col-md-6">
-                    <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="link">Link to study/article</label>
-                  <div class="col-md-6">
-                    <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="year">Year</label>
-                  <div class="col-md-2">
-                    <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="tags">Tags</label>
-                  <div class="col-md-6">
-                    <tags-input ng-model="tags" min-length="1" placeholder="Add at least one tag"></tags-input>
-                  </div>
-                </div>
-
-                <button type="submit" class="btn btn-success pull-right" ng-click="addStudy()" data-dismiss="modal"><i class="fa fa-plus"></i> Add Study</button>
-              </fieldset>
-            </form>
-            </div>
-          </div>
 
 </div>
     <!-- Add existing study modal -->
