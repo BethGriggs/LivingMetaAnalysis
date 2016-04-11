@@ -254,7 +254,7 @@
           <td>
             <button class="btn btn-warning btn-sm" ng-click="removePropertyFromMetaAnalysis(property)"><i class="fa fa-minus"></i></button> {{property}}</td>
           <td ng-repeat="study in studies">
-            <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="{{getStudyPropertyComment(study,property)}}" onmouseenter="$(this).tooltip('show')">
+            <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="" onmouseenter="$(this).tooltip('show')">
                 {{getStudyProperty(study,property)}}
             </span>
             <span ng-if="getStudyProperty(study,property) == null"><i ng-click="setupStudyPropertyScope(study, property)" data-toggle="modal" data-target="#addPropertyToStudyModal" class="fa fa-plus"> </i></span>
@@ -427,7 +427,7 @@
           </div>
 
           <div class="form-group">
-            <button type="button" class="btn btn-success pull-right" ng-click="addStudyData()"><i class="fa fa-plus"></i>Add Property</button>
+            <button type="submit" class="btn btn-success pull-right" ng-click="addStudyData()"><i class="fa fa-plus"></i>Add Property</button>
           </div>
 
         </fieldset>
@@ -437,9 +437,10 @@
   </script>
 
   <script type="text/ng-template" id="studies/create.html">
-    <form class="form-horizontal">
+    <form ng-submit="addStudy()" class="form-horizontal">
       <fieldset>
         <legend> Add new study</legend>
+
         <div class="form-group">
           <label class="col-md-4 control-label" for="title">Title</label>
           <div class="col-md-6">
@@ -475,7 +476,7 @@
           </div>
         </div>
 
-        <button class="btn btn-success pull-right" ng-click="addStudy()"><i class="fa fa-plus"></i> Add study</button>
+        <button type="submit" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add study</button>
       </fieldset>
     </form>
   </script>

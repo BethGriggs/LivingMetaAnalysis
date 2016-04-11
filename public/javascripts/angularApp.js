@@ -334,8 +334,10 @@ app.controller('StudiesCtrl', ['auth', '$http',
     $scope.addStudy = function() {
       var tagsArray = [];
       var i = 0;
-      for (i; i < $scope.tags.length; i++) {
-        tagsArray.push($scope.tags[i].text);
+      if ($scope.tags !== undefined) {
+        for (i; i < $scope.tags.length; i++) {
+          tagsArray.push($scope.tags[i].text);
+        }
       }
       studies.create({
         title: $scope.title,
@@ -365,8 +367,8 @@ app.controller('StudiesCtrl', ['auth', '$http',
 /* data to a particular study
 /**/
 app.controller('MetaAnalysisCtrl', [
-  '$http', '$scope', '$state', 'metaAnalyses', 'metaAnalysis', 'studies',
-  function($http, $scope, $state, metaAnalyses, metaAnalysis, studies) {
+  '$http', '$scope', '$state', '$timeout', 'metaAnalyses', 'metaAnalysis', 'studies',
+  function($http, $scope, $state, $timeout, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = metaAnalysis.properties;
 
@@ -412,13 +414,12 @@ app.controller('MetaAnalysisCtrl', [
       };
       studies.addData($scope.study._id, newDerivedData);
 
-      // Refresh state is needed to repopulate table
-      $state.go($state.current, {}, {
-        reload: true
-      });
-      $state.go($state.current, {}, {
-        reload: true
-      });
+      // TODO: workaround - refresh on timeout is needed to repopulate table
+      $timeout(function() {
+        $state.go($state.current, {}, {
+          reload: true
+        });
+      }, 2000);
     };
 
     // removes a property from the meta-analysis
@@ -442,6 +443,7 @@ app.controller('MetaAnalysisCtrl', [
     $scope.getStudyPropertyComment = function(study, property) {
       for (var i = 0; i < study.derivedData.length; i++) {
         if (study.derivedData[i].property == property) {
+          console.log('test');
           return study.derivedData[i].comment;
         }
       }
@@ -451,7 +453,7 @@ app.controller('MetaAnalysisCtrl', [
     // adds a new study
     $scope.addNewStudy = function() {
       var tagsArray = [];
-
+      console.log('123');
       if ($scope.tags.length) {
         for (var i = 0; i < $scope.tags.length; i++) {
           tagsArray.push($scope.tags[i].text);
@@ -467,6 +469,7 @@ app.controller('MetaAnalysisCtrl', [
     };
 
     $scope.studyInMetaAnalysis = function(study) {
+      console.log('in loop');
       var i = 0;
       for (i; i < metaAnalysis.studies.length; i++) {
         if (study._id === metaAnalysis.studies[i]._id) {
@@ -491,8 +494,10 @@ app.controller('MetaAnalysesCtrl', [
     $scope.createMetaAnalysis = function() {
       // get tags from view
       var tagsArray = [];
-      for (var i = 0; i < $scope.tags.length; i++) {
-        tagsArray.push($scope.tags[i].text);
+      if ($scope.tags !== undefined) {
+        for (var i = 0; i < $scope.tags.length; i++) {
+          tagsArray.push($scope.tags[i].text);
+        }
       }
 
       // creates a new meta-analysis
