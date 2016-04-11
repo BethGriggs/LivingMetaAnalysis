@@ -131,7 +131,10 @@ router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
       new: true
     },
     function(err, study) {
+      if(err){
       console.log(err);
+    }
+      res.json(study);
     }
   );
 });

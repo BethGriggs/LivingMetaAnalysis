@@ -186,9 +186,6 @@ app.factory('studies', ['$http', 'auth', function($http, auth) {
       headers: {
         Authorization: 'Bearer ' + auth.getToken()
       }
-    }).then(function(res) {
-      studies.getAll();
-      return res.data;
     });
   };
 
@@ -315,7 +312,7 @@ app.controller('UserCtrl', ['$http',
 /*
 /**/
 app.controller('StudiesCtrl', ['$http', '$scope',
-'$state', 'auth', 'studies',
+  '$state', 'auth', 'studies',
   function($http, $scope, $state, auth, studies) {
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.studies = studies.studies;
@@ -346,7 +343,9 @@ app.controller('StudiesCtrl', ['$http', '$scope',
         year: $scope.year,
         tags: tagsArray
       }).success(function(data) {
-        $state.go('studies/id', {id : data._id}, {
+        $state.go('studies/id', {
+          id: data._id
+        }, {
           reload: true
         });
       });
@@ -356,7 +355,7 @@ app.controller('StudiesCtrl', ['$http', '$scope',
       $scope.author = '';
       $scope.year = '';
       $scope.link = '';
-      $scope.tags= [];
+      $scope.tags = [];
 
     };
 
@@ -420,14 +419,11 @@ app.controller('MetaAnalysisCtrl', [
         property: $scope.property,
         comment: $scope.comment,
       };
-      studies.addData($scope.study._id, newDerivedData);
-
-      // TODO: workaround - refresh on timeout is needed to repopulate table
-      $timeout(function() {
+      studies.addData($scope.study._id, newDerivedData).success(function(data) {
         $state.go($state.current, {}, {
           reload: true
         });
-      }, 2000);
+      });
     };
 
     // removes a property from the meta-analysis
