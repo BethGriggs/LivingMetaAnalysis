@@ -314,9 +314,9 @@ app.controller('UserCtrl', ['$http',
 /* Studies controller
 /*
 /**/
-app.controller('StudiesCtrl', ['auth', '$http',
-  '$scope', 'studies',
-  function(auth, $http, $scope, studies) {
+app.controller('StudiesCtrl', ['$http', '$scope',
+'$state', 'auth', 'studies',
+  function($http, $scope, $state, auth, studies) {
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.studies = studies.studies;
     $scope.authors = [{
@@ -345,10 +345,18 @@ app.controller('StudiesCtrl', ['auth', '$http',
         link: $scope.link,
         year: $scope.year,
         tags: tagsArray
+      }).success(function(data) {
+        $state.go('studies/id', {id : data._id}, {
+          reload: true
+        });
       });
+
+      //reset scope
       $scope.title = '';
       $scope.author = '';
       $scope.year = '';
+      $scope.link = '';
+      $scope.tags= [];
 
     };
 
