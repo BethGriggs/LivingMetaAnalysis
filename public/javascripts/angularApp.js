@@ -373,14 +373,16 @@ app.controller('MetaAnalysisCtrl', [
     $scope.studies = metaAnalysis.studies;
     // for view
 
-    $scope.toggleNewStudyForm = function () {
+    $scope.toggleNewStudyForm = function() {
       $scope.newStudyForm = !$scope.newStudyForm;
     };
 
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
-      metaAnalysis.properties.push($scope.newProperty);
-      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+      if ($scope.newProperty !== undefined) {
+        metaAnalysis.properties.push($scope.newProperty);
+        metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+      }
     };
 
     // adds study to meta-analysis
