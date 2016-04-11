@@ -241,7 +241,7 @@
         </form>
         </div>
       </div>
-      
+
     <div class="row table-responsive">
       <table class="table table-striped">
         <tr>
@@ -262,10 +262,8 @@
         </tr>
       </table>
     </div>
-
-
-
 </div>
+
     <!-- Add existing study modal -->
     <div class="modal fade" id="addExistingStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -291,12 +289,13 @@
                 </section>
 
                 <section>
-                  <ul>
+                  <ul ng-show="searchResults.length > 0">
                     <li ng-repeat="study in searchResults">
                       <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
                       <button ng-show="!studyInMetaAnalysis(study)" class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis(study)"><i class="fa fa-plus"></i></button>
                     </li>
                   </ul>
+                  <p ng-show="searchResults.length == 0">No studies match that tag.</p>
                 </section>
               </div>
             </div>
@@ -497,11 +496,12 @@
       </div>
     </div>
     <div class="row">
-      <ul>
+      <ul ng-show="searchResults.length > 0">
         <li ng-repeat="study in searchResults">
           <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
         </li>
       </ul>
+      <p ng-show="searchResults.length == 0">No studies match that tag.</p>
     </div>
   </script>
 </body>
