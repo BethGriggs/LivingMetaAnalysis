@@ -336,6 +336,7 @@ app.controller('StudiesCtrl', ['$http', '$scope',
           tagsArray.push($scope.tags[i].text);
         }
       }
+
       studies.create({
         title: $scope.title,
         author: [$scope.author],
@@ -419,11 +420,15 @@ app.controller('MetaAnalysisCtrl', [
         property: $scope.property,
         comment: $scope.comment,
       };
-      studies.addData($scope.study._id, newDerivedData).success(function(data) {
-        $state.go($state.current, {}, {
-          reload: true
+
+      // Adds the new derived data to the specific study,
+      // updates the Angular state if successful 
+      studies.addData($scope.study._id, newDerivedData).success(
+        function(data) {
+          $state.go($state.current, {}, {
+            reload: true
+          });
         });
-      });
     };
 
     // removes a property from the meta-analysis
