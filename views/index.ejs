@@ -254,7 +254,7 @@
           <td>
             <button class="btn btn-warning btn-sm" ng-click="removePropertyFromMetaAnalysis(property)"><i class="fa fa-minus"></i></button> {{property}}</td>
           <td ng-repeat="study in studies">
-            <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="" onmouseenter="$(this).tooltip('show')">
+            <span ng-if="getStudyProperty(study,property) != null" data-toggle="tooltip" data-placement="top" title="{{getStudyPropertyComment(study, property)}}" onmouseenter="$(this).tooltip('show')">
                 {{getStudyProperty(study,property)}}
             </span>
             <span ng-if="getStudyProperty(study,property) == null"><i ng-click="setupStudyPropertyScope(study, property)" data-toggle="modal" data-target="#addPropertyToStudyModal" class="fa fa-plus"> </i></span>
