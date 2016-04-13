@@ -375,6 +375,11 @@
                 </div>
               </fieldset>
             </form>
+
+            <h4>Existing Properties</h4>
+            <ul>
+              <li ng-repeat="existingProperty in existingProperties track by $index" ng-click="$parent.newProperty = existingProperty">{{existingProperty}}</li>
+            </ul>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

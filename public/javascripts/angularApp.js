@@ -381,7 +381,20 @@ app.controller('MetaAnalysisCtrl', [
     $scope.properties = metaAnalysis.properties;
 
     $scope.studies = metaAnalysis.studies;
-    // for view
+
+    // get suggested / existing properties
+    var existingProperties = [];
+    for (var i=0; i < metaAnalysis.studies.length; i++){
+      var study =  metaAnalysis.studies[i];
+      for(var j=0; j < study.derivedData.length; j++){
+        var currentProperty = study.derivedData[j].property;
+        if (existingProperties.indexOf(currentProperty) <  0 && $scope.properties.indexOf(currentProperty) < 0){
+        existingProperties.push(currentProperty);
+      }
+      }
+    }
+    $scope.existingProperties = existingProperties;
+
 
     $scope.toggleNewStudyForm = function() {
       $scope.newStudyForm = !$scope.newStudyForm;
@@ -389,6 +402,8 @@ app.controller('MetaAnalysisCtrl', [
 
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
+
+
       if ($scope.newProperty !== undefined) {
         metaAnalysis.properties.push($scope.newProperty);
         metaAnalyses.update(metaAnalysis._id, metaAnalysis);
@@ -422,7 +437,7 @@ app.controller('MetaAnalysisCtrl', [
       };
 
       // Adds the new derived data to the specific study,
-      // updates the Angular state if successful 
+      // updates the Angular state if successful
       studies.addData($scope.study._id, newDerivedData).success(
         function(data) {
           $state.go($state.current, {}, {
