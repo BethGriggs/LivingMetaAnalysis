@@ -41,7 +41,7 @@
           <ul class="dropdown-menu">
             <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
         </li>
-      </ul>
+        </ul>
     </div>
   </nav>
 
@@ -76,6 +76,10 @@
     </form>
   </script>
 
+  <!-- ================================================
+      Templates
+      ================================================ -->
+
   <script type="text/ng-template" id="/login.html">
 
     <div ng-show="error" class="alert alert-danger row">
@@ -97,7 +101,7 @@
 
   <script type="text/ng-template" id="/home.html">
 
-   <div ng-show="user != null" class="row">
+    <div ng-show="user != null" class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
@@ -128,8 +132,6 @@
       </div>
     </div>
   </script>
-
-
 
   <script type="text/ng-template" id="metaanalyses/create.html">
 
@@ -184,8 +186,8 @@
       <button class="btn btn-success" data-toggle="modal" data-target="#addPropertyToMetaAnalysisModal"><i class="fa fa-plus"></i> Add Property</button>
 
 
-      <button type="button" class="btn btn-success pull-right"  ng-click="toggleNewStudyForm()">
-              <i class="fa fa-plus"></i> Add new study
+      <button type="button" class="btn btn-success pull-right" ng-click="toggleNewStudyForm()">
+        <i class="fa fa-plus"></i> Add new study
       </button>
 
       <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#addExistingStudyModal">
@@ -194,62 +196,61 @@
 
     </div>
     <h1></h1>
-    <div ng-show="newStudyForm" class="well"
-      <div ng-controller="StudiesCtrl">
-        <button class="btn btn-primary pull-right" ng-click="toggleNewStudyForm()"><i class="fa fa-close"> </i></button>
-        <form class="form-horizontal">
-          <fieldset>
-            <legend>Add new study</legend>
+    <div ng-show="newStudyForm" class="well" <div ng-controller="StudiesCtrl">
+      <button class="btn btn-primary pull-right" ng-click="toggleNewStudyForm()"><i class="fa fa-close"> </i></button>
+      <form class="form-horizontal">
+        <fieldset>
+          <legend>Add new study</legend>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="title">Study Identifier/Shortname</label>
-              <div class="col-md-6">
-                <input id="identifier" name="identifier" ng-model="identifier" type="text" placeholder="enter an id or shortname for the study" class="form-control input-md" required="">
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="title">Study Identifier/Shortname</label>
+            <div class="col-md-6">
+              <input id="identifier" name="identifier" ng-model="identifier" type="text" placeholder="enter an id or shortname for the study" class="form-control input-md" required="">
             </div>
+          </div>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="title">Title</label>
-              <div class="col-md-6">
-                <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="title">Title</label>
+            <div class="col-md-6">
+              <input id="title" name="title" ng-model="title" type="text" placeholder="title of article/study/experiment" class="form-control input-md" required="">
             </div>
+          </div>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="author">Author</label>
-              <div class="col-md-6">
-                <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="author">Author</label>
+            <div class="col-md-6">
+              <input id="author" name="author" ng-model="author" type="text" placeholder="author" class="form-control input-md" required="">
             </div>
+          </div>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="link">Link to study/article</label>
-              <div class="col-md-6">
-                <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="link">Link to study/article</label>
+            <div class="col-md-6">
+              <input id="link" name="link" ng-model="link" type="text" placeholder="link" class="form-control input-md" required="">
             </div>
+          </div>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="year">Year</label>
-              <div class="col-md-2">
-                <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="year">Year</label>
+            <div class="col-md-2">
+              <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
             </div>
+          </div>
 
-            <div class="form-group">
-              <label class="col-md-4 control-label" for="tags">Tags</label>
-              <div class="col-md-6">
-                <tags-input ng-model="tags" min-length="1" placeholder="Add at least one tag"></tags-input>
-              </div>
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="tags">Tags</label>
+            <div class="col-md-6">
+              <tags-input ng-model="tags" min-length="1" placeholder="Add at least one tag"></tags-input>
             </div>
+          </div>
 
-            <button type="submit" class="btn btn-success pull-right" ng-click="addStudy()" data-dismiss="modal"><i class="fa fa-plus"></i> Add Study</button>
-          </fieldset>
-        </form>
-        </div>
-      </div>
+          <button type="submit" class="btn btn-success pull-right" ng-click="addStudy()" data-dismiss="modal"><i class="fa fa-plus"></i> Add Study</button>
+        </fieldset>
+      </form>
+    </div>
+    </div>
 
-     <!-- Meta-analysis table HTML -->
+    <!-- Meta-analysis table HTML -->
     <div class="row table-responsive">
       <table class="table table-striped">
         <tr>
@@ -272,7 +273,7 @@
       </table>
 
     </div>
-</div>
+    </div>
 
     <!-- Add existing study modal -->
     <div class="modal fade" id="addExistingStudyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -431,7 +432,7 @@
           <legend>Add property to study</legend>
           <div class="form-group">
             <label for="property">Property</label>
-            <input class="form-control" ng-model="property" id="property" type="text" required=""/>
+            <input class="form-control" ng-model="property" id="property" type="text" required="" />
           </div>
           <div class="form-group">
             <label for="value">Value</label>
@@ -439,11 +440,11 @@
           </div>
           <div class="form-group">
             <label for="Comment">Comment</label>
-            <input class="form-control" ng-model="comment" id="comment" type="text"/>
+            <input class="form-control" ng-model="comment" id="comment" type="text" />
           </div>
 
           <div class="form-group">
-            <button type="submit" class="btn btn-success pull-right" ><i class="fa fa-plus"></i>Add Property</button>
+            <button type="submit" class="btn btn-success pull-right"><i class="fa fa-plus"></i>Add Property</button>
           </div>
 
         </fieldset>
