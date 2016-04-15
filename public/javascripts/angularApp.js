@@ -1,6 +1,8 @@
 var app = angular.module('livingmetaanalysis', ['ui.router', 'ngTagsInput']);
 
-// app state config
+/**
+/* App config
+/**/
 app.config([
   '$stateProvider',
   '$urlRouterProvider',
@@ -87,8 +89,11 @@ app.config([
   }
 ]);
 
-// Authentication service is based on a tutorial
-// https://thinkster.io/mean-stack-tutorial
+/**
+/* Auth service based on a tutorial
+/* https://thinkster.io/mean-stack-tutorial
+/* Manages users and JWT
+/**/
 app.factory('auth', ['$http', '$window', function($http, $window) {
   var auth = {};
 
@@ -128,9 +133,7 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
   };
 
   auth.logIn = function(user) {
-    console.log(user);
     return $http.post('/login', user).success(function(data) {
-      console.log(data);
       auth.saveToken(data.token);
     });
   };
@@ -141,7 +144,12 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
   return auth;
 }]);
 
-/* services */
+/* Services */
+
+/**
+/* Studies service
+/* Provides methods to: create, get, getAll, update, and add data to a studues
+/**/
 app.factory('studies', ['$http', 'auth', function($http, auth) {
 
   var o = {
@@ -192,7 +200,10 @@ app.factory('studies', ['$http', 'auth', function($http, auth) {
   return o;
 }]);
 
-// services
+/**
+/* Meta-analysis service
+/* Provides methods to: create, get, getAll, and update meta-analyses
+/**/
 app.factory('metaAnalyses', ['$http', 'auth',
   function($http, auth) {
 
@@ -234,6 +245,11 @@ app.factory('metaAnalyses', ['$http', 'auth',
 ]);
 
 /* Controllers */
+
+/**
+/* Authentication controller
+/* Provides methods for a user to register and log in
+/**/
 app.controller('AuthCtrl', [
   '$scope',
   '$state',
@@ -241,6 +257,7 @@ app.controller('AuthCtrl', [
   function($scope, $state, auth) {
     $scope.user = {};
 
+    // registers a new user
     $scope.register = function() {
       auth.register($scope.user).error(function(error) {
         $scope.error = error;
@@ -249,6 +266,7 @@ app.controller('AuthCtrl', [
       });
     };
 
+    // logs a user in
     $scope.logIn = function() {
       auth.logIn($scope.user).error(function(error) {
         $scope.error = error;
@@ -259,6 +277,10 @@ app.controller('AuthCtrl', [
   }
 ]);
 
+/**
+/* Study controller
+/* Provides methods to: add a derived data to a study
+/**/
 app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
   function(auth, $scope, $state, studies, study) {
     $scope.study = study;
@@ -282,6 +304,10 @@ app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
   }
 ]);
 
+/**
+/* Nav controller
+/* Sets up the $scope for the navigation
+/**/
 app.controller('NavCtrl', [
   '$scope', '$state',
   'auth',
@@ -297,10 +323,16 @@ app.controller('NavCtrl', [
   }
 ]);
 
+/**
+/* UserCtrl controller
+/* Provides methods to: add a new study and search for studies
+/**/
 app.controller('UserCtrl', ['$http',
   '$scope', 'auth',
   function($http, $scope, auth) {
     $scope.user = auth.currentUser();
+
+    // populates the users contributions
     $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').then(function(res) {
       $scope.userMetaAnalyses = res.data;
     });
@@ -309,25 +341,14 @@ app.controller('UserCtrl', ['$http',
 
 /**
 /* Studies controller
-/*
+/* Provides methods to: add a new study and search for studies
 /**/
 app.controller('StudiesCtrl', ['$http', '$scope',
   '$state', 'auth', 'studies',
   function($http, $scope, $state, auth, studies) {
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.studies = studies.studies;
-    $scope.authors = [{
-      "author": ""
-    }];
-    var testArray = ['one', 'two'];
-    $scope.addAuthor = function() {
-      $scope.authors.push({
-        'author': ''
-      });
-    };
-    $scope.removeAuthor = function(index) {
-      $scope.authors.splice(index, 1);
-    };
+
     $scope.addStudy = function() {
       var tagsArray = [];
       var i = 0;
@@ -360,7 +381,8 @@ app.controller('StudiesCtrl', ['$http', '$scope',
         }
       });
 
-      //reset scope
+      //reset scopes
+      $scope.identifier = '';
       $scope.title = '';
       $scope.author = '';
       $scope.year = '';
@@ -388,7 +410,6 @@ app.controller('MetaAnalysisCtrl', [
   function($http, $scope, $state, $timeout, metaAnalyses, metaAnalysis, studies) {
     $scope.metaAnalysis = metaAnalysis;
     $scope.properties = metaAnalysis.properties;
-
     $scope.studies = metaAnalysis.studies;
 
     // get suggested / existing properties
@@ -404,14 +425,13 @@ app.controller('MetaAnalysisCtrl', [
     }
     $scope.existingProperties = existingProperties;
 
-
+    // toggles the new study form
     $scope.toggleNewStudyForm = function() {
       $scope.newStudyForm = !$scope.newStudyForm;
     };
 
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
-
 
       if ($scope.newProperty !== undefined) {
         metaAnalysis.properties.push($scope.newProperty);
@@ -476,7 +496,6 @@ app.controller('MetaAnalysisCtrl', [
     $scope.getStudyPropertyComment = function(study, property) {
       for (var i = 0; i < study.derivedData.length; i++) {
         if (study.derivedData[i].property == property) {
-          console.log('test');
           return study.derivedData[i].comment;
         }
       }
@@ -486,7 +505,6 @@ app.controller('MetaAnalysisCtrl', [
     // adds a new study
     $scope.addNewStudy = function() {
       var tagsArray = [];
-      console.log('123');
       if ($scope.tags.length) {
         for (var i = 0; i < $scope.tags.length; i++) {
           tagsArray.push($scope.tags[i].text);
@@ -502,8 +520,8 @@ app.controller('MetaAnalysisCtrl', [
       });
     };
 
+    // checks if the study is in a meta-analysis
     $scope.studyInMetaAnalysis = function(study) {
-      console.log('in loop');
       var i = 0;
       for (i; i < metaAnalysis.studies.length; i++) {
         if (study._id === metaAnalysis.studies[i]._id) {
