@@ -242,11 +242,13 @@
         </div>
       </div>
 
+     <!-- Meta-analysis table HTML -->
     <div class="row table-responsive">
       <table class="table table-striped">
         <tr>
           <th>Properties</th>
-          <th ng-repeat="study in studies"><a href="#/studies/{{study._id}}">{{study.title}}</a>
+          <th ng-repeat="study in studies">
+            <a href="#/studies/{{study._id}}">{{study.title}}</a>
             <button class="btn btn-warning btn-sm" ng-click="removeStudyFromMetaAnalysis(study)"><i class="fa fa-minus"></i></button>
           </th>
         </tr>
@@ -261,6 +263,7 @@
           </td>
         </tr>
       </table>
+
     </div>
 </div>
 

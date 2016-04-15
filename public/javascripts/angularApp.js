@@ -384,13 +384,13 @@ app.controller('MetaAnalysisCtrl', [
 
     // get suggested / existing properties
     var existingProperties = [];
-    for (var i=0; i < metaAnalysis.studies.length; i++){
-      var study =  metaAnalysis.studies[i];
-      for(var j=0; j < study.derivedData.length; j++){
+    for (var i = 0; i < metaAnalysis.studies.length; i++) {
+      var study = metaAnalysis.studies[i];
+      for (var j = 0; j < study.derivedData.length; j++) {
         var currentProperty = study.derivedData[j].property;
-        if (existingProperties.indexOf(currentProperty) <  0 && $scope.properties.indexOf(currentProperty) < 0){
-        existingProperties.push(currentProperty);
-      }
+        if (existingProperties.indexOf(currentProperty) < 0 && $scope.properties.indexOf(currentProperty) < 0) {
+          existingProperties.push(currentProperty);
+        }
       }
     }
     $scope.existingProperties = existingProperties;

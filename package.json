@@ -12,6 +12,7 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "express-jwt": "^3.3.0",
+    "jquery": "^2.2.3",
     "jsonwebtoken": "^5.7.0",
     "mongoose": "^4.4.2",
     "morgan": "~1.6.1",
