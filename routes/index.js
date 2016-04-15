@@ -161,7 +161,6 @@ router.param('username', function(req, res, next, username) {
 
 // GET: meta-analyses for particular user
 router.get('/api/user/:username/metaanalyses', function(req, res, next) {
-  console.log(req.metaAnalyses);
   res.json(req.metaAnalyses);
 });
 
