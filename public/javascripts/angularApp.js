@@ -345,11 +345,19 @@ app.controller('StudiesCtrl', ['$http', '$scope',
         year: $scope.year,
         tags: tagsArray
       }).success(function(data) {
-        $state.go('studies/id', {
-          id: data._id
-        }, {
-          reload: true
-        });
+        // if state is meta-analysis reload state
+        if ($state.current.name == 'metaanalyses/id') {
+          $state.go($state.current, {}, {
+            reload: true
+          });
+        } else {
+          // else got to study that has been created
+          $state.go('studies/id', {
+            id: data._id
+          }, {
+            reload: true
+          });
+        }
       });
 
       //reset scope

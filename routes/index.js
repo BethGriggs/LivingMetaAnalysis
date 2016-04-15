@@ -1,15 +1,18 @@
+/**/
+/* Declares the API routes using Express.
+/**/
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require('passport');
-
 var jwt = require('express-jwt');
 var auth = jwt({
   secret: 'SECRET',
   userProperty: 'payload'
 });
 
-/* import models */
+
+/* import Mongoose schemas  */
 var User = mongoose.model('User');
 var Study = mongoose.model('Study');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
@@ -19,21 +22,20 @@ router.get('/', function(req, res) {
   res.render('index');
 });
 
-
-// user register routes
+// user register route
 router.post('/register', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({
-      message: 'Please fill out all fields'
+      message: 'Please complete all fields'
     });
   }
 
+  // create new user
   var user = new User();
-
   user.username = req.body.username;
-
   user.setPassword(req.body.password);
 
+  // save user
   user.save(function(err) {
     if (err) {
       if (err.code == 11000) {
@@ -43,7 +45,6 @@ router.post('/register', function(req, res, next) {
       }
       return next(err);
     }
-
     return res.json({
       token: user.generateJWT()
     });
@@ -54,7 +55,7 @@ router.post('/register', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({
-      message: 'Please fill out all fields'
+      message: 'Please complete all fields'
     });
   }
 
@@ -75,7 +76,7 @@ router.post('/login', function(req, res, next) {
 
 /* studies routes */
 
-// get studies route
+// GET: studies route
 router.get('/api/studies', function(req, res, next) {
   Study.find(function(err, studies) {
     if (err) {
@@ -85,7 +86,7 @@ router.get('/api/studies', function(req, res, next) {
   });
 });
 
-// post study route
+// POST: study route
 router.post('/api/studies', function(req, res, next) {
   var study = new Study(req.body);
   study.save(function(err, study) {
@@ -96,7 +97,7 @@ router.post('/api/studies', function(req, res, next) {
   });
 });
 
-// study id param
+// PARAM: study id
 router.param('study', function(req, res, next, id) {
   var query = Study.findById(id);
 
@@ -118,6 +119,7 @@ router.get('/api/studies/:study', function(req, res) {
   res.json(req.study);
 });
 
+// PUT: derived data to study
 router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
   req.body.addedBy = req.payload.username;
   Study.findByIdAndUpdate(
@@ -131,16 +133,15 @@ router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
       new: true
     },
     function(err, study) {
-      if(err){
-      console.log(err);
-    }
+      if (err) {
+        console.log(err);
+      }
       res.json(study);
     }
   );
 });
 
-
-// user param
+// PARAM: username
 router.param('username', function(req, res, next, username) {
   var query = MetaAnalysis.find({
     'owner': username
@@ -156,16 +157,15 @@ router.param('username', function(req, res, next, username) {
     req.metaAnalyses = metaAnalyses;
     return next();
   });
-
 });
 
-// get meta-analyses for particular user
+// GET: meta-analyses for particular user
 router.get('/api/user/:username/metaanalyses', function(req, res, next) {
   console.log(req.metaAnalyses);
   res.json(req.metaAnalyses);
 });
 
-// param
+// PARAM: tag
 router.param('tag', function(req, res, next, tag) {
   var query = Study.find({
     'tags': tag
@@ -178,20 +178,19 @@ router.param('tag', function(req, res, next, tag) {
     if (!studies) {
       return next(new Error('cannot find study'));
     }
-
     req.studies = studies;
     return next();
   });
 });
 
+// GET: studies with tag param
 router.get('/api/studies/tag/:tag', function(req, res) {
   res.json(req.studies);
 });
 
-//api/studies/tag/
 /* meta-analysis routes */
 
-// GET all meta-analyses
+// GET: all meta-analyses
 router.get('/api/metaanalyses', function(req, res, next) {
   MetaAnalysis.find(function(err, metaAnalyses) {
     if (err) {
@@ -201,7 +200,7 @@ router.get('/api/metaanalyses', function(req, res, next) {
   });
 });
 
-// post meta-analyses route
+// POST: meta-analyses route
 router.post('/api/metaanalyses', auth, function(req, res, next) {
   var metaAnalysis = new MetaAnalysis(req.body);
   metaAnalysis.owner = req.payload.username;
@@ -214,11 +213,11 @@ router.post('/api/metaanalyses', auth, function(req, res, next) {
   });
 });
 
-// param
+// PARAM: meta-analysis id
 router.param('metaanalysis', function(req, res, next, id) {
   var query = MetaAnalysis.findById(id);
 
-  // populates the referenced objects
+  // populates the referenced study objects
   query.populate('studies');
   query.exec(function(err, metaAnalysis) {
     if (err) {
@@ -233,10 +232,12 @@ router.param('metaanalysis', function(req, res, next, id) {
   });
 });
 
+// GET: get indivudal meta-analysis
 router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
   res.json(req.metaAnalysis);
 });
 
+// PUT: update the meta-analysis
 router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
   MetaAnalysis.findByIdAndUpdate(
     req.params.metaanalysis,
@@ -245,9 +246,7 @@ router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
       upsert: true,
       new: true
     },
-    function(err, study) {
-      console.log(err);
-    }
+    function(err, metaAnalysis) {}
   );
 });
 
