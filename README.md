@@ -7,4 +7,7 @@ MEAN.io stack version
 
 # Installation
 - npm install
-- npm start 
+- npm start
+
+# Hosted at
+http://139.59.175.67:3000/
