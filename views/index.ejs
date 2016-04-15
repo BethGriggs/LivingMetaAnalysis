@@ -201,6 +201,14 @@
         <form class="form-horizontal">
           <fieldset>
             <legend>Add new study</legend>
+
+            <div class="form-group">
+              <label class="col-md-4 control-label" for="title">Study Identifier/Shortname</label>
+              <div class="col-md-6">
+                <input id="identifier" name="identifier" ng-model="identifier" type="text" placeholder="enter an id or shortname for the study" class="form-control input-md" required="">
+              </div>
+            </div>
+
             <div class="form-group">
               <label class="col-md-4 control-label" for="title">Title</label>
               <div class="col-md-6">
@@ -248,7 +256,7 @@
         <tr>
           <th>Properties</th>
           <th ng-repeat="study in studies">
-            <a href="#/studies/{{study._id}}">{{study.title}}</a>
+            <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')">{{study.identifier}} </a>
             <button class="btn btn-warning btn-sm" ng-click="removeStudyFromMetaAnalysis(study)"><i class="fa fa-minus"></i></button>
           </th>
         </tr>
@@ -395,6 +403,7 @@
 
   <script type="text/ng-template" id="/study.html">
     <h1>{{study.title}}</h1>
+    <p>Identifier: {{study.identifier}}</p>
     <p>Author : {{study.author}} </p>
     <p>Year published: {{study.year}} </p>
     <p>Link: <a href={{study.link}}>{{study.link}}</a> </p>
@@ -448,6 +457,13 @@
     <form ng-submit="addStudy()" class="form-horizontal">
       <fieldset>
         <legend> Add new study</legend>
+
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="identifier">Identifier / Shortname</label>
+          <div class="col-md-6">
+            <input id="identifier" name="identifier" ng-model="identifier" type="text" placeholder="enter an id or shortname for the study" class="form-control input-md" required="">
+          </div>
+        </div>
 
         <div class="form-group">
           <label class="col-md-4 control-label" for="title">Title</label>

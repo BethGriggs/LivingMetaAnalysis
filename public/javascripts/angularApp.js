@@ -338,6 +338,7 @@ app.controller('StudiesCtrl', ['$http', '$scope',
       }
 
       studies.create({
+        identifier: $scope.identifier,
         title: $scope.title,
         author: [$scope.author],
         link: $scope.link,
@@ -484,6 +485,7 @@ app.controller('MetaAnalysisCtrl', [
         }
       }
       $http.post('/api/studies', {
+        identifier: $scope.identifier,
         title: $scope.title,
         author: $scope.author,
         year: $scope.year,
