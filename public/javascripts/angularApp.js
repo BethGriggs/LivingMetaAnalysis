@@ -333,8 +333,13 @@ app.controller('UserCtrl', ['$http',
     $scope.user = auth.currentUser();
 
     // populates the users contributions
-    $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').then(function(res) {
-      $scope.userMetaAnalyses = res.data;
+    $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').success(function(data) {
+      $scope.userMetaAnalyses = data;
+    });
+
+    $http.get('/api/user/' + auth.currentUser() +'/studies').success(function(data) {
+      console.log(data);
+      $scope.userStudies = data;
     });
   }
 ]);

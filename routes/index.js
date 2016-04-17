@@ -249,4 +249,29 @@ router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
   );
 });
 
+
+// PARAM: addedBy
+router.param('addedBy', function(req, res, next, addedBy) {
+  var query = Study.find({
+    'derivedData.addedBy': addedBy
+  });
+
+  query.exec(function(err, studies) {
+    if (err) {
+      return next(err);
+    }
+    if (!studies) {
+      return next(new Error('cannot find study'));
+    }
+    req.studies = studies;
+    return next();
+  });
+});
+
+// GET: All studies where a user has contributed data
+router.get('/api/user/:addedBy/studies', function(req, res) {
+  res.json(req.studies);
+});
+
+
 module.exports = router;
