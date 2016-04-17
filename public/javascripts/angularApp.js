@@ -338,7 +338,6 @@ app.controller('UserCtrl', ['$http',
     });
 
     $http.get('/api/user/' + auth.currentUser() +'/studies').success(function(data) {
-      console.log(data);
       $scope.userStudies = data;
     });
   }
