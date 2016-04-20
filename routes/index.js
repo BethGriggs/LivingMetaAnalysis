@@ -11,18 +11,12 @@ var auth = jwt({
   userProperty: 'payload'
 });
 
-
 /* import Mongoose schemas  */
 var User = mongoose.model('User');
 var Study = mongoose.model('Study');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index');
-});
-
-// user register route
+// POST: user register route
 router.post('/register', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({
@@ -51,7 +45,7 @@ router.post('/register', function(req, res, next) {
   });
 });
 
-// login route
+// POST: login route
 router.post('/login', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({

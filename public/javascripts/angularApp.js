@@ -84,7 +84,15 @@ app.config([
             return studies.get($stateParams.id);
           }]
         }
-      });
+      })
+      .state('help', {
+        url: '/help',
+        templateUrl: 'help.html'
+      })
+      .state('api', {
+        url: '/api',
+        templateUrl: 'api.html'
+            });
     $urlRouterProvider.otherwise('home');
   }
 ]);
@@ -340,7 +348,7 @@ app.controller('UserCtrl', ['$http',
       $scope.userMetaAnalyses = data;
     });
 
-    $http.get('/api/user/' + auth.currentUser() +'/studies').success(function(data) {
+    $http.get('/api/user/' + auth.currentUser() + '/studies').success(function(data) {
       $scope.userStudies = data;
     });
   }

@@ -45,10 +45,21 @@
     </div>
   </nav>
 
+  <!-- ================================================
+      Container for content
+      ================================================ -->
   <div class="container">
     <ui-view></ui-view>
   </div>
 
+  <footer class="footer">
+    <div class="container">
+      <ul class="list-inline pull-right">
+        <li><a href="#/help">Help</a></li>
+        <li><a href="#/api">API Documentation</a></li>
+      </ul>
+    </div>
+  </footer>
   <!-- ================================================
       Scripts
       ================================================ -->
@@ -99,8 +110,11 @@
     </form>
   </script>
 
-  <script type="text/ng-template" id="/home.html">
+  <!-- ================================================
+      Home template
+      ================================================ -->
 
+  <script type="text/ng-template" id="/home.html">
     <div ng-show="user != null" class="row">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -137,12 +151,13 @@
     </div>
   </script>
 
+  <!-- ================================================
+      Create Meta-analysis template
+      ================================================ -->
   <script type="text/ng-template" id="metaanalyses/create.html">
-
     <div ng-submit="createMetaAnalysis()" class="row">
       <form class="form-horizontal">
         <fieldset>
-
           <legend>Create a new meta-analysis</legend>
           <div class="form-group">
             <label class="col-md-4 control-label" for="title">Title</label>
@@ -171,12 +186,14 @@
               <button id="create" name="create" class="btn btn-success"><i class="fa fa-plus"></i> Create</button>
             </div>
           </div>
-
         </fieldset>
       </form>
     </div>
   </script>
 
+  <!-- ================================================
+      View Meta-analysis template
+      ================================================ -->
   <script type="text/ng-template" id="/metaanalysis.html">
     <h1>{{metaAnalysis.title}}
     <a href="api/metaanalyses/{{metaAnalysis._id}}" class="btn btn-success pull-right">Apply Statistics <i class="fa fa-arrow-right"></i></a>
@@ -390,7 +407,6 @@
                 </div>
               </fieldset>
             </form>
-
             <h4>Existing Properties</h4>
             <ul>
               <li ng-repeat="existingProperty in existingProperties track by $index" ng-click="$parent.newProperty = existingProperty">{{existingProperty}}</li>
@@ -404,6 +420,10 @@
       </div>
     </div>
   </script>
+
+  <!-- ================================================
+      View Study template
+      ================================================ -->
 
   <script type="text/ng-template" id="/study.html">
     <h1>{{study.title}}</h1>
@@ -454,8 +474,11 @@
         </fieldset>
       </form>
     </div>
-
   </script>
+
+  <!-- ================================================
+      Create Study template
+      ================================================ -->
 
   <script type="text/ng-template" id="studies/create.html">
     <form ng-submit="form.$valid && addStudy()" class="form-horizontal">
@@ -509,6 +532,9 @@
     </form>
   </script>
 
+  <!-- ================================================
+      Search template
+      ================================================ -->
   <script type="text/ng-template" id="studies/search.html">
     <div class="row">
         <form ng-submit="search()">
@@ -529,6 +555,91 @@
         </li>
       </ul>
       <p ng-show="searchResults.length == 0">No studies match that tag.</p>
+    </div>
+  </script>
+
+  <!-- ================================================
+      Help template
+      ================================================ -->
+  <script type="text/ng-template" id="help.html">
+    <h1>Help</h1>
+    <div class="row">
+        <h3>How to create a meta-analysis</h3>
+        <ul class="list-unstyled">
+          <li>1. <a href="#/metaanalyses/create">Create a new meta-analysis</a>.</li>
+          <li>2. Add properties relevant to the meta-analysis.</li>
+          <li>3. Search for existing studys to be included in the meta-analysis.</li>
+          <li>4. Populate any missing study properties.</li>
+          <li>5. <a href="#/studies/create">Add new studies</a>.</li>
+          <li>6. Apply statistics to the meta-analysis.</li>
+        </ul>
+    </div>
+  </script>
+
+  <!-- ================================================
+      API documentation template
+      ================================================ -->
+  <script type="text/ng-template" id="api.html">
+    <h1>API Documentation</h1>
+    <div class="row">
+      <table class="table">
+      <tr>
+        <th>Method</th>
+        <th>URL</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/studies">/api/studies</a></td>
+        <td>Returns a list of all studies</td>
+      </tr>
+
+      <tr>
+        <td><span class="label label-default">POST</span></td>
+        <td><a href="/api/studies">/api/studies</a></td>
+        <td>Creates a new study</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/studies/:id">/api/studies/{id}</a></td>
+        <td>Returns the study with the given ID</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">PUT</span></td>
+        <td><a href="/api/studies/:id/derivedData">/api/studies/{id}/derivedData</a></td>
+        <td>Adds new properties to the specified study</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/studies/tag/:tag">/api/studies/tag/{tag}</a></td>
+        <td>Returns all studies with the specified tag</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
+        <td>Returns all meta-analyses</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">POST</span></td>
+        <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
+        <td>Creates a new meta-analysis</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/metaanalyses/:id">/api/metaanalyses/{id}</a></td>
+        <td>Returns the meta-analysis with the given ID</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/metaanalyses</a></td>
+        <td>Returns all meta-analyses belonging to the specified user</td>
+      </tr>
+      <tr>
+        <td><span class="label label-default">GET</span></td>
+        <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/studies</a></td>
+        <td>Returns all study properties added by the specified user</td>
+      </tr>
+    </table>
     </div>
   </script>
 </body>
