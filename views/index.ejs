@@ -105,7 +105,7 @@
       <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">
-            <a href="#/metaanalyses">Your Meta-Analyses</a>
+            Your Meta-Analyses <span class="badge">{{userMetaAnalyses.length}}</span>
           </h3>
           <a type="button" class="btn btn-success pull-right" href="#/metaanalyses/create">
             <i class="fa fa-plus"></i> New Meta-analysis
@@ -120,7 +120,7 @@
       </div>
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title pull-left">Studies you have contributed data to</h3>
+          <h3 class="panel-title pull-left">Studies you have contributed data to   <span class="badge">{{userStudies.length}}</span></h3>
           <a type="button" class="btn btn-success pull-right" href="#/studies/create"><i class="fa fa-plus"></i> New Study</a>
           <div class="clearfix"></div>
         </div>
@@ -260,7 +260,7 @@
         <tr>
           <th>Properties</th>
           <th ng-repeat="study in studies">
-            <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')">{{study.identifier}} </a>
+            <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')">{{study.identifier}}</a>
             <button class="btn btn-warning btn-sm" ng-click="removeStudyFromMetaAnalysis(study)"><i class="fa fa-minus"></i></button>
           </th>
         </tr>
@@ -306,7 +306,7 @@
                 <section>
                   <ul ng-show="searchResults.length > 0">
                     <li ng-repeat="study in searchResults">
-                      <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+                      <a href="#/studies/{{study._id}}"  data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
                       <button ng-show="!studyInMetaAnalysis(study)" class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis(study)"><i class="fa fa-plus"></i></button>
                     </li>
                   </ul>
@@ -511,7 +511,6 @@
 
   <script type="text/ng-template" id="studies/search.html">
     <div class="row">
-      <div class="col-lg-offset-4">
         <form ng-submit="search()">
           <div class="input-group">
             <input type="text" class="form-control input-sm" ng-model="searchTerm" placeholder="Search for studies by tag" />
@@ -522,12 +521,11 @@
             </span>
           </div>
         </form>
-      </div>
     </div>
     <div class="row">
       <ul ng-show="searchResults.length > 0">
         <li ng-repeat="study in searchResults">
-          <a href="#/studies/{{study._id}}" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+          <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
         </li>
       </ul>
       <p ng-show="searchResults.length == 0">No studies match that tag.</p>
