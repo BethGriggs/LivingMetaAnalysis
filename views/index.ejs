@@ -126,7 +126,11 @@
         </div>
         <div class="panel-body">
           <ul>
-            <li ng-repeat="study in userStudies"><a href="#/studies/{{study._id}}">{{study.title}}</a></li>
+            <li ng-repeat="study in userStudies">
+              <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')">
+                {{study.title}}
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -233,7 +237,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label" for="year">Year</label>
             <div class="col-md-2">
-              <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+              <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}"]>
             </div>
           </div>
 
@@ -454,7 +458,7 @@
   </script>
 
   <script type="text/ng-template" id="studies/create.html">
-    <form ng-submit="addStudy()" class="form-horizontal">
+    <form ng-submit="form.$valid && addStudy()" class="form-horizontal">
       <fieldset>
         <legend> Add new study</legend>
 
@@ -489,7 +493,7 @@
         <div class="form-group">
           <label class="col-md-4 control-label" for="year">Year</label>
           <div class="col-md-2">
-            <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="">
+            <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}"]>
           </div>
         </div>
 

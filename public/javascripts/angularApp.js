@@ -293,13 +293,16 @@ app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
         comment: $scope.comment,
         addedBy: "1"
       };
-      studies.addData(study._id, newDerivedData);
-      $scope.property = '';
-      $scope.value = '';
-      $scope.comment = '';
-      $state.go($state.current, {}, {
-        reload: true
+
+      studies.addData(study._id, newDerivedData).success(function() {
+        $scope.property = '';
+        $scope.value = '';
+        $scope.comment = '';
+        $state.go($state.current, {}, {
+          reload: true
+        });
       });
+
     };
   }
 ]);
