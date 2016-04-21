@@ -323,7 +323,14 @@
                 <section>
                   <ul ng-show="searchResults.length > 0">
                     <li ng-repeat="study in searchResults">
-                      <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+                      <a href="#/studies/{{study._id}}"
+                         data-toggle="tooltip"
+                         data-placement="top"
+                         title="{{study.title}} ({{study.author}}, {{study.year}})"
+                         onmouseenter="$(this).tooltip('show')"
+                         onclick="$('#addExistingStudyModal').modal('hide')">
+                         {{study.title}} ({{study.identifier}})
+                       </a>
                       <button ng-show="!studyInMetaAnalysis(study)" class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis(study)"><i class="fa fa-plus"></i></button>
                     </li>
                   </ul>
