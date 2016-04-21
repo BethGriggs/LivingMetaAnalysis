@@ -16,6 +16,11 @@ var User = mongoose.model('User');
 var Study = mongoose.model('Study');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
 
+/* GET: render index  */
+ router.get('/', function(req, res) {
+   res.render('index');
+ });
+
 // POST: user register route
 router.post('/register', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
