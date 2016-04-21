@@ -286,145 +286,38 @@ app.controller('AuthCtrl', [
 ]);
 
 /**
-/* Study controller
-/* Provides methods to: add a derived data to a study
+/* MetaAnalyses controller
+/* Provides methods to add a new meta-analysis
 /**/
-app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
-  function(auth, $scope, $state, studies, study) {
-    $scope.study = study;
-    $scope.isLoggedIn = auth.isLoggedIn;
+app.controller('MetaAnalysesCtrl', [
+  '$scope', '$state', 'metaAnalyses',
+  function($scope, $state, metaAnalyses) {
+    $scope.metaAnalyses = metaAnalyses.data;
 
-    $scope.addStudyData = function() {
-      var newDerivedData = {
-        value: $scope.value,
-        property: $scope.property,
-        comment: $scope.comment,
-        addedBy: "1"
-      };
-
-      studies.addData(study._id, newDerivedData).success(function() {
-        $scope.property = '';
-        $scope.value = '';
-        $scope.comment = '';
-        $state.go($state.current, {}, {
-          reload: true
-        });
-      });
-
-    };
-  }
-]);
-
-/**
-/* Nav controller
-/* Sets up the $scope for the navigation
-/**/
-app.controller('NavCtrl', [
-  '$scope', '$state',
-  'auth',
-  function($scope, $state, auth) {
-    $scope.isLoggedIn = auth.isLoggedIn;
-    $scope.currentUser = auth.currentUser;
-    $scope.logOut = function() {
-      auth.logOut();
-      $state.go('login', {}, {
-        reload: true
-      });
-    };
-  }
-]);
-
-/**
-/* UserCtrl controller
-/* Provides methods to: add a new study and search for studies
-/**/
-app.controller('UserCtrl', ['$http',
-  '$scope', 'auth',
-  function($http, $scope, auth) {
-    $scope.user = auth.currentUser();
-
-    // populates the users contributions
-    $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').success(function(data) {
-      $scope.userMetaAnalyses = data;
-    });
-
-    $http.get('/api/user/' + auth.currentUser() + '/studies').success(function(data) {
-      $scope.userStudies = data;
-    });
-  }
-]);
-
-/**
-/* SearchCtrl controller
-/* Provides methods to: search for studies and meta-analyses by tag
-/**/
-app.controller('SearchCtrl', ['$http',
-  '$scope',
-  function($http, $scope) {
-    $scope.search = function() {
-      $http.get('/api/studies/tag/' + $scope.searchTerm).success(function(data) {
-        $scope.studiesResults = data;
-      });
-    };
-  }
-]);
-
-/**
-/* Studies controller
-/* Provides methods to: add a new study and search for studies
-/**/
-app.controller('StudiesCtrl', ['$http', '$scope',
-  '$state', 'auth', 'studies',
-  function($http, $scope, $state, auth, studies) {
-    $scope.isLoggedIn = auth.isLoggedIn;
-    $scope.studies = studies.studies;
-
-    $scope.addStudy = function() {
+    // function to create a new meta analysis
+    $scope.createMetaAnalysis = function() {
+      // get tags from view
       var tagsArray = [];
-      var i = 0;
       if ($scope.tags !== undefined) {
-        for (i; i < $scope.tags.length; i++) {
+        for (var i = 0; i < $scope.tags.length; i++) {
           tagsArray.push($scope.tags[i].text);
         }
       }
 
-      studies.create({
-        identifier: $scope.identifier,
+      // creates a new meta-analysis
+      metaAnalyses.create({
         title: $scope.title,
-        author: [$scope.author],
-        link: $scope.link,
-        year: $scope.year,
+        description: $scope.description,
+        owner: '1',
         tags: tagsArray
-      }).success(function(data) {
-        // if state is meta-analysis reload state
-        if ($state.current.name == 'metaanalyses/id') {
-          $state.go($state.current, {}, {
-            reload: true
-          });
-        } else {
-          // else got to study that has been created
-          $state.go('studies/id', {
-            id: data._id
-          }, {
-            reload: true
-          });
-        }
       });
-
-      //reset scopes
-      $scope.identifier = '';
       $scope.title = '';
-      $scope.author = '';
-      $scope.year = '';
-      $scope.link = '';
+      $scope.description = '';
       $scope.tags = [];
 
-    };
-
-    $scope.search = function() {
-      $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res) {
-        $scope.searchResults = res.data;
-        return res.data;
+      // return to dashboard state
+      $state.go('home', {}, {
+        reload: true
       });
     };
   }
@@ -564,39 +457,146 @@ app.controller('MetaAnalysisCtrl', [
 ]);
 
 /**
-/* MetaAnalyses controller
-/* Provides methods to add a new meta-analysis
+/* Nav controller
+/* Sets up the $scope for the navigation
 /**/
-app.controller('MetaAnalysesCtrl', [
-  '$scope', '$state', 'metaAnalyses',
-  function($scope, $state, metaAnalyses) {
-    $scope.metaAnalyses = metaAnalyses.data;
+app.controller('NavCtrl', [
+  '$scope', '$state',
+  'auth',
+  function($scope, $state, auth) {
+    $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.currentUser = auth.currentUser;
+    $scope.logOut = function() {
+      auth.logOut();
+      $state.go('login', {}, {
+        reload: true
+      });
+    };
+  }
+]);
 
-    // function to create a new meta analysis
-    $scope.createMetaAnalysis = function() {
-      // get tags from view
+/**
+/* SearchCtrl controller
+/* Provides methods to: search for studies and meta-analyses by tag
+/**/
+app.controller('SearchCtrl', ['$http',
+  '$scope',
+  function($http, $scope) {
+    $scope.search = function() {
+      $http.get('/api/studies/tag/' + $scope.searchTerm).success(function(data) {
+        $scope.studiesResults = data;
+      });
+    };
+  }
+]);
+
+/**
+/* Studies controller
+/* Provides methods to: add a new study and search for studies
+/**/
+app.controller('StudiesCtrl', ['$http', '$scope',
+  '$state', 'auth', 'studies',
+  function($http, $scope, $state, auth, studies) {
+    $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.studies = studies.studies;
+
+    $scope.addStudy = function() {
       var tagsArray = [];
+      var i = 0;
       if ($scope.tags !== undefined) {
-        for (var i = 0; i < $scope.tags.length; i++) {
+        for (i; i < $scope.tags.length; i++) {
           tagsArray.push($scope.tags[i].text);
         }
       }
 
-      // creates a new meta-analysis
-      metaAnalyses.create({
+      studies.create({
+        identifier: $scope.identifier,
         title: $scope.title,
-        description: $scope.description,
-        owner: '1',
+        author: [$scope.author],
+        link: $scope.link,
+        year: $scope.year,
         tags: tagsArray
+      }).success(function(data) {
+        // if state is meta-analysis reload state
+        if ($state.current.name == 'metaanalyses/id') {
+          $state.go($state.current, {}, {
+            reload: true
+          });
+        } else {
+          // else got to study that has been created
+          $state.go('studies/id', {
+            id: data._id
+          }, {
+            reload: true
+          });
+        }
       });
+
+      //reset scopes
+      $scope.identifier = '';
       $scope.title = '';
-      $scope.description = '';
+      $scope.author = '';
+      $scope.year = '';
+      $scope.link = '';
       $scope.tags = [];
 
-      // return to dashboard state
-      $state.go('home', {}, {
-        reload: true
+    };
+
+    $scope.search = function() {
+      $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res) {
+        $scope.searchResults = res.data;
+        return res.data;
       });
     };
+  }
+]);
+
+/**
+/* Study controller
+/* Provides methods to: add a derived data to a study
+/**/
+app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
+  function(auth, $scope, $state, studies, study) {
+    $scope.study = study;
+    $scope.isLoggedIn = auth.isLoggedIn;
+
+    $scope.addStudyData = function() {
+      var newDerivedData = {
+        value: $scope.value,
+        property: $scope.property,
+        comment: $scope.comment,
+        addedBy: "1"
+      };
+
+      studies.addData(study._id, newDerivedData).success(function() {
+        $scope.property = '';
+        $scope.value = '';
+        $scope.comment = '';
+        $state.go($state.current, {}, {
+          reload: true
+        });
+      });
+
+    };
+  }
+]);
+
+/**
+/* UserCtrl controller
+/* Provides methods to: add a new study and search for studies
+/**/
+app.controller('UserCtrl', ['$http',
+  '$scope', 'auth',
+  function($http, $scope, auth) {
+    $scope.user = auth.currentUser();
+
+    // populates the users contributions
+    $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').success(function(data) {
+      $scope.userMetaAnalyses = data;
+    });
+
+    $http.get('/api/user/' + auth.currentUser() + '/studies').success(function(data) {
+      $scope.userStudies = data;
+    });
   }
 ]);
