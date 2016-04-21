@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// Meta-analysis schema
 var MetaAnalysisSchema = new mongoose.Schema({
   title: String,
   description: String,

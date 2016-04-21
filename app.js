@@ -22,6 +22,8 @@ var app = express();
 var mongoose = require('mongoose');
 var passport = require('passport');
 
+/* Default configuration for the MEAN.io framework */
+
 // connects to the mongodb
 mongoose.connect('mongodb://localhost/metaanalysis');
 

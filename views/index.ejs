@@ -609,6 +609,9 @@
   <script type="text/ng-template" id="api.html">
     <h1>API Documentation</h1>
     <div class="row">
+      <p>Living Meta-analysis provides a RESTful API for accessing and contributing data.</p>
+    </div>
+    <div class="row">
       <table class="table">
         <tr>
           <th>Method</th>
@@ -632,7 +635,7 @@
           <td>Returns the study with the given ID</td>
         </tr>
         <tr>
-          <td><span class="label label-default">PUT</span></td>
+          <td><span class="label label-default">PUT <i class="fa fa-lock"></i></span></td>
           <td><a href="/api/studies/:id/derivedData">/api/studies/{id}/derivedData</a></td>
           <td>Adds new properties to the specified study</td>
         </tr>
@@ -647,7 +650,7 @@
           <td>Returns all meta-analyses</td>
         </tr>
         <tr>
-          <td><span class="label label-default">POST</span></td>
+          <td><span class="label label-default">POST <i class="fa fa-lock"></i></span></td>
           <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
           <td>Creates a new meta-analysis</td>
         </tr>
@@ -672,6 +675,10 @@
           <td>Returns all study properties added by the specified user</td>
         </tr>
       </table>
+
+      <p>
+        <i class="fa fa-lock"></i> denotes an API route that requires authentication.
+      </p>
     </div>
   </script>
 </body>

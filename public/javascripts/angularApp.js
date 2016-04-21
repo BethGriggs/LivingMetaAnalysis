@@ -1,7 +1,7 @@
 var app = angular.module('livingmetaanalysis', ['ui.router', 'ngTagsInput']);
 
 /**
-/* App config
+/* App config: defines 'states'
 /**/
 app.config([
   '$stateProvider',
@@ -92,7 +92,9 @@ app.config([
       .state('api', {
         url: '/api',
         templateUrl: 'api.html'
-            });
+      });
+
+    // route to home state if invalid URL
     $urlRouterProvider.otherwise('home');
   }
 ]);
@@ -105,14 +107,17 @@ app.config([
 app.factory('auth', ['$http', '$window', function($http, $window) {
   var auth = {};
 
+  // save the JWT
   auth.saveToken = function(token) {
     $window.localStorage['livingmetaanalysis-token'] = token;
   };
 
+  // get the JWT
   auth.getToken = function() {
     return $window.localStorage['livingmetaanalysis-token'];
   };
 
+  // check if user has token
   auth.isLoggedIn = function() {
     var token = auth.getToken();
 
@@ -125,6 +130,7 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
     }
   };
 
+  // return the current user
   auth.currentUser = function() {
     if (auth.isLoggedIn()) {
       var token = auth.getToken();
@@ -134,18 +140,21 @@ app.factory('auth', ['$http', '$window', function($http, $window) {
     }
   };
 
+  // register a new user
   auth.register = function(user) {
     return $http.post('/register', user).success(function(data) {
       auth.saveToken(data.token);
     });
   };
 
+  // log a user in
   auth.logIn = function(user) {
     return $http.post('/login', user).success(function(data) {
       auth.saveToken(data.token);
     });
   };
 
+  // log a user out
   auth.logOut = function() {
     $window.localStorage.removeItem('livingmetaanalysis-token');
   };
@@ -355,11 +364,17 @@ app.controller('MetaAnalysisCtrl', [
 
     // adds a new property to the meta-analysis
     $scope.addPropertyToMetaAnalysis = function() {
-
       if ($scope.newProperty !== undefined) {
         metaAnalysis.properties.push($scope.newProperty);
         metaAnalyses.update(metaAnalysis._id, metaAnalysis);
       }
+    };
+
+    // removes a property from the meta-analysis
+    $scope.removePropertyFromMetaAnalysis = function(property) {
+      var index = metaAnalysis.properties.indexOf(property);
+      metaAnalysis.properties.splice(index, 1);
+      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
     };
 
     // adds study to meta-analysis
@@ -368,16 +383,11 @@ app.controller('MetaAnalysisCtrl', [
       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
     };
 
+    // removes the study from the meta-analysis
     $scope.removeStudyFromMetaAnalysis = function(study) {
       var index = metaAnalysis.studies.indexOf(study);
       metaAnalysis.studies.splice(index, 1);
       metaAnalyses.update(metaAnalysis._id, metaAnalysis);
-    };
-
-    // used to obtain scope values
-    $scope.setupStudyPropertyScope = function(study, property) {
-      $scope.study = study;
-      $scope.property = property;
     };
 
     // adds a propety to the study
@@ -398,14 +408,13 @@ app.controller('MetaAnalysisCtrl', [
         });
     };
 
-    // removes a property from the meta-analysis
-    $scope.removePropertyFromMetaAnalysis = function(property) {
-      var index = metaAnalysis.properties.indexOf(property);
-      metaAnalysis.properties.splice(index, 1);
-      metaAnalyses.update(metaAnalysis._id, metaAnalysis);
+    // used to obtain scope values
+    $scope.setupStudyPropertyScope = function(study, property) {
+      $scope.study = study;
+      $scope.property = property;
     };
 
-    // used to detect whether the study has had that property derived
+    // used to detect whether the study has had the given property derived
     $scope.getStudyProperty = function(study, property) {
       for (var i = 0; i < study.derivedData.length; i++) {
         if (study.derivedData[i].property == property) {
@@ -415,7 +424,7 @@ app.controller('MetaAnalysisCtrl', [
       return null;
     };
 
-    // used to detect whether the study has had that property derived
+    // returns the comment of the derived property
     $scope.getStudyPropertyComment = function(study, property) {
       for (var i = 0; i < study.derivedData.length; i++) {
         if (study.derivedData[i].property == property) {
@@ -423,6 +432,17 @@ app.controller('MetaAnalysisCtrl', [
         }
       }
       return '';
+    };
+
+    // checks if the study is in a meta-analysis
+    $scope.studyInMetaAnalysis = function(study) {
+      var i = 0;
+      for (i; i < metaAnalysis.studies.length; i++) {
+        if (study._id === metaAnalysis.studies[i]._id) {
+          return true;
+        }
+      }
+      return false;
     };
 
     // adds a new study
@@ -441,17 +461,13 @@ app.controller('MetaAnalysisCtrl', [
         link: $scope.link,
         tags: tagsArray
       });
-    };
 
-    // checks if the study is in a meta-analysis
-    $scope.studyInMetaAnalysis = function(study) {
-      var i = 0;
-      for (i; i < metaAnalysis.studies.length; i++) {
-        if (study._id === metaAnalysis.studies[i]._id) {
-          return true;
-        }
-      }
-      return false;
+      //resets scope
+      $scope.identifier = '';
+      $scope.title = '';
+      $scope.author = '';
+      $scope.year = '';
+      $scope.link = '';
     };
   }
 ]);
@@ -507,6 +523,7 @@ app.controller('StudiesCtrl', ['$http', '$scope',
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.studies = studies.studies;
 
+    // adds a new study
     $scope.addStudy = function() {
       var tagsArray = [];
       var i = 0;
@@ -515,7 +532,6 @@ app.controller('StudiesCtrl', ['$http', '$scope',
           tagsArray.push($scope.tags[i].text);
         }
       }
-
       studies.create({
         identifier: $scope.identifier,
         title: $scope.title,
@@ -549,6 +565,7 @@ app.controller('StudiesCtrl', ['$http', '$scope',
 
     };
 
+    // search for studies
     $scope.search = function() {
       $http.get('/api/studies/tag/' + $scope.searchTerm).then(function(res) {
         $scope.searchResults = res.data;
@@ -567,6 +584,7 @@ app.controller('StudyCtrl', ['auth', '$scope', '$state', 'studies', 'study',
     $scope.study = study;
     $scope.isLoggedIn = auth.isLoggedIn;
 
+    // adds data to the study
     $scope.addStudyData = function() {
       var newDerivedData = {
         value: $scope.value,
@@ -597,11 +615,12 @@ app.controller('UserCtrl', ['$http',
   function($http, $scope, auth) {
     $scope.user = auth.currentUser();
 
-    // populates the users contributions
+    // populates the users meta-analysis
     $http.get('/api/user/' + auth.currentUser() + '/metaanalyses').success(function(data) {
       $scope.userMetaAnalyses = data;
     });
 
+    // populates the users study contributions
     $http.get('/api/user/' + auth.currentUser() + '/studies').success(function(data) {
       $scope.userStudies = data;
     });

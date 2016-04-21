@@ -1,17 +1,20 @@
 /**/
 /* Declares the API routes using Express.
 /**/
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var passport = require('passport');
 var jwt = require('express-jwt');
+
+// in production secret should be changed.
 var auth = jwt({
   secret: 'SECRET',
   userProperty: 'payload'
 });
 
-/* import Mongoose schemas  */
+/* Import Mongoose schemas  */
 var User = mongoose.model('User');
 var Study = mongoose.model('Study');
 var MetaAnalysis = mongoose.model('MetaAnalysis');

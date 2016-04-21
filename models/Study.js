@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// Study schema 
 var StudySchema = new mongoose.Schema({
   identifier: String,
   title: String,
