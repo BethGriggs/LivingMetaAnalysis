@@ -70,10 +70,10 @@ app.config([
         templateUrl: 'studies/create.html',
         controller: 'StudiesCtrl'
       })
-      .state('studies/search', {
-        url: '/studies/search',
-        templateUrl: 'studies/search.html',
-        controller: 'StudiesCtrl'
+      .state('search', {
+        url: '/search',
+        templateUrl: 'search.html',
+        controller: 'SearchCtrl'
       })
       .state('studies/id', {
         url: '/studies/:id',
@@ -351,6 +351,21 @@ app.controller('UserCtrl', ['$http',
     $http.get('/api/user/' + auth.currentUser() + '/studies').success(function(data) {
       $scope.userStudies = data;
     });
+  }
+]);
+
+/**
+/* SearchCtrl controller
+/* Provides methods to: search for studies and meta-analyses by tag
+/**/
+app.controller('SearchCtrl', ['$http',
+  '$scope',
+  function($http, $scope) {
+    $scope.search = function() {
+      $http.get('/api/studies/tag/' + $scope.searchTerm).success(function(data) {
+        $scope.studiesResults = data;
+      });
+    };
   }
 ]);
 

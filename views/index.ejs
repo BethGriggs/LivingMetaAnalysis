@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Living Meta Analysis</title>
+  <title>Living Meta-analysis</title>
   <link rel="stylesheet" href="/vendor/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="vendor/ng-tags-input.min.css">
@@ -26,7 +26,7 @@
 
     <div ng-controller="NavCtrl" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/studies/search"><i class="fa fa-search fa-2x"></i></a></li>
+        <li><a href="#/search"><i class="fa fa-search fa-2x"></i></a></li>
         <li ng-show="isLoggedIn()" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i  class="fa fa-plus fa-2x"></i><span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -254,7 +254,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label" for="year">Year</label>
             <div class="col-md-2">
-              <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}"]>
+              <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}" ]>
             </div>
           </div>
 
@@ -323,7 +323,7 @@
                 <section>
                   <ul ng-show="searchResults.length > 0">
                     <li ng-repeat="study in searchResults">
-                      <a href="#/studies/{{study._id}}"  data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+                      <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
                       <button ng-show="!studyInMetaAnalysis(study)" class="btn btn-success btn-sm" ng-click="addStudyToMetaAnalysis(study)"><i class="fa fa-plus"></i></button>
                     </li>
                   </ul>
@@ -516,7 +516,7 @@
         <div class="form-group">
           <label class="col-md-4 control-label" for="year">Year</label>
           <div class="col-md-2">
-            <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}"]>
+            <input id="year" name="year" ng-model="year" type="text" placeholder="yyyy" class="form-control input-md" required="" [ng-pattern="[0-9]{4}" ]>
           </div>
         </div>
 
@@ -535,22 +535,33 @@
   <!-- ================================================
       Search template
       ================================================ -->
-  <script type="text/ng-template" id="studies/search.html">
+  <script type="text/ng-template" id="search.html">
     <div class="row">
-        <form ng-submit="search()">
-          <div class="input-group">
-            <input type="text" class="form-control input-sm" ng-model="searchTerm" placeholder="Search for studies by tag" />
-            <span class="input-group-btn">
+      <form ng-submit="search()">
+        <div class="input-group">
+          <input type="text" class="form-control input-sm" ng-model="searchTerm" placeholder="Search by tag" />
+          <span class="input-group-btn">
                 <button class="btn btn-success" type="submit">
                   <span class=" fa fa-search"></span>
-            </button>
-            </span>
-          </div>
-        </form>
+          </button>
+          </span>
+        </div>
+      </form>
     </div>
     <div class="row">
+      <h1>Studies</h1>
+      <ul ng-show="studiesResults.length > 0">
+        <li ng-repeat="study in studiesResults">
+          <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+        </li>
+      </ul>
+      <p ng-show="studiesResults.length == 0">No studies match that tag.</p>
+    </div>
+
+    <div class="row">
+      <h1>Meta-analyes</h1>
       <ul ng-show="searchResults.length > 0">
-        <li ng-repeat="study in searchResults">
+        <li ng-repeat="study in studyResults">
           <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
         </li>
       </ul>
@@ -564,15 +575,15 @@
   <script type="text/ng-template" id="help.html">
     <h1>Help</h1>
     <div class="row">
-        <h3>How to create a meta-analysis</h3>
-        <ul class="list-unstyled">
-          <li>1. <a href="#/metaanalyses/create">Create a new meta-analysis</a>.</li>
-          <li>2. Add properties relevant to the meta-analysis.</li>
-          <li>3. Search for existing studys to be included in the meta-analysis.</li>
-          <li>4. Populate any missing study properties.</li>
-          <li>5. <a href="#/studies/create">Add new studies</a>.</li>
-          <li>6. Apply statistics to the meta-analysis.</li>
-        </ul>
+      <h3>How to create a meta-analysis</h3>
+      <ul class="list-unstyled">
+        <li>1. <a href="#/metaanalyses/create">Create a new meta-analysis</a>.</li>
+        <li>2. Add properties relevant to the meta-analysis.</li>
+        <li>3. Search for existing studys to be included in the meta-analysis.</li>
+        <li>4. Populate any missing study properties.</li>
+        <li>5. <a href="#/studies/create">Add new studies</a>.</li>
+        <li>6. Apply statistics to the meta-analysis.</li>
+      </ul>
     </div>
   </script>
 
@@ -583,63 +594,63 @@
     <h1>API Documentation</h1>
     <div class="row">
       <table class="table">
-      <tr>
-        <th>Method</th>
-        <th>URL</th>
-        <th>Description</th>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/studies">/api/studies</a></td>
-        <td>Returns a list of all studies</td>
-      </tr>
+        <tr>
+          <th>Method</th>
+          <th>URL</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/studies">/api/studies</a></td>
+          <td>Returns a list of all studies</td>
+        </tr>
 
-      <tr>
-        <td><span class="label label-default">POST</span></td>
-        <td><a href="/api/studies">/api/studies</a></td>
-        <td>Creates a new study</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/studies/:id">/api/studies/{id}</a></td>
-        <td>Returns the study with the given ID</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">PUT</span></td>
-        <td><a href="/api/studies/:id/derivedData">/api/studies/{id}/derivedData</a></td>
-        <td>Adds new properties to the specified study</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/studies/tag/:tag">/api/studies/tag/{tag}</a></td>
-        <td>Returns all studies with the specified tag</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
-        <td>Returns all meta-analyses</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">POST</span></td>
-        <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
-        <td>Creates a new meta-analysis</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/metaanalyses/:id">/api/metaanalyses/{id}</a></td>
-        <td>Returns the meta-analysis with the given ID</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/metaanalyses</a></td>
-        <td>Returns all meta-analyses belonging to the specified user</td>
-      </tr>
-      <tr>
-        <td><span class="label label-default">GET</span></td>
-        <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/studies</a></td>
-        <td>Returns all study properties added by the specified user</td>
-      </tr>
-    </table>
+        <tr>
+          <td><span class="label label-default">POST</span></td>
+          <td><a href="/api/studies">/api/studies</a></td>
+          <td>Creates a new study</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/studies/:id">/api/studies/{id}</a></td>
+          <td>Returns the study with the given ID</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">PUT</span></td>
+          <td><a href="/api/studies/:id/derivedData">/api/studies/{id}/derivedData</a></td>
+          <td>Adds new properties to the specified study</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/studies/tag/:tag">/api/studies/tag/{tag}</a></td>
+          <td>Returns all studies with the specified tag</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
+          <td>Returns all meta-analyses</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">POST</span></td>
+          <td><a href="/api/metaanalyses">/api/metaanalyses</a></td>
+          <td>Creates a new meta-analysis</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/metaanalyses/:id">/api/metaanalyses/{id}</a></td>
+          <td>Returns the meta-analysis with the given ID</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/metaanalyses</a></td>
+          <td>Returns all meta-analyses belonging to the specified user</td>
+        </tr>
+        <tr>
+          <td><span class="label label-default">GET</span></td>
+          <td><a href="/api/user/:username/metaanalyses">/api/user/{username}/studies</a></td>
+          <td>Returns all study properties added by the specified user</td>
+        </tr>
+      </table>
     </div>
   </script>
 </body>
