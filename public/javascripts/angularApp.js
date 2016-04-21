@@ -483,8 +483,15 @@ app.controller('SearchCtrl', ['$http',
   '$scope',
   function($http, $scope) {
     $scope.search = function() {
+
+      // gets studies with matching tag
       $http.get('/api/studies/tag/' + $scope.searchTerm).success(function(data) {
         $scope.studiesResults = data;
+      });
+
+      // gets meta-analyses with matching tag
+      $http.get('/api/metaanalyses/tag/' + $scope.searchTerm).success(function(data) {
+        $scope.metaAnalysesResults = data;
       });
     };
   }

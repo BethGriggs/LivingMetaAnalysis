@@ -555,6 +555,7 @@
         </div>
       </form>
     </div>
+    <div ng-show="searchTerm != ''">
     <div class="row">
       <h1>Studies</h1>
       <ul ng-show="studiesResults.length > 0">
@@ -573,13 +574,14 @@
 
     <div class="row">
       <h1>Meta-analyes</h1>
-      <ul ng-show="searchResults.length > 0">
-        <li ng-repeat="study in studyResults">
-          <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+      <ul ng-show="metaAnalysesResults.length > 0">
+        <li ng-repeat="metaAnalysis in metaAnalysesResults">
+          <a href="#/metaanalyses/{{metaAnalysis._id}}"> {{metaAnalysis.title}}</a>
         </li>
       </ul>
-      <p ng-show="searchResults.length == 0">No studies match that tag.</p>
+      <p ng-show="metaAnalysesResults.length == 0">No meta-analyses match that tag.</p>
     </div>
+  </div>
   </script>
 
   <!-- ================================================

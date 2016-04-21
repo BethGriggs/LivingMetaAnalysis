@@ -248,6 +248,28 @@ router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
   );
 });
 
+// PARAM: tag
+router.param('tags', function(req, res, next, tag) {
+  var query = MetaAnalysis.find({
+    'tags': tag
+  });
+
+  query.exec(function(err, metaAnalyses) {
+    if (err) {
+      return next(err);
+    }
+    if (!metaAnalyses) {
+      return next(new Error('cannot find meta-analysis'));
+    }
+    req.metaAnalyses = metaAnalyses;
+    return next();
+  });
+});
+
+// GET: metaAnalyses with tag param
+router.get('/api/metaanalyses/tag/:tags', function(req, res) {
+  res.json(req.metaAnalyses);
+});
 
 // PARAM: addedBy
 router.param('addedBy', function(req, res, next, addedBy) {
