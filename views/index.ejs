@@ -559,7 +559,13 @@
       <h1>Studies</h1>
       <ul ng-show="studiesResults.length > 0">
         <li ng-repeat="study in studiesResults">
-          <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onclick="$('#addExistingStudyModal').modal('hide')"> {{study.title}}</a>
+          <a href="#/studies/{{study._id}}"
+             data-toggle="tooltip"
+             data-placement="top"
+             title="{{study.title}} ({{study.author}}, {{study.year}})"
+             onclick="$('#addExistingStudyModal').modal('hide')">
+             {{study.title}} ({{study.identifier}})
+          </a>
         </li>
       </ul>
       <p ng-show="studiesResults.length == 0">No studies match that tag.</p>
