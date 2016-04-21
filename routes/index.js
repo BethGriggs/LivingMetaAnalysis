@@ -16,10 +16,12 @@ var User = mongoose.model('User');
 var Study = mongoose.model('Study');
 var MetaAnalysis = mongoose.model('MetaAnalysis');
 
-/* GET: render index  */
+// GET: render index
  router.get('/', function(req, res) {
    res.render('index');
  });
+
+/* Authentication routes */
 
 // POST: user register route
 router.post('/register', function(req, res, next) {
@@ -73,7 +75,7 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-/* studies routes */
+/* Studies routes */
 
 // GET: studies route
 router.get('/api/studies', function(req, res, next) {
@@ -140,6 +142,72 @@ router.put('/api/studies/:study/derivedData', auth, function(req, res, next) {
   );
 });
 
+// PARAM: addedBy
+router.param('addedBy', function(req, res, next, addedBy) {
+  var query = Study.find({
+    'derivedData.addedBy': addedBy
+  });
+
+  query.exec(function(err, studies) {
+    if (err) {
+      return next(err);
+    }
+    if (!studies) {
+      return next(new Error('cannot find study'));
+    }
+    req.studies = studies;
+    return next();
+  });
+});
+
+// GET: All studies where a user has contributed data
+router.get('/api/user/:addedBy/studies', function(req, res) {
+  res.json(req.studies);
+});
+
+/* meta-analysis routes */
+
+// GET: all meta-analyses
+router.get('/api/metaanalyses', function(req, res, next) {
+  MetaAnalysis.find(function(err, metaAnalyses) {
+    if (err) {
+      return next(err);
+    }
+    res.json(metaAnalyses);
+  });
+});
+
+// POST: meta-analyses route
+router.post('/api/metaanalyses', auth, function(req, res, next) {
+  var metaAnalysis = new MetaAnalysis(req.body);
+  metaAnalysis.owner = req.payload.username;
+  metaAnalysis.save(function(err, metaAnalysis) {
+    if (err) {
+      console.log(err);
+      return next(err);
+    }
+    res.json(metaAnalysis);
+  });
+});
+
+// GET: get indivudal meta-analysis
+router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
+  res.json(req.metaAnalysis);
+});
+
+// PUT: update the meta-analysis
+router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
+  MetaAnalysis.findByIdAndUpdate(
+    req.params.metaanalysis,
+    req.body, {
+      safe: true,
+      upsert: true,
+      new: true
+    },
+    function(err, metaAnalysis) {}
+  );
+});
+
 // PARAM: username
 router.param('username', function(req, res, next, username) {
   var query = MetaAnalysis.find({
@@ -186,31 +254,6 @@ router.get('/api/studies/tag/:tag', function(req, res) {
   res.json(req.studies);
 });
 
-/* meta-analysis routes */
-
-// GET: all meta-analyses
-router.get('/api/metaanalyses', function(req, res, next) {
-  MetaAnalysis.find(function(err, metaAnalyses) {
-    if (err) {
-      return next(err);
-    }
-    res.json(metaAnalyses);
-  });
-});
-
-// POST: meta-analyses route
-router.post('/api/metaanalyses', auth, function(req, res, next) {
-  var metaAnalysis = new MetaAnalysis(req.body);
-  metaAnalysis.owner = req.payload.username;
-  metaAnalysis.save(function(err, metaAnalysis) {
-    if (err) {
-      console.log(err);
-      return next(err);
-    }
-    res.json(metaAnalysis);
-  });
-});
-
 // PARAM: meta-analysis id
 router.param('metaanalysis', function(req, res, next, id) {
   var query = MetaAnalysis.findById(id);
@@ -228,24 +271,6 @@ router.param('metaanalysis', function(req, res, next, id) {
     req.metaAnalysis = metaAnalysis;
     return next();
   });
-});
-
-// GET: get indivudal meta-analysis
-router.get('/api/metaanalyses/:metaanalysis', function(req, res) {
-  res.json(req.metaAnalysis);
-});
-
-// PUT: update the meta-analysis
-router.put('/api/metaanalyses/:metaanalysis', function(req, res, next) {
-  MetaAnalysis.findByIdAndUpdate(
-    req.params.metaanalysis,
-    req.body, {
-      safe: true,
-      upsert: true,
-      new: true
-    },
-    function(err, metaAnalysis) {}
-  );
 });
 
 // PARAM: tag
@@ -270,29 +295,5 @@ router.param('tags', function(req, res, next, tag) {
 router.get('/api/metaanalyses/tag/:tags', function(req, res) {
   res.json(req.metaAnalyses);
 });
-
-// PARAM: addedBy
-router.param('addedBy', function(req, res, next, addedBy) {
-  var query = Study.find({
-    'derivedData.addedBy': addedBy
-  });
-
-  query.exec(function(err, studies) {
-    if (err) {
-      return next(err);
-    }
-    if (!studies) {
-      return next(new Error('cannot find study'));
-    }
-    req.studies = studies;
-    return next();
-  });
-});
-
-// GET: All studies where a user has contributed data
-router.get('/api/user/:addedBy/studies', function(req, res) {
-  res.json(req.studies);
-});
-
 
 module.exports = router;
