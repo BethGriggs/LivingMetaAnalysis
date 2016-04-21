@@ -142,7 +142,7 @@
           <ul>
             <li ng-repeat="study in userStudies">
               <a href="#/studies/{{study._id}}" data-toggle="tooltip" data-placement="top" title="{{study.title}} ({{study.author}}, {{study.year}})" onmouseenter="$(this).tooltip('show')">
-                {{study.title}}
+                {{study.title}} ({{study.identifier}})
               </a>
             </li>
           </ul>
